@@ -21,7 +21,7 @@ game: dict
 ├── teams: dict
 ├── players: list
 │   ├── snapshots: list
-│   ├── runes: dict
+│   ├── runes: list
 │   └── items: list
 └── event: list
 ```
