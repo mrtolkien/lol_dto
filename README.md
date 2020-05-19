@@ -20,9 +20,9 @@ means allowed data types are strings, numbers, booleans, lists, and dictionaries
 game: dict
 ├── teams: dict
 ├── players: list
-│   ├── snapshot: dict
-│   ├── rune: dict
-│   └── item: dict
+│   ├── snapshots: list
+│   ├── runes: dict
+│   └── items: list
 └── event: list
 ```
 
