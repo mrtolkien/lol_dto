@@ -101,7 +101,7 @@ snapshot['totalGold']
 ```python console
 runes = blue_mid['runes']
 
-runes['keystoneName']
+runes['keystoneId']
 >>> 8005
 
 runes['keystoneName']
