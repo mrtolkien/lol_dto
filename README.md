@@ -19,11 +19,11 @@ means allowed data types are strings, numbers, booleans, lists, and dictionaries
 ```
 game: dict
 ├── teams: dict
-├── players: list
-│   ├── snapshots: list
-│   ├── runes: list
-│   └── items: list
-└── event: list
+│   └── players: list
+│       ├── snapshots: list
+│       ├── runes: list
+│       └── items: list
+└── events: list
 ```
 
 # Data access examples
