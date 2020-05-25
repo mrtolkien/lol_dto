@@ -15,12 +15,14 @@ The goal of this unique DTO is to simplify interoperability between community to
 To be easily usable in multiple programming languages, we have chosen to keep the data format `JSON` compliant. This 
 means allowed data types are strings, numbers, booleans, lists, and dictionaries.
 
+
 # Structure overview
+THIS IS A WORK IN PROGRESS AND NEEDS FINALISATION
 ```
 game: dict
-├── teams: dict
+├── teams: ?dict?
 │   └── players: list
-│       ├── snapshots: list
+│       ├── snapshots: ?list/dict?
 │       ├── runes: list
 │       └── items: list
 └── events: list
@@ -30,7 +32,7 @@ game: dict
 
 ## Game
 ```python console
-game['riotID']
+game['riotId']
 >>> 1353193
 
 game['riotServer']
