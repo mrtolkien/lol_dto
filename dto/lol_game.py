@@ -4,7 +4,7 @@ from lol.dto.lol_game_event import LolGameEvent
 from lol.dto.lol_game_team import LolGameTeam
 
 
-class LolGame(TypedDict):
+class LolGame(TypedDict, total=False):
     # Fields that are related to a specific data source should be prefaced by its name
     riotId: str  # gameId in Riot’s API
     riotServer: str  # platformId in Riot’s API
