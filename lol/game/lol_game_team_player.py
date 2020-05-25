@@ -6,6 +6,12 @@ class LolGameTeamPlayerSnapshot(TypedDict):
     totalGold: int
     totalGoldDiff: int
 
+    cs: int
+    csDiff: int
+    monstersKilled: int  # Moved to "monsters" nomenclature
+
+    position: Dict[str, int]  # Defined as distance from the bottom left of the map
+
 
 class LolGameTeamPlayerRune(TypedDict):
     slot: int  # Goes from 0 to 9 as of 2020
@@ -13,6 +19,8 @@ class LolGameTeamPlayerRune(TypedDict):
     name: str  # Optional
     rank: int  # Used for perks to represent the number of points put in it
     # TODO Check if rank appears in Riot’s API
+
+    stats: List[int]  # End of game stats per rune
 
 
 class LolGameTeamPlayerItem(TypedDict):
@@ -52,6 +60,7 @@ class LolGameTeamPlayer(TypedDict):
     snapshots: Dict[str, LolGameTeamPlayerSnapshot]
 
     # TODO Ask if runes/items should be a list or map. Currently a list because of regular structural
+    # TODO See where/how to save primary/secondary rune tree names
     runes: List[LolGameTeamPlayerRune]
     items: List[LolGameTeamPlayerItem]
     summonerSpells: List[LolGameTeamPlayerSummonerSpell]

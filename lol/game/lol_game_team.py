@@ -6,6 +6,7 @@ from lol.game.lol_game_team_player import LolGameTeamPlayer
 class LolGameTeamBan(TypedDict):
     championId: int
     championName: str  # Optional
+    # TODO See if we add "pickTurn" or just rely on list index
 
 
 class LolGameTeam(TypedDict):
