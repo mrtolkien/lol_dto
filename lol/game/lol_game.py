@@ -9,9 +9,16 @@ class LolGame(TypedDict):
     riotId: str  # gameId in Riot’s API
     riotServer: str  # platformId in Riot’s API
 
+    # Example of esports information
+    leaguepediaId: str
+    leaguepediaTournament: str
+    gameInSeries: int
+    vod_url: str
+
+    # Fields independent of the data source
     duration: int  # expressed in seconds
     startDate: str  # expressed as ISO 8601 date
-    gameVersion: str  # Raw game version
+    gameVersion: str  # Raw game version or patch? TODO
 
     winner: str  # equal to the winning team’s side (blue or red as of 2020)
 

@@ -42,17 +42,19 @@ class LolGameTeamPlayer(TypedDict):
     championId: int  # Based on Riot’s champions identifiers
     championName: int  # Optional
 
+    inGameName: str  # The in-game name is not linked to a particular data source and is unique
     role: str  # Role as defined by the community. Roles are top, jungle, mid, bot, support as of 2020
 
     riotRole: str  # Role and lane as defined by Riot’s API, very inaccurate
     riotLane: str
 
-    inGameName: str  # The in-game name is not linked to a particular data source and is unique
-
     # Fields specific to a unique data source are prefaced by its name
     riotAccountId: str
     riotSummonerId: str
     riotProfileIcon: int
+
+    # Example of esports information
+    leaguepediaLink: str
 
     # TODO Ask about this design choice, a list is easier to create but harder to use
     # Current idea: keys should a duration expressed as mm:ss to allow for easy querying and sorting
