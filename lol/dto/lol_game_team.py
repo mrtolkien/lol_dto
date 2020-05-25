@@ -1,6 +1,6 @@
 from typing import TypedDict, List
 
-from lol.game.lol_game_team_player import LolGameTeamPlayer
+from lol.dto.lol_game_team_player import LolGameTeamPlayer
 
 
 class LolGameTeamBan(TypedDict):
@@ -10,7 +10,7 @@ class LolGameTeamBan(TypedDict):
 
 
 class LolGameTeam(TypedDict):
-    # All fields here refer to end of game statistics
+    # All fields here refer to end of dto statistics
     riftHeraldKills: int
     dragonKills: int
     baronKills: int

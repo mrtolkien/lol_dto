@@ -1,7 +1,7 @@
 from typing import TypedDict, Dict, List
 
-from lol.game.lol_game_event import LolGameEvent
-from lol.game.lol_game_team import LolGameTeam
+from lol.dto.lol_game_event import LolGameEvent
+from lol.dto.lol_game_team import LolGameTeam
 
 
 class LolGame(TypedDict):
@@ -18,7 +18,7 @@ class LolGame(TypedDict):
     # Fields independent of the data source
     duration: int  # expressed in seconds
     startDate: str  # expressed as ISO 8601 date
-    gameVersion: str  # Raw game version or patch? TODO
+    gameVersion: str  # Raw dto version or patch? TODO
 
     winner: str  # equal to the winning team’s side (blue or red as of 2020)
 

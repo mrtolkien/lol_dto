@@ -20,7 +20,7 @@ class LolGameTeamPlayerRune(TypedDict):
     rank: int  # Used for perks to represent the number of points put in it
     # TODO Check if rank appears in Riot’s API
 
-    stats: List[int]  # End of game stats per rune
+    stats: List[int]  # End of dto stats per rune
 
 
 class LolGameTeamPlayerItem(TypedDict):
@@ -36,13 +36,13 @@ class LolGameTeamPlayerSummonerSpell(TypedDict):
 
 
 class LolGameTeamPlayer(TypedDict):
-    id: int  # Can be equal to participantId in Riot’s API. Meant to identify the player in this game
+    id: int  # Can be equal to participantId in Riot’s API. Meant to identify the player in this dto
     kills: int
 
     championId: int  # Based on Riot’s champions identifiers
     championName: int  # Optional
 
-    inGameName: str  # The in-game name is not linked to a particular data source and is unique
+    inGameName: str  # The in-dto name is not linked to a particular data source and is unique
     role: str  # Role as defined by the community. Roles are top, jungle, mid, bot, support as of 2020
 
     riotRole: str  # Role and lane as defined by Riot’s API, very inaccurate
@@ -67,7 +67,7 @@ class LolGameTeamPlayer(TypedDict):
     items: List[LolGameTeamPlayerItem]
     summonerSpells: List[LolGameTeamPlayerSummonerSpell]
 
-    # All stats here refer to end of game stats
+    # All stats here refer to end of dto stats
     firstBlood: bool
     firstTower: bool
 
