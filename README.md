@@ -15,14 +15,13 @@ The goal of this unique DTO is to simplify interoperability between community to
 To be easily usable in multiple programming languages, we have chosen to keep the data format `JSON` compliant. This 
 means allowed data types are strings, numbers, booleans, lists, and dictionaries.
 
-
 # Structure overview
 THIS IS A WORK IN PROGRESS AND NEEDS FINALISATION
 ```
 game: dict
-├── teams: ?dict?
+├── teams: dict
 │   └── players: list
-│       ├── snapshots: ?list/dict?
+│       ├── snapshots: list
 │       ├── runes: list
 │       └── items: list
 └── events: list
@@ -32,17 +31,17 @@ game: dict
 
 ## Game
 ```python console
-game['riotId']
+game['sources']['riot']['gameId']
 >>> 1353193
 
-game['riotServer']
+game['sources']['riot']['platformId']
 >>> ESPORTSTMNT03
 
 game['duration']
 >>> 1776
 
-game['startTimestamp']
->>> 1587810654658
+game['startDate']
+>>> '2020-04-25T10:30:54Z'
 
 game['winner']
 >>> blue
@@ -57,7 +56,7 @@ teams.keys()
 
 blue_team = teams['blue']
 
-blue_team['firstBlood']
+blue_team['firstBaron']
 >>> True
 
 blue_team['baronKills']
@@ -66,12 +65,9 @@ blue_team['baronKills']
 
 ## Player
 ```python console
-players = game['players']
+blue_players = game['blue']['players']
 
-blue_mid = next(p for p in players if p['team'] == 'blue' and p['role'] == 'mid')
-
-blue_mid['playerID']
->>> 3
+blue_mid = next(p for p in blue_players if p['role'] == 'mid')
 
 blue_mid['kills']
 >>> 7
@@ -91,10 +87,10 @@ snapshots = blue_mid['snapshots']
 len(snapshots)
 >>> 29
 
-snapshot = snapshots[15]
+snapshot = (s for s in snapshots if s['timestamp'] == 15*60)
 
 snapshot['timestamp']
->>> 900000
+>>> 900.0
 
 snapshot['totalGold']
 >>> 6417
@@ -103,24 +99,22 @@ snapshot['totalGold']
 ```python console
 runes = blue_mid['runes']
 
-runes['keystoneId']
+runes['primaryTreeId']
+>>> 800
+
+runes['runes_list'][0]['id']
 >>> 8005
 
-runes['keystoneName']
+runes['runes_list'][0]['name']
 >>> Press the Attack
-
-runes['primaryTree'][0]['rune_id']
->>> 9111
 ```
+
 ### Items
 ```python console
 items = blue_mid['items']
 
-items[0]['item_id']
+items[0]['id']
 >>> 3031
-
-items[0]['item_slot']
->>> 1
 ```
 
 ## Event
@@ -133,9 +127,13 @@ event['type']
 >>> 'CHAMPION_KILL'
 
 event['timestamp']
->>> 919689
+>>> 919.689
 
-# The playerID of an event is the one of the player performing the event
-event['playerID']
+# The playerID of an event is the one of the player performing the event, here the killer
+event['playerId']
 >>> 3
 ```
+
+# Code formatting
+
+If you want to contribute to the project the code should be formatted with `Black`, using a maximum line length of 100.
