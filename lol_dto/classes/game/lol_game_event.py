@@ -1,6 +1,6 @@
 from typing import TypedDict, Optional, List
 
-from lol_dto.game.extra_classes import Position, Building, Monster
+from lol_dto.classes.game.extra_classes import Position, Building, Monster
 
 
 class LolGameEvent(TypedDict, total=False):

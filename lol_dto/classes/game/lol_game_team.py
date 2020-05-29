@@ -1,5 +1,5 @@
 from typing import TypedDict, List, Optional
-from lol_dto.game.lol_game_player import LolGamePlayer
+from lol_dto.classes.game.lol_game_player import LolGamePlayer
 
 
 class LolGameTeam(TypedDict, total=False):

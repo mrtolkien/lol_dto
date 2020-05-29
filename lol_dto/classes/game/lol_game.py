@@ -1,7 +1,7 @@
 from typing import TypedDict, Dict, List, Optional
 
-from lol_dto.game.lol_game_event import LolGameEvent
-from lol_dto.game.lol_game_team import LolGameTeam
+from lol_dto.classes.game.lol_game_event import LolGameEvent
+from lol_dto.classes.game.lol_game_team import LolGameTeam
 
 
 class LolGame(TypedDict, total=False):

@@ -1,6 +1,6 @@
 from typing import TypedDict, List, Dict, Optional
 
-from lol_dto.game.extra_classes import Position
+from lol_dto.classes.game.extra_classes import Position
 
 
 class LolGamePlayerSnapshot(TypedDict, total=False):
