@@ -18,6 +18,7 @@ class LolGame(TypedDict, total=False):
     duration: int  # Expressed in seconds
 
     # As JSON does not define a date format, we rely on ISO formatting
+    # TODO Maybe change the field name?
     startDate: str  # Expressed as ISO 8601 date and time
 
     # We allow information duplication here because many data sources only have patch information
@@ -34,6 +35,9 @@ class LolGame(TypedDict, total=False):
     # Events are simply a list and should be treated in code-driven data representations
     # There is no guarantee that events present in this list or ordered chronologically
     events: List[LolGameEvent]
+
+    # TODO Add a clean picks and bans representation for esports games with full information
+    pass
 
     # Optional esports information
     tournament: Optional[str]  # Name of the tournament this game is a part of

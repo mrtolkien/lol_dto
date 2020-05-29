@@ -1,18 +1,8 @@
 from typing import TypedDict, List, Optional
-from lol_dto.game.lol_game_team_player import LolGamePlayer
+from lol_dto.game.lol_game_player import LolGamePlayer
 
 
-class LolGameTeamBan(TypedDict):
-    """A single ban made by one of the teams.
-
-    We have chosen to eschew the pickTurn field from the Riot API and simply rely on the list’s ordering.
-    """
-
-    championId: int  # Based on Riot API champion ID
-    championName: Optional[str]  # Optional champion name for convenience
-
-
-class LolGameTeam(TypedDict):
+class LolGameTeam(TypedDict, total=False):
     """One of the two teams taking part in a LoL game.
 
     The key referring to this object is what defines its side.
@@ -40,6 +30,7 @@ class LolGameTeam(TypedDict):
     # Players are defined as a simple list as no obvious key emerges
     players: List[LolGamePlayer]
 
-    # Bans should be ordered if the order has any meaning (it does not in solo queue as of 2020)
-    # If players do a single champion ban, it should be a part of the player object.
-    bans: Optional[List[LolGameTeamBan]]
+    # Team-related bans are a list of champions that were banned by players on the team
+    bans: Optional[List[int]]  # List of champion IDs
+
+    # TODO Add esports fields

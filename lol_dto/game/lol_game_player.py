@@ -1,9 +1,9 @@
 from typing import TypedDict, List, Dict, Optional
 
-from lol_dto.game.lol_game_event import Position
+from lol_dto.game.extra_classes import Position
 
 
-class LolGamePlayerSnapshot(TypedDict):
+class LolGamePlayerSnapshot(TypedDict, total=False):
     """Information about a player at a specific point in the game.
     """
 
@@ -13,22 +13,26 @@ class LolGamePlayerSnapshot(TypedDict):
     totalGold: int  # Total gold earned
     totalGoldDiff: Optional[int]  # Total gold difference with the opponent in the same role
 
+    xp: int  # Current experience
+    level: int  # Current champion level
+
     cs: int  # Total number of minions and monsters killed
-    csDiff: int  # Total CS difference with the opponent in the same role
+    csDiff: Optional[int]  # Total CS difference with the opponent in the same role
+
     monstersKilled: int  # Total monsters (neutral minions) killed
 
-    position: Position  # Player position
+    position: Optional[Position]  # Player position, None for the last "snapshot"
 
 
-class LolGamePlayerRune(TypedDict):
+class LolGamePlayerRune(TypedDict, total=False):
     """A single rune used by one of the players.
     """
 
-    slot: int  # Goes from 0 to 9 as of 2020
+    slot: int  # Primary tree, secondary tree, then stats perks
     id: int  # Referring to Riot API rune ID
-    name: Optional[str]  # Optional rune name for convenience
 
-    rank: int  # Used by stats perks to represent the number of points put in it
+    name: Optional[str]  # Optional rune name for convenience
+    rank: Optional[int]  # Used by stats perks to represent the number of points put in it
 
     stats: List[int]  # Riot-provided end-of-game statistics for the rune
 
@@ -43,34 +47,34 @@ class LolGamePlayerRunes(TypedDict):
     runes_list: List[LolGamePlayerRune]
 
 
-class LolGamePlayerItem(TypedDict):
+class LolGamePlayerItem(TypedDict, total=False):
     """A single item that a player possessed at the end of the game.
     """
 
     slot: int  # Goes from 0 to 6 as of 2020
     id: int  # Referring to Riot API item ID
-    name: str  # Optional item name for convenience
+    name: Optional[str]  # Optional item name for convenience
 
 
-class LolGamePlayerSummonerSpell(TypedDict):
+class LolGamePlayerSummonerSpell(TypedDict, total=False):
     """A single summoner spell chosen by a player.
     """
 
     slot: int  # 0 or 1
     id: int  # Referring to Riot API summoner spell ID
-    name: str  # Optional summoner spell name for convenience
+    name: Optional[str]  # Optional summoner spell name for convenience
 
 
-class LolGamePlayer(TypedDict):
+class LolGamePlayer(TypedDict, total=False):
     """A player in a LoL game.
 
     All player-specific information should be present here.
     """
 
-    inGameName: str  # The in-game name is not linked to a particular data source and should be unique
-
     # TODO Most contentious part of the spec, will likely need a rework
     id: int  # Usually equal to participantId in Riot’s API. Meant to identify the player in events.
+
+    inGameName: str  # The in-game name is not linked to a particular data source and should be unique
 
     # /!\ This field should be curated if it is present /!\
     role: Optional[str]  # Standard roles are top, jungle, mid, bot, support as of 2020.
@@ -84,6 +88,8 @@ class LolGamePlayer(TypedDict):
     foreignKeys: Dict[str, dict]
 
     profileIcon: int  # Refers to Riot API icon ID
+
+    # TODO Add esports fields
 
     # Snapshots represent player-specific information at a given timestamp.
     # Timestamp could be used as keys, but JSON does not allow for integer keys.
@@ -142,20 +148,24 @@ class LolGamePlayer(TypedDict):
     monsterKillsInEnemyJungle: int
 
     # Damage-related statistics
-    # Total true damage dealt can be calculated by subtracting physical and magical damage to the total
+    # Total true damage dealt can be calculated by subtracting physical and magic damage to the total
     totalDamageDealt: int  # Includes damage to minions and monsters
     physicalDamageDealt: int
-    magicalDamageDealt: int
+    magicDamageDealt: int
 
-    # Total true damage dealt  to champions can be calculated by subtracting physical and magical damage to the total
+    # Total true damage dealt  to champions can be calculated by subtracting physical and magic damage to the total
     totalDamageDealtToChampions: int
     physicalDamageDealtToChampions: int
-    magicalDamageDealtToChampions: int
+    magicDamageDealtToChampions: int
 
-    # Total true damage taken can be calculated by subtracting physical and magical damage to the total
+    # Total true damage taken can be calculated by subtracting physical and magic damage to the total
     totalDamageTaken: int
     physicalDamageTaken: int
-    magicalDamageTaken: int
+    magicDamageTaken: int
+
+    # Other damage statistics
+    damageDealtToObjectives: int
+    damageDealtToTurrets: int
 
     # Really random statistics
     longestTimeSpentLiving: int  # Expressed in seconds

@@ -1,17 +1,9 @@
-from typing import TypedDict
+from typing import TypedDict, Optional, List
+
+from lol_dto.game.extra_classes import Position, Building, Monster
 
 
-class Position(TypedDict):
-    """A position on the LoL map.
-    """
-
-    # min: {x: -120, y: -120}
-    # max: {x: 14870, y: 14980}
-    x: int  # Horizontal distance from bottom left of the map
-    y: int  # Vertical distance from bottom left of the map
-
-
-class LolGameEvent(TypedDict):
+class LolGameEvent(TypedDict, total=False):
     """A single event that took place during a LoL game.
 
     'timestamp', 'type', 'playerId', and 'position' should be present for almost all events.
@@ -29,10 +21,22 @@ class LolGameEvent(TypedDict):
 
     # TODO This is the most contentious field, currently heavily based on Riot’s structure
     # PlayerId can be null for executions and buildings dying to minions in particular
-    playerId: int  # Refers to the 'id' field in a player object. Refers to the player performing the event.
+    playerId: Optional[int]  # Refers to the 'id' field in a player object. Refers to the player performing the event.
 
     # Currently, only champion kills and monster kills have a position associated to them
-    position: Position  # Position where the event took place
+    position: Optional[Position]  # Position where the event took place
 
     # Other fields can be created according to what is needed to describe the event
-    # Expected fields can mirror Riot’s MatchEventDto for standard events types
+    itemId: Optional[int]  # Refer to Riot API item IDs. A simple int as we don’t need other info here
+    itemIdBeforeUndo: Optional[int]  # For items undo
+    itemIdAfterUndo: Optional[int]  # For items undo
+
+    victimId: Optional[int]  # Refers to the player’s id field
+    assistingParticipantIds: Optional[List[int]]  # Only filled for kills
+
+    skillSlot: Optional[int]  # 1 to 4
+    levelUpType: Optional[str]  # Used for Kha Zix and Kai’Sa evolutions. NORMAL most of the time.
+
+    # Objectives have their own DTO for easier parsing
+    building: Optional[Building]
+    monster: Optional[Monster]
