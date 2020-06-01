@@ -43,7 +43,7 @@ class LolGameTeamBuildingKill(LolGameEvent):
     side: str  # 'BLUE', 'RED'
 
 
-class LolGamePlayerItemEvent(LolGameEvent):
+class LolGamePlayerItemEvent(LolGameEvent, total=False):
     """An item-related event for a player.
 
     Represents buying, selling, destroying, and undoing items.
@@ -51,7 +51,8 @@ class LolGamePlayerItemEvent(LolGameEvent):
 
     # TODO See if "UNDO" needs specific fields
     type: str  # PURCHASED, SOLD, UNDO, DESTROYED
-    id: int  # Referring to Riot API item ID
+    id: int  # Referring to Riot API item ID. Resulting item in case of an UNDO
+    undoId: Optional[int]  # Referring to the item that was undone in an UNDO event
 
 
 class LolGamePlayerWardEvent(LolGameEvent):
