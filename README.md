@@ -28,6 +28,7 @@ game: dict
 ```
 
 # Data access examples
+THIS WAS RELATING TO THE VERY FIRST ALPHA AND IS OUT OF DATE
 
 ## Game
 ```python console
@@ -44,7 +45,7 @@ game['startDate']
 >>> '2020-04-25T10:30:54Z'
 
 game['winner']
->>> blue
+>>> BLUE
 ```
 
 ## Team

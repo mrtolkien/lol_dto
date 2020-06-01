@@ -1,6 +1,7 @@
 from typing import TypedDict, List, Dict, Optional
 
 from lol_dto.classes.game.extra_classes import Position
+from lol_dto.classes.game.lol_game_event import LolGamePlayerItemEvent, LolGamePlayerWardEvent, LolGamePlayerSkillEvent
 
 
 class LolGamePlayerSnapshot(TypedDict, total=False):
@@ -37,16 +38,6 @@ class LolGamePlayerRune(TypedDict, total=False):
     stats: List[int]  # Riot-provided end-of-game statistics for the rune
 
 
-class LolGamePlayerRunes(TypedDict):
-    """All runes used by player.
-    """
-
-    primaryTreeId: int  # Refers to Riot rune tree ID
-    secondaryTreeId: int  # Refers to Riot rune tree ID
-
-    runes_list: List[LolGamePlayerRune]
-
-
 class LolGamePlayerItem(TypedDict, total=False):
     """A single item that a player possessed at the end of the game.
     """
@@ -65,46 +56,13 @@ class LolGamePlayerSummonerSpell(TypedDict, total=False):
     name: Optional[str]  # Optional summoner spell name for convenience
 
 
-class LolGamePlayer(TypedDict, total=False):
-    """A player in a LoL game.
-
-    All player-specific information should be present here.
+class LolGamePlayerStats(TypedDict, total=False):
+    """End of game stats for a player in a game
     """
-
-    # TODO Most contentious part of the spec, will likely need a rework
-    id: int  # Usually equal to participantId in Riot’s API. Meant to identify the player in events.
-
-    inGameName: str  # The in-game name is not linked to a particular data source and should be unique
-
-    # /!\ This field should be curated if it is present /!\
-    role: Optional[str]  # Standard roles are top, jungle, mid, bot, support as of 2020.
-
-    championId: int  # Referring to Riot API champion ID
-    championName: int  # Optional champion name for convenience
-
-    # Foreign keys are the ways to identify this player in the data sources used to gather the data
-    # Any key that is present in game['sources'] should also be present here
-    # A Riot API 'foreignKeys' dict looks like: {'riot': {'accountId': str, 'platformId': str}}
-    foreignKeys: Dict[str, dict]
-
-    profileIcon: int  # Refers to Riot API icon ID
-
-    # TODO Add esports fields
-
-    # Snapshots represent player-specific information at a given timestamp.
-    # Timestamp could be used as keys, but JSON does not allow for integer keys.
-    # This is therefore simply a list, and you should not expect it to be indexed or sorted in any particular way.
-    snapshots: List[LolGamePlayerSnapshot]
-
-    # Runes are a dictionary and not directly a list to allow for primaryTree and secondaryTree information
-    runes: LolGamePlayerRunes
 
     # Items are simply a list with the 'slot' field defining which item slot they occupied.
     # The list cannot be simply indexed on this 'slot' as many players have empty slots at the end of games.
-    items: List[LolGamePlayerItem]
-
-    # Summoner spells is a simple 2-items list
-    summonerSpells: List[LolGamePlayerSummonerSpell]
+    items: List[LolGamePlayerItem]  # List of end of game items
 
     # As first blood is player-specific, this does not appear in Team objects.
     firstBlood: bool  # True if the player performed the first blood
@@ -177,5 +135,56 @@ class LolGamePlayer(TypedDict, total=False):
     totalUnitsHealed: int  # TODO Document this field
     damageSelfMitigated: int  # TODO Document this field
 
-    totalTimeCrowdControlDealt: int  # TODO Document this field
+    totalTimeCCDealt: int  # TODO Document this field
     timeCCingOthers: int  # TODO Document this field
+
+
+class LolGamePlayer(TypedDict, total=False):
+    """A player in a LoL game.
+
+    All player-specific information should be present here.
+    """
+
+    # TODO Most contentious part of the spec, will likely need a rework
+    id: int  # Usually equal to participantId in Riot’s API. Meant to identify the player in events.
+
+    inGameName: str  # The in-game name is not linked to a particular data source and should be unique
+    profileIconId: int  # Refers to Riot API icon ID
+
+    # /!\ This field should be curated if it is present /!\
+    role: Optional[str]  # Standard roles are top, jungle, mid, bot, support as of 2020.
+
+    championId: int  # Referring to Riot API champion ID
+    championName: Optional[str]  # Optional champion name for convenience
+
+    # Foreign keys are the ways to identify this player in the data sources used to gather the data
+    # Any key that is present in game['sources'] should also be present here
+    # A Riot API 'foreignKeys' dict looks like: {'riot': {'accountId': str, 'platformId': str}}
+    foreignKeys: Dict[str, dict]
+
+    # TODO Add esports fields
+
+    # Snapshots represent player-specific information at a given timestamp.
+    # Timestamp could be used as keys but JSON does not allow for integer keys.
+    # This is therefore simply a list, and you should not expect it to be indexed or sorted in any particular way.
+    snapshots: List[LolGamePlayerSnapshot]
+
+    # Rune information is stored directly in the player object as they are beginning-of-game information
+    primaryRuneTreeId: int  # Refers to Riot rune tree ID
+    secondaryRuneTreeId: int  # Refers to Riot rune tree ID
+
+    runes: List[LolGamePlayerRune]
+
+    # Summoner spells is a simple 2-items list
+    summonerSpells: List[LolGamePlayerSummonerSpell]
+
+    endOfGameStats: LolGamePlayerStats
+
+    # Item events is a list of item buys, sell, and undo
+    itemsEvents: List[LolGamePlayerItemEvent]
+
+    # Ward events are a list of wards placed and destroyed
+    wardsEvents: List[LolGamePlayerWardEvent]
+
+    # Skill level up events are every time the player used a skill or evolution point
+    skillsEvents: List[LolGamePlayerSkillEvent]

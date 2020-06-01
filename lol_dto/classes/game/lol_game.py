@@ -18,8 +18,7 @@ class LolGame(TypedDict, total=False):
     duration: int  # Expressed in seconds
 
     # As JSON does not define a date format, we rely on ISO formatting
-    # TODO Maybe change the field name?
-    startDate: str  # Expressed as ISO 8601 date and time
+    start: str  # Expressed as ISO 8601 date and time with a seconds precision, for example "2020-05-27T02:23:02+00:00"
 
     # We allow information duplication here because many data sources only have patch information
     patch: str  # Patch should follow a simple XX.YY nomenclature and is the recommended field to use
@@ -29,12 +28,12 @@ class LolGame(TypedDict, total=False):
     # To know if a given player won, use player['team'] == game['winner']
     winner: str  # Equal to the winning team’s side
 
-    # Team are a dictionary with keys equal to the team side ('blue' or 'red')
+    # Team are a dictionary with keys equal to the team side ('BLUE' or 'RED')
     teams: Dict[str, LolGameTeam]
 
-    # Events are simply a list and should be treated in code-driven data representations
-    # There is no guarantee that events present in this list or ordered chronologically
-    events: List[LolGameEvent]
+    # Kills involve multiple players from different teams and are therefore defined here
+    # TODO Talk about putting kills somewhere else?
+    kills: List[LolGameEvent]
 
     # TODO Add a clean picks and bans representation for esports games with full information
     pass

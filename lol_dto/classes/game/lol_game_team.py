@@ -1,4 +1,6 @@
 from typing import TypedDict, List, Optional
+
+from lol_dto.classes.game.lol_game_event import LolGameTeamMonsterKill, LolGameTeamBuildingKill
 from lol_dto.classes.game.lol_game_player import LolGamePlayer
 
 
@@ -32,5 +34,11 @@ class LolGameTeam(TypedDict, total=False):
 
     # Team-related bans are a list of champions that were banned by players on the team
     bans: Optional[List[int]]  # List of champion IDs
+
+    # Team monsters kills
+    monstersKills: List[LolGameTeamMonsterKill]
+
+    # Team buildings kills
+    buildingsKills: List[LolGameTeamBuildingKill]
 
     # TODO Add esports fields
