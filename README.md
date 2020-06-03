@@ -32,6 +32,7 @@ developers, and will make existing libraries easier to maintain.
 - Field names are coherent and comply with modern LoL nomenclature
     - Every field that is an identifier ends with `id`
     - Fields like `cs` or `monstersKilled` use current game vocabulary (as of June 2020)
+    - All durations from the game start are expressed in seconds
 
 ### `null` 
 The `null` value should only be used for unknown information. The best practice is to not have unknown fields in
