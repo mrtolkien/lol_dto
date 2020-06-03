@@ -11,7 +11,7 @@ class LolGame(TypedDict, total=False):
     """
 
     # The ['sources'] dictionary should have all information required to identify this game from a given source
-    # A Riot API 'sources' dict looks like: {'riot': {'gameId': int, 'platformId': str}}
+    # A Riot API 'sources' dict looks like: {'riotLolApi': {'gameId': int, 'platformId': str}}
     sources: Dict[str, dict]
 
     # Time-related fields should be expressed in seconds, using floats for ms precision

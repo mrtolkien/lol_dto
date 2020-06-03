@@ -164,11 +164,6 @@ class LolGamePlayer(TypedDict, total=False):
 
     # TODO Add esports fields
 
-    # Snapshots represent player-specific information at a given timestamp.
-    # Timestamp could be used as keys but JSON does not allow for integer keys.
-    # This is therefore simply a list, and you should not expect it to be indexed or sorted in any particular way.
-    snapshots: List[LolGamePlayerSnapshot]
-
     # Rune information is stored directly in the player object as they are beginning-of-game information
     primaryRuneTreeId: int  # Refers to Riot rune tree ID
     secondaryRuneTreeId: int  # Refers to Riot rune tree ID
@@ -178,7 +173,13 @@ class LolGamePlayer(TypedDict, total=False):
     # Summoner spells is a simple 2-items list
     summonerSpells: List[LolGamePlayerSummonerSpell]
 
+    # End of game stats are statistics like total kills, damage, vision score, ...
     endOfGameStats: LolGamePlayerStats
+
+    # Snapshots represent player-specific information at a given timestamp.
+    # Timestamp could be used as keys but JSON does not allow for integer keys.
+    # This is therefore simply a list, and you should not expect it to be indexed or sorted in any particular way.
+    snapshots: List[LolGamePlayerSnapshot]
 
     # Item events is a list of item buys, sell, and undo
     itemsEvents: List[LolGamePlayerItemEvent]

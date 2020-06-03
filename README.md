@@ -1,140 +1,110 @@
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 # LoL Game DTO
-A unified Data Transfer Object for League of Legends games
+A unified Data Transfer Object for League of Legends games. Currently developed by Tolki, FatalElement, and Kalturi.
 
-# Goal
-League of Legends game information can come in many forms. The most popular is Riot’s API and in particular its 
+⚠ This project is still a work in progress and not ready for release yet ⚠
+
+# Motivation
+League of Legends game information can come in many forms. The most popular source is Riot’s API and in particular its 
 [MATCH-V4](https://developer.riotgames.com/apis#match-v4/) endpoint, which defines its own MatchDto 
-and MatchTimelineDto objects.
+and MatchTimelineDto objects. While other sources of information could follow Riot’s data format, requiring
+ multiple objects to represent a single game and being constrained by Riot’s data format is inconvenient.
 
-While other sources of information could follow those specifications, having multiple objects represent a single game
-and being constrained by Riot’s ever-changing data format is not convenient.
+This is why creating a unique, community-driven representation of League of Legends game data will help communication
+and teamwork in open source projects. Improving the data structure will also make the data more accessible to new 
+developers, and will make existing libraries easier to maintain.
 
-The goal of this unique DTO is to simplify interoperability between community tools, requiring data to only be cast
- once to this unique LoL Game DTO.
+## Constraints
+- Retain all the information present in the Riot API
 
-To be easily usable in multiple programming languages, we have chosen to keep the data format `JSON` compliant. This 
-means allowed data types are strings, numbers, booleans, lists, and dictionaries.
+- Allow for external information, like role, to be added to the object
 
-# Structure overview
-THIS IS A WORK IN PROGRESS AND NEEDS FINALISATION
+- Be compatible across a wide variety of programming languages
+
+## General philosophy
+- We try to adhere to the [Google JSON Style Guide](https://google.github.io/styleguide/jsoncstyleguide.xml?showone=Property_Name_Format#Property_Name_Format)
+- Information is as close as possible to the objects it refers to
+    - Player-specific information is directly under `player` objects
+    - Team-wide information is directly under `team` objects
+- Information is not duplicated
+    - `winner` is only defined once in the `game` object
+- Field names are coherent and comply with modern LoL nomenclature
+    - Every field that is an identifier ends with `id`
+    - Fields like `cs` or `monstersKilled` use current game vocabulary (as of June 2020)
+
+### `null` 
+The `null` value should only be used for unknown information. The best practice is to not have unknown fields in
+the object to keep it as light as possible.
+
+# `lol_dto`
+This repository hosts a `python` reference implementation in the form of a `TypedDict`.
+
+A `TypedDict` does not enforce constraints but will raise linter warnings and allows IDEs to autocomplete field names.
+
+Another module focused on  transforming `MatchDto` and `MatchTimelineDto` to a `LolGame` can 
+[be found here](https://github.com/mrtolkien/riot_api_to_lol_dto). Its 
+[unit tests](https://github.com/mrtolkien/riot_api_to_lol_dto/blob/master/riot_api_to_lol_dto/tests/test_riotwatcher_dto.py#L35) 
+and [JSON examples](https://github.com/mrtolkien/riot_api_to_lol_dto/tree/master/examples)
+ are useful sources to better understand the data structure.
+
+## LolGame DTO overview
 ```
 game: dict
+├── sources: dict
 ├── teams: dict
+│   ├── bans: list
+│   ├── monstersKills: list
+│   ├── buildingsKills: list
 │   └── players: list
-│       ├── snapshots: list
+│       ├── foreignKeys: dict
+│       ├── endOfGameStats: dict
+│       │   └── items: list
+│       ├── summonersSpells: list
 │       ├── runes: list
-│       └── items: list
-└── events: list
+│       ├── snapshots: list
+│       ├── itemsEvents: list
+│       ├── wardsEvents: list
+│       └── skillsEvents: list
+└── kills: list
 ```
-
-# Data access examples
-THIS WAS RELATING TO THE VERY FIRST ALPHA AND IS OUT OF DATE
 
 ## Game
-```python console
-game['sources']['riot']['gameId']
->>> 1353193
-
-game['sources']['riot']['platformId']
->>> ESPORTSTMNT03
-
-game['duration']
->>> 1776
-
-game['startDate']
->>> '2020-04-25T10:30:54Z'
-
-game['winner']
->>> BLUE
-```
+- `sources` represents unique identifiers for this game for a given data source
+    - `"riotLolApi": {
+            "gameId": 4409190456,
+            "platformId": "KR"
+        }`
+- `teams` is a dictionary with keys equal to `'BLUE'` or `'RED'`
+- `kills` are present directly at the root of the `game` object as they refer to multiple players through 
+`killerId`, `victimId`, and `assistingParticipantsIds`
+    - ⚠ This is open to discussion and could be changed before the first release ⚠
+- ⚠ `picks_bans` will be added in the near future for esports games and will represent the full picks and bans ⚠
 
 ## Team
-```python console
-teams = game['teams']
-
-teams.keys()
->>> ['blue', 'red']
-
-blue_team = teams['blue']
-
-blue_team['firstBaron']
->>> True
-
-blue_team['baronKills']
->>> 2
-```
+- `bans` is a simple list of `id` of champions banned by the team.
+- `monsterKills` and `buildingKills` are at the `team` level because they are team-wide
+    - They both define their own `BuildingKillEvent` and `MonsterKillEvent` DTOs that are very different from Riot’s API
+- `players` are simply in a list because no unique key arises
+    - `roles` are not guaranteed to be defined and unique
 
 ## Player
-```python console
-blue_players = game['blue']['players']
+- `foreignKeys` is similar to `game['sources']` in that it represents a unique identifier for the player in the
+ specified data source
+    - `"riotLolApi": {
+                            "accountId": "3VcaXNMW8jq3adCqG0k0RPBaxoNL08NFXH_h4_2sKI_iEKw",
+                            "platformId": "KR"
+                        }`
+    - ⚠ Field name is slightly contentious and open to suggestions ⚠
+- `endOfGameStats` represents statistics that are only available at the end of the game, including end of game `items` 
+as well as `kills`, `totalDamageDealtToChampions`, ...
+- `snapshots` is a list of timestamped information about the player, mostly `gold` and `position` at given timestamps
+- `itemsEvents` are item-related events from players (buying, selling, undoing, destroying)
+- `wardsEvents` are ward-related events from players (placing, destroying)
+- `skillsEvents` are skills-related events from players (level-up)
 
-blue_mid = next(p for p in blue_players if p['role'] == 'mid')
-
-blue_mid['kills']
->>> 7
-
-blue_mid['championId']
->>> 1
-
-# Object names can be added during processing for easier use
-blue_mid['championName']
->>> Annie
-```
-
-### Snapshots
-```python console
-snapshots = blue_mid['snapshots']
-
-len(snapshots)
->>> 29
-
-snapshot = (s for s in snapshots if s['timestamp'] == 15*60)
-
-snapshot['timestamp']
->>> 900.0
-
-snapshot['totalGold']
->>> 6417
-```
-### Runes
-```python console
-runes = blue_mid['runes']
-
-runes['primaryTreeId']
->>> 800
-
-runes['runes_list'][0]['id']
->>> 8005
-
-runes['runes_list'][0]['name']
->>> Press the Attack
-```
-
-### Items
-```python console
-items = blue_mid['items']
-
-items[0]['id']
->>> 3031
-```
-
-## Event
-```python console
-events = game['events']
-
-event = events[500]
-
-event['type']
->>> 'CHAMPION_KILL'
-
-event['timestamp']
->>> 919.689
-
-# The playerID of an event is the one of the player performing the event, here the killer
-event['playerId']
->>> 3
-```
-
-# Code formatting
-
-If you want to contribute to the project the code should be formatted with `Black`, using a maximum line length of 100.
+# Contributing
+Currently wanted contribution are:
+- Feedback about the data structure and field names
+- Implementation of the data structure in other programming languages
+- C functions to cast Riot API objects to this LolGame DTO as multiple languages can bind to them
