@@ -52,6 +52,7 @@ class LolGamePlayerItemEvent(LolEvent, total=False):
 
     type: str  # 'PURCHASED', 'SOLD', 'UNDO', 'DESTROYED'
     id: int  # Referring to Riot API item ID. Resulting item in case of an UNDO
+    name: str  # Optional convenience field for human readability
     undoId: Optional[int]  # Referring to the item that was undone in an UNDO event
 
 

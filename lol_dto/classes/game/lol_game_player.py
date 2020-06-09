@@ -170,7 +170,10 @@ class LolGamePlayer(TypedDict, total=False):
 
     # Rune information is stored directly in the player object as they are beginning-of-game information
     primaryRuneTreeId: int  # Refers to Riot rune tree ID
+    primaryRuneTreeName: Optional[str]  # Optional name for human readability
+
     secondaryRuneTreeId: int  # Refers to Riot rune tree ID
+    secondaryRuneTreeName: Optional[str]  # Optional name for human readability
 
     runes: List[LolGamePlayerRune]
 
@@ -192,4 +195,4 @@ class LolGamePlayer(TypedDict, total=False):
     wardsEvents: List[LolGamePlayerWardEvent]
 
     # Skill level up events are every time the player used a skill or evolution point
-    skillsEvents: List[LolGamePlayerSkillLevelUpEvent]
+    skillsLevelUpEvents: List[LolGamePlayerSkillLevelUpEvent]
