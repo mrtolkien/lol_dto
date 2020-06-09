@@ -34,6 +34,7 @@ class LolGameTeam(TypedDict, total=False):
 
     # Team-related bans are a list of champions that were banned by players on the team
     bans: Optional[List[int]]  # List of champion IDs
+    bansNames: Optional[List[str]]  # List of champion names for human readability
 
     # Team monsters kills
     monstersKills: List[LolGameTeamMonsterKill]
