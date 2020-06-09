@@ -1,7 +1,11 @@
 from typing import TypedDict, List, Dict, Optional
 
-from lol_dto.classes.game.extra_classes import Position
-from lol_dto.classes.game.lol_game_event import LolGamePlayerItemEvent, LolGamePlayerWardEvent, LolGamePlayerSkillEvent
+from lol_dto.classes.game.position import Position
+from lol_dto.classes.game.lol_game_event import (
+    LolGamePlayerItemEvent,
+    LolGamePlayerWardEvent,
+    LolGamePlayerSkillLevelUpEvent,
+)
 
 
 class LolGamePlayerSnapshot(TypedDict, total=False):
@@ -157,12 +161,12 @@ class LolGamePlayer(TypedDict, total=False):
     championId: int  # Referring to Riot API champion ID
     championName: Optional[str]  # Optional champion name for convenience
 
-    # Foreign keys are the ways to identify this player in the data sources used to gather the data
+    # Unique identifiers are the ways to identify this player in the data sources used to gather the data
     # Any key that is present in game['sources'] should also be present here
-    # A Riot API 'foreignKeys' dict looks like: {'riot': {'accountId': str, 'platformId': str}}
-    foreignKeys: Dict[str, dict]
+    # A Riot API 'uniqueIdentifiers' dict looks like: {'riot': {'accountId': str, 'platformId': str}}
+    uniqueIdentifiers: Dict[str, dict]
 
-    # TODO Add esports fields
+    # TODO Add esports fields (team, playerName, ...)
 
     # Rune information is stored directly in the player object as they are beginning-of-game information
     primaryRuneTreeId: int  # Refers to Riot rune tree ID
@@ -188,4 +192,4 @@ class LolGamePlayer(TypedDict, total=False):
     wardsEvents: List[LolGamePlayerWardEvent]
 
     # Skill level up events are every time the player used a skill or evolution point
-    skillsEvents: List[LolGamePlayerSkillEvent]
+    skillsEvents: List[LolGamePlayerSkillLevelUpEvent]

@@ -1,6 +1,6 @@
 from typing import TypedDict, Dict, List, Optional
 
-from lol_dto.classes.game.lol_game_event import LolGameEvent
+from lol_dto.classes.game.lol_game_event import LolGameKill
 from lol_dto.classes.game.lol_game_team import LolGameTeam
 
 
@@ -32,13 +32,12 @@ class LolGame(TypedDict, total=False):
     teams: Dict[str, LolGameTeam]
 
     # Kills involve multiple players from different teams and are therefore defined here
-    # TODO Talk about putting kills somewhere else?
-    kills: List[LolGameEvent]
-
-    # TODO Add a clean picks and bans representation for esports games with full information
-    pass
+    kills: List[LolGameKill]
 
     # Optional esports information
     tournament: Optional[str]  # Name of the tournament this game is a part of
     gameInSeries: Optional[int]  # Game index in the series including this game
     vod: Optional[str]  # VOD url
+
+    # TODO Add a clean picks and bans representation for esports games with full information
+    picks_bans: List

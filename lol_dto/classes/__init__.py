@@ -9,12 +9,12 @@ from lol_dto.classes.game.lol_game_player import (
     LolGamePlayerStats,
 )
 from lol_dto.classes.game.lol_game_event import (
-    LolGameEvent,
+    LolEvent,
     LolGameKill,
     LolGameTeamMonsterKill,
     LolGameTeamBuildingKill,
     LolGamePlayerWardEvent,
     LolGamePlayerItemEvent,
-    LolGamePlayerSkillEvent,
+    LolGamePlayerSkillLevelUpEvent,
 )
-from lol_dto.classes.game.extra_classes import Position
+from lol_dto.classes.game.position import Position

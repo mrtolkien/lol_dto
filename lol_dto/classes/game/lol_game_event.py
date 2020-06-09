@@ -1,9 +1,9 @@
 from typing import TypedDict, Optional, List
 
-from lol_dto.classes.game.extra_classes import Position
+from lol_dto.classes.game.position import Position
 
 
-class LolGameEvent(TypedDict, total=False):
+class LolEvent(TypedDict, total=False):
     """A single event that took place during a LoL game.
 
     Should not be used as-is and is intended to be a building block for other event classes.
@@ -15,60 +15,60 @@ class LolGameEvent(TypedDict, total=False):
     position: Optional[Position]  # Position where the event took place
 
 
-class LolGameKill(LolGameEvent):
+class LolGameKill(LolEvent):
     """A single kill in a LoL game
     """
 
     # All the id here refer to the id field in players objects
-    killerId: int
-    assistingParticipantIds: List[int]
-    victimId: int
+    killerId: Optional[int]  # Player getting the last hit on the kill. None for executions.
+    assistsIds: List[int]  # Players getting an assist in the kill
+    victimId: int  # Player getting killed
 
 
-class LolGameTeamMonsterKill(LolGameEvent, total=False):
+class LolGameTeamMonsterKill(LolEvent, total=False):
     """A monster kill for a team.
     """
+
     killerId: int  # Refers to 'id' in players, represents the player landing the last hit
     type: str  # 'DRAGON', 'NASHOR', 'RIFT_HERALD'
     subType: Optional[str]  # 'CLOUD', 'INFERNAL', 'MOUNTAIN', 'OCEAN', 'ELDER'
 
 
-class LolGameTeamBuildingKill(LolGameEvent):
+class LolGameTeamBuildingKill(LolEvent, total=False):
     """A building kill for a team.
     """
-    # TODO Check that 'UNDEFINED_TURRET' are Azir turrets, and check 'FOUNTAIN_TURRET' events (very rare, old games).
+
     type: str  # 'TURRET', 'INHIBITOR'
-    lane: str  # 'TOP', 'MID', 'BOT', None
-    towerLocation: Optional[str]  # 'OUTER', 'INNER', 'INHIBITOR', 'NEXUS', None
+    lane: str  # 'TOP', 'MID', 'BOT'
     side: str  # 'BLUE', 'RED'
+    towerLocation: Optional[str]  # 'OUTER', 'INNER', 'INHIBITOR', 'NEXUS'
 
 
-class LolGamePlayerItemEvent(LolGameEvent, total=False):
+class LolGamePlayerItemEvent(LolEvent, total=False):
     """An item-related event for a player.
 
     Represents buying, selling, destroying, and undoing items.
     """
 
-    # TODO See if "UNDO" needs specific fields
-    type: str  # PURCHASED, SOLD, UNDO, DESTROYED
+    type: str  # 'PURCHASED', 'SOLD', 'UNDO', 'DESTROYED'
     id: int  # Referring to Riot API item ID. Resulting item in case of an UNDO
     undoId: Optional[int]  # Referring to the item that was undone in an UNDO event
 
 
-class LolGamePlayerWardEvent(LolGameEvent):
+class LolGamePlayerWardEvent(LolEvent):
     """A ward-related event for a player.
 
     Represents placing and killing wards.
     """
 
-    type: str  # PLACED, KILLED
-    wardType: str  # TODO Document possible ward types
+    type: str  # 'PLACED', 'KILLED'
+    wardType: str  # Values in: YELLOW_TRINKET', 'CONTROL_WARD', 'SIGHT_WARD', 'YELLOW_TRINKET_UPGRADE', 'BLUE_TRINKET',
+    #                                  'TEEMO_MUSHROOM', 'VISION_WARD', 'UNDEFINED'
 
 
-class LolGamePlayerSkillEvent(LolGameEvent):
+class LolGamePlayerSkillLevelUpEvent(LolEvent):
     """A skill level up by a player.
     """
 
-    type: str  # NORMAL or ? TODO Search for level up types
-    skillSlot: int  # The skill slot, from 1 to 4  TODO Is that the right name?
-
+    type: str  # 'NORMAL' or 'EVOLVE'
+    slot: int  # The skill slot, from 1 to 4

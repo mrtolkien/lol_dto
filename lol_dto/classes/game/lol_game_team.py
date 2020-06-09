@@ -41,4 +41,4 @@ class LolGameTeam(TypedDict, total=False):
     # Team buildings kills
     buildingsKills: List[LolGameTeamBuildingKill]
 
-    # TODO Add esports fields
+    # TODO Add esports fields (name, trigram, ...)

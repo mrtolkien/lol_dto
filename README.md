@@ -58,7 +58,7 @@ game: dict
 │   ├── monstersKills: list
 │   ├── buildingsKills: list
 │   └── players: list
-│       ├── foreignKeys: dict
+│       ├── uniqueIdentifiers: dict
 │       ├── endOfGameStats: dict
 │       │   └── items: list
 │       ├── summonersSpells: list
@@ -80,6 +80,9 @@ game: dict
 - `kills` are present directly at the root of the `game` object as they refer to multiple players through 
 `killerId`, `victimId`, and `assistingParticipantsIds`
     - ⚠ This is open to discussion and could be changed before the first release ⚠
+    - We have to rely on the arbitrary `participantId` given by the Riot API because:
+        - Relying on `championId` makes it incompatible with blind pick
+        - Relying on `inGameName` does not work for `MatchTimeline` objects from the Riot API
 - ⚠ `picks_bans` will be added in the near future for esports games and will represent the full picks and bans ⚠
 
 ## Team
@@ -90,19 +93,20 @@ game: dict
     - `roles` are not guaranteed to be defined and unique
 
 ## Player
-- `foreignKeys` is similar to `game['sources']` in that it represents a unique identifier for the player in the
+- `id` refers to Riot API’s `participantId` and is unfortunately necessary to be able to link different objects coming
+from it
+- `uniqueIdentifiers` is similar to `game['sources']` in that it represents a unique identifier for the player in the
  specified data source
     - `"riotLolApi": {
                             "accountId": "3VcaXNMW8jq3adCqG0k0RPBaxoNL08NFXH_h4_2sKI_iEKw",
                             "platformId": "KR"
                         }`
-    - ⚠ Field name is slightly contentious and open to suggestions ⚠
 - `endOfGameStats` represents statistics that are only available at the end of the game, including end of game `items` 
 as well as `kills`, `totalDamageDealtToChampions`, ...
 - `snapshots` is a list of timestamped information about the player, mostly `gold` and `position` at given timestamps
 - `itemsEvents` are item-related events from players (buying, selling, undoing, destroying)
 - `wardsEvents` are ward-related events from players (placing, destroying)
-- `skillsEvents` are skills-related events from players (level-up)
+- `skillsLevelUpEvents` are skills level up events from players
 
 # Contributing
 Currently wanted contribution are:
