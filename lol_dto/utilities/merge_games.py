@@ -40,7 +40,7 @@ def check_equal_field(field_name, dict_1, dict_2):
         try:
             assert dict_1[field_name] == dict_2[field_name]
         except AssertionError:
-            raise MergeError(f"Conflict at {field_name}")
+            raise MergeError(f"Conflict at {field_name}\n" f"{dict_1[field_name]} != {dict_2[field_name]}")
 
 
 def merge_games(game_1: LolGame, game_2: LolGame) -> LolGame:

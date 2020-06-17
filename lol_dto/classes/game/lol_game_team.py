@@ -1,4 +1,4 @@
-from typing import TypedDict, List, Optional
+from typing import TypedDict, List, Optional, Dict
 
 from lol_dto.classes.game.lol_game_event import LolGameTeamMonsterKill, LolGameTeamBuildingKill
 from lol_dto.classes.game.lol_game_player import LolGamePlayer
@@ -42,4 +42,6 @@ class LolGameTeam(TypedDict, total=False):
     # Team buildings kills
     buildingsKills: List[LolGameTeamBuildingKill]
 
-    # TODO Add esports fields (name, trigram, ...)
+    # Esports-specific fields
+    name: Optional[str]  # The actual name of the team (T1, Fnatic, TSM, ...)
+    uniqueIdentifiers: Dict[str, dict]

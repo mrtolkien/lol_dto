@@ -149,14 +149,14 @@ class LolGamePlayer(TypedDict, total=False):
     All player-specific information should be present here.
     """
 
-    # TODO Most contentious part of the spec, will likely need a rework
+    # TODO Most contentious part of the spec, might need a rework
     id: int  # Usually equal to participantId in Riot’s API. Meant to identify the player in events.
 
     inGameName: str  # The in-game name is not linked to a particular data source and should be unique
     profileIconId: int  # Refers to Riot API icon ID
 
     # /!\ This field should be curated if it is present /!\
-    role: Optional[str]  # Standard roles are top, jungle, mid, bot, support as of 2020.
+    role: Optional[str]  # Role values are TOP, JGL, MID, BOT, SUP as of 2020.
 
     championId: int  # Referring to Riot API champion ID
     championName: Optional[str]  # Optional champion name for convenience
@@ -165,8 +165,6 @@ class LolGamePlayer(TypedDict, total=False):
     # Any key that is present in game['sources'] should also be present here
     # A Riot API 'uniqueIdentifiers' dict looks like: {'riot': {'accountId': str, 'platformId': str}}
     uniqueIdentifiers: Dict[str, dict]
-
-    # TODO Add esports fields (team, playerName, ...)
 
     # Rune information is stored directly in the player object as they are beginning-of-game information
     primaryRuneTreeId: int  # Refers to Riot rune tree ID

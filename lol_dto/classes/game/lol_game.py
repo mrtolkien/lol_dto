@@ -4,6 +4,19 @@ from lol_dto.classes.game.lol_game_event import LolGameKill
 from lol_dto.classes.game.lol_game_team import LolGameTeam
 
 
+class LolPickBan(TypedDict):
+    """A single pick or ban in a LoL game.
+
+    'ban' and 'team' fields are required to account for possibly changing picks and bans formats.
+    """
+
+    championId: int
+    championName: Optional[str]
+
+    ban: bool  # True if this represented a ban, False if this represented a pick
+    team: str  # 'BLUE' or 'RED'
+
+
 class LolGame(TypedDict, total=False):
     """A dictionary representing a single League of Legends game.
 
@@ -32,12 +45,10 @@ class LolGame(TypedDict, total=False):
     teams: Dict[str, LolGameTeam]
 
     # Kills involve multiple players from different teams and are therefore defined here
-    kills: List[LolGameKill]
+    kills: Optional[List[LolGameKill]]
 
     # Optional esports information
     tournament: Optional[str]  # Name of the tournament this game is a part of
     gameInSeries: Optional[int]  # Game index in the series including this game
     vod: Optional[str]  # VOD url
-
-    # TODO Add a clean picks and bans representation for esports games with full information
-    picks_bans: List
+    picks_bans: Optional[List[LolPickBan]]  # Ordered list of picks and bans that happened in the game
