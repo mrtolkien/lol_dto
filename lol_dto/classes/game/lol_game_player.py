@@ -60,7 +60,7 @@ class LolGamePlayerSummonerSpell(TypedDict, total=False):
     name: Optional[str]  # Optional summoner spell name for convenience
 
 
-class LolGamePlayerStats(TypedDict, total=False):
+class LolGamePlayerEndOfGameStats(TypedDict, total=False):
     """End of game stats for a player in a game
     """
 
@@ -179,7 +179,7 @@ class LolGamePlayer(TypedDict, total=False):
     summonerSpells: List[LolGamePlayerSummonerSpell]
 
     # End of game stats are statistics like total kills, damage, vision score, ...
-    endOfGameStats: LolGamePlayerStats
+    endOfGameStats: LolGamePlayerEndOfGameStats
 
     # Snapshots represent player-specific information at a given timestamp.
     # Timestamp could be used as keys but JSON does not allow for integer keys.

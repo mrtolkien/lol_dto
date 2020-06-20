@@ -30,7 +30,7 @@ class LolGameTeamMonsterKill(LolEvent, total=False):
     """
 
     killerId: int  # Refers to 'id' in players, represents the player landing the last hit
-    type: str  # 'DRAGON', 'NASHOR', 'RIFT_HERALD'
+    type: str  # 'DRAGON', 'BARON', 'RIFT_HERALD'
     subType: Optional[str]  # 'CLOUD', 'INFERNAL', 'MOUNTAIN', 'OCEAN', 'ELDER'
 
 

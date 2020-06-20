@@ -1,12 +1,12 @@
 from lol_dto.classes.game.lol_game import LolGame
-from lol_dto.classes.game.lol_game_team import LolGameTeam
+from lol_dto.classes.game.lol_game_team import LolGameTeam, LolGameTeamEndOfGameStats
 from lol_dto.classes.game.lol_game_player import (
     LolGamePlayer,
     LolGamePlayerRune,
     LolGamePlayerItem,
     LolGamePlayerSnapshot,
     LolGamePlayerSummonerSpell,
-    LolGamePlayerStats,
+    LolGamePlayerEndOfGameStats,
 )
 from lol_dto.classes.game.lol_game_event import (
     LolEvent,

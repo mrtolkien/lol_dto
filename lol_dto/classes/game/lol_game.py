@@ -13,7 +13,7 @@ class LolPickBan(TypedDict):
     championId: int
     championName: Optional[str]
 
-    ban: bool  # True if this represented a ban, False if this represented a pick
+    isBan: bool  # True if this represented a ban, False if this represented a pick
     team: str  # 'BLUE' or 'RED'
 
 
@@ -46,9 +46,8 @@ class LolGame(TypedDict, total=False):
 
     # Kills involve multiple players from different teams and are therefore defined here
     kills: Optional[List[LolGameKill]]
-
     # Optional esports information
     tournament: Optional[str]  # Name of the tournament this game is a part of
     gameInSeries: Optional[int]  # Game index in the series including this game
     vod: Optional[str]  # VOD url
-    picks_bans: Optional[List[LolPickBan]]  # Ordered list of picks and bans that happened in the game
+    picksBans: Optional[List[LolPickBan]]  # Ordered list of picks and bans that happened in the game
