@@ -46,6 +46,7 @@ class LolGame(TypedDict, total=False):
 
     # Kills involve multiple players from different teams and are therefore defined here
     kills: Optional[List[LolGameKill]]
+
     # Optional esports information
     tournament: Optional[str]  # Name of the tournament this game is a part of
     gameInSeries: Optional[int]  # Game index in the series including this game

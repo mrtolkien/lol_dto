@@ -37,7 +37,6 @@ class LolGamePlayerRune(TypedDict, total=False):
     id: int  # Referring to Riot API rune ID
 
     name: Optional[str]  # Optional rune name for convenience
-    rank: Optional[int]  # Used by stats perks to represent the number of points put in it
 
     stats: List[int]  # Riot-provided end-of-game statistics for the rune
 
