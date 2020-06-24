@@ -44,9 +44,9 @@ This repository hosts a `python` reference implementation in the form of a `Type
 A `TypedDict` does not enforce constraints but will raise linter warnings and allows IDEs to autocomplete field names.
 
 Another module focused on  transforming `MatchDto` and `MatchTimelineDto` to a `LolGame` can 
-[be found here](https://github.com/mrtolkien/riot_api_to_lol_dto). Its 
-[unit tests](https://github.com/mrtolkien/riot_api_to_lol_dto/blob/master/riot_api_to_lol_dto/tests/test_riotwatcher_dto.py#L35) 
-and [JSON examples](https://github.com/mrtolkien/riot_api_to_lol_dto/tree/master/examples)
+[be found here](https://github.com/mrtolkien/riot_transmute). Its 
+[unit tests](https://github.com/mrtolkien/riot_transmute/blob/master/riot_api_to_lol_dto/tests/test_riotwatcher_dto.py#L35) 
+and [JSON examples](https://github.com/mrtolkien/riot_transmute/tree/master/examples)
  are useful sources to better understand the data structure.
 
 ## LolGame DTO overview
