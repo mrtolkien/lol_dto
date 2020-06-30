@@ -27,7 +27,7 @@ class LolGamePlayerSnapshot(TypedDict, total=False):
     csDiff: Optional[int]  # Total CS difference with the opponent in the same role
 
     monstersKilled: int  # Total monsters (neutral minions) killed
-    monstersKilledDiff: int # Total monsters killed difference with the opponent in the same role
+    monstersKilledDiff: int  # Total monsters killed difference with the opponent in the same role
 
     position: Optional[Position]  # Player position, None for the last "snapshot"
 

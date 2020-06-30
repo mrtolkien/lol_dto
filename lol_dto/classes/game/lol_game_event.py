@@ -16,8 +16,7 @@ class LolEvent(TypedDict, total=False):
 
 
 class LolGameKill(LolEvent):
-    """A single kill in a LoL game
-    """
+    """A single kill in a LoL game"""
 
     # All the id here refer to the id field in players objects
     killerId: Optional[int]  # Player getting the last hit on the kill. None for executions.
@@ -26,8 +25,7 @@ class LolGameKill(LolEvent):
 
 
 class LolGameTeamMonsterKill(LolEvent, total=False):
-    """A monster kill for a team.
-    """
+    """A monster kill for a team."""
 
     killerId: int  # Refers to 'id' in players, represents the player landing the last hit
     type: str  # 'DRAGON', 'BARON', 'RIFT_HERALD'
@@ -35,8 +33,7 @@ class LolGameTeamMonsterKill(LolEvent, total=False):
 
 
 class LolGameTeamBuildingKill(LolEvent, total=False):
-    """A building kill for a team.
-    """
+    """A building kill for a team."""
 
     type: str  # 'TURRET', 'INHIBITOR'
     lane: str  # 'TOP', 'MID', 'BOT'
