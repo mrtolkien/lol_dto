@@ -19,12 +19,15 @@ class LolGamePlayerSnapshot(TypedDict, total=False):
     totalGoldDiff: Optional[int]  # Total gold difference with the opponent in the same role
 
     xp: int  # Current experience
+    xpDiff: int  # Experience difference with the opponent in the same role
+
     level: int  # Current champion level
 
     cs: int  # Total number of minions and monsters killed
     csDiff: Optional[int]  # Total CS difference with the opponent in the same role
 
     monstersKilled: int  # Total monsters (neutral minions) killed
+    monstersKilledDiff: int # Total monsters killed difference with the opponent in the same role
 
     position: Optional[Position]  # Player position, None for the last "snapshot"
 
