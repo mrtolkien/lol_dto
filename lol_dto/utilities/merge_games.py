@@ -73,7 +73,10 @@ def merge_games(game_1: LolGame, game_2: LolGame) -> LolGame:
         # Fuse g2 players into g1 players
         for g1_player in game_1["teams"][team_side]["players"]:
             try:
-                g2_player = next(p for p in game_2["teams"][team_side]["players"] if p["id"] == g1_player["id"])
+                # We try and match them on team side + champion ID
+                g2_player = next(
+                    p for p in game_2["teams"][team_side]["players"] if p["championId"] == g1_player["championId"]
+                )
             except StopIteration:
                 raise MergeError("Conflict between player IDs")
 
