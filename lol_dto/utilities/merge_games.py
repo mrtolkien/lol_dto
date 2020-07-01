@@ -29,7 +29,7 @@ def merge_dicts(a, b, path=None):
                 pass  # Same leaf value
             else:
                 path.append(str(key))
-                raise MergeError(f"Conflict at {'.'.join(path)}")
+                raise MergeError(f"Conflict at {'.'.join(path)}\n" f"{a[key]} != {b[key]}")
         else:
             a[key] = b[key]
     return a
