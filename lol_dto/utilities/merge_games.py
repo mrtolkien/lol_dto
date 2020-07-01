@@ -74,9 +74,14 @@ def merge_games(game_1: LolGame, game_2: LolGame) -> LolGame:
         for g1_player in game_1["teams"][team_side]["players"]:
             try:
                 # We try and match them on team side + champion ID
-                g2_player = next(
-                    p for p in game_2["teams"][team_side]["players"] if p["championId"] == g1_player["championId"]
-                )
+                try:
+                    g2_player = next(
+                        p for p in game_2["teams"][team_side]["players"] if p["championId"] == g1_player["championId"]
+                    )
+                # Sometimes we don’t have a championId, we then match on an "id" field
+                except KeyError:
+                    g2_player = next(p for p in game_2["teams"][team_side]["players"] if p["id"] == g1_player["id"])
+
             except StopIteration:
                 raise MergeError("Conflict between player IDs")
 
