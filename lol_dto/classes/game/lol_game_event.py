@@ -35,6 +35,8 @@ class LolGameTeamMonsterKill(LolEvent, total=False):
 class LolGameTeamBuildingKill(LolEvent, total=False):
     """A building kill for a team."""
 
+    killerId: Optional[int]  # Refers to 'id' in players, represents the player landing the last hit
+
     type: str  # 'TURRET', 'INHIBITOR'
     lane: str  # 'TOP', 'MID', 'BOT'
     side: str  # 'BLUE', 'RED'
