@@ -25,12 +25,17 @@ def merge_dicts(a, b, path=None):
                 merge_dicts(a[key], b[key], path)
             elif isinstance(a[key], list) and isinstance(b[key], list):
                 pass  # Lists fusing has to be handled case-by-case
+            # In the case one is None/empty and the other is not, we use the non empty value
+            elif not a and b:
+                a[key] = b[key]
+            elif not b and a:
+                b[key] = a[key]
             elif a[key] == b[key]:
-                pass  # Same leaf value
+                pass  # Same leaf value, we pass
             else:
                 path.append(str(key))
                 raise MergeError(f"Conflict at {'.'.join(path)}\n" f"{a[key]} != {b[key]}")
-        else:
+        else:  # If the key isn’t in a, we just write the value from b
             a[key] = b[key]
     return a
 
