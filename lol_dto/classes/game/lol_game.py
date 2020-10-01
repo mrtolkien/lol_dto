@@ -18,17 +18,18 @@ class LolPickBan(TypedDict):
 
 
 class LolGame(TypedDict, total=False):
-    """A dictionary representing a single League of Legends game.
+    """
+    A dictionary representing a single League of Legends game.
 
-    A TypedDict does not enforce any constraints and is here to raise linter warnings and enable auto-completion.
+    As a TypedDict, it does not enforce any constraints but raises linter warnings and enables auto-completion.
     """
 
-    # The ['sources'] dictionary should have all information required to identify this game from a given source
-    # A Riot API 'sources' dict looks like: {'riotLolApi': {'gameId': int, 'platformId': str}}
+    # The ['sources'] dictionary should have all information necessary to identify the game for a given data source
+    # Riot API example: {'riotLolApi': {'gameId': int, 'platformId': str}}
     sources: Dict[str, dict]
 
-    # Time-related fields should be expressed in seconds, using floats for ms precision
-    duration: int  # Expressed in seconds
+    # Time-related fields should be expressed in seconds, optionally using floats for ms precision
+    duration: float  # Expressed in seconds
 
     # As JSON does not define a date format, we rely on ISO formatting
     start: str  # Expressed as ISO 8601 date and time with a seconds precision, for example "2020-05-27T02:23:02+00:00"

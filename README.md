@@ -67,7 +67,7 @@ game: dict
 │       ├── wardsEvents: list
 │       └── skillsLevelUpEvents: list
 ├── kills: list
-└── picks_bans: list
+└── picksBans: list
 ```
 
 ## Game
@@ -82,7 +82,7 @@ game: dict
     - We have to rely on the arbitrary `participantId` given by the Riot API because:
         - Relying on `championId` makes it incompatible with blind pick
         - Relying on `inGameName` does not work for `MatchTimeline` objects from the Riot API
-- `picks_bans` represents the full picks and bans and is mostly used for esports games
+- `picksBans` represents the full picks and bans and is mostly used for esports games
 
 ## Team
 - `bans` is a simple list of `id` of champions banned by the team.
