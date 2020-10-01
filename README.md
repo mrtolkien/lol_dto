@@ -65,7 +65,8 @@ game: dict
 │       ├── itemsEvents: list
 │       ├── wardsEvents: list
 │       └── skillsEvents: list
-└── kills: list
+├── kills: list
+└── picks_bans: list
 ```
 
 ## Game
