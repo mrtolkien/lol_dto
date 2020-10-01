@@ -3,8 +3,6 @@
 # LoL Game DTO
 A unified Data Transfer Object for League of Legends games. Currently developed by Tolki, FatalElement, and Kalturi.
 
-⚠ This project is still a work in progress and not ready for release yet ⚠
-
 # Motivation
 League of Legends game information can come in many forms. The most popular source is Riot’s API and in particular its 
 [MATCH-V4](https://developer.riotgames.com/apis#match-v4/) endpoint, which defines its own MatchDto 
