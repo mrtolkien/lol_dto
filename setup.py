@@ -7,7 +7,7 @@ with open(path.join(this_directory, "README.md"), encoding="utf-8") as f:
 
 setuptools.setup(
     name="lol_dto",
-    version="0.1a8",
+    version="1.0",
     packages=setuptools.find_packages(),
     url="https://github.com/mrtolkien/lol_dto",
     license="MIT",
