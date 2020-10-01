@@ -52,6 +52,7 @@ and [JSON examples](https://github.com/mrtolkien/riot_transmute/tree/master/exam
 game: dict
 ├── sources: dict
 ├── teams: dict
+|   ├── uniqueIdentifiers: dict
 │   ├── bans: list
 │   ├── monstersKills: list
 │   ├── buildingsKills: list
@@ -64,7 +65,7 @@ game: dict
 │       ├── snapshots: list
 │       ├── itemsEvents: list
 │       ├── wardsEvents: list
-│       └── skillsEvents: list
+│       └── skillsLevelUpEvents: list
 ├── kills: list
 └── picks_bans: list
 ```
@@ -78,11 +79,10 @@ game: dict
 - `teams` is a dictionary with keys equal to `'BLUE'` or `'RED'`
 - `kills` are present directly at the root of the `game` object as they refer to multiple players through 
 `killerId`, `victimId`, and `assistingParticipantsIds`
-    - ⚠ This is open to discussion and could be changed before the first release ⚠
     - We have to rely on the arbitrary `participantId` given by the Riot API because:
         - Relying on `championId` makes it incompatible with blind pick
         - Relying on `inGameName` does not work for `MatchTimeline` objects from the Riot API
-- ⚠ `picks_bans` will be added in the near future for esports games and will represent the full picks and bans ⚠
+- `picks_bans` represents the full picks and bans and is mostly used for esports games
 
 ## Team
 - `bans` is a simple list of `id` of champions banned by the team.

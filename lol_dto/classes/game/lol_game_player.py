@@ -151,8 +151,7 @@ class LolGamePlayer(TypedDict, total=False):
     All player-specific information should be present here.
     """
 
-    # TODO Most contentious part of the spec, might need a rework
-    id: int  # Usually equal to participantId in Riot’s API. Meant to identify the player in events.
+    id: int  # Usually equal to participantId in Riot’s API. Meant to identify the player in kills
 
     inGameName: str  # The in-game name is not linked to a particular data source and should be unique
     profileIconId: int  # Refers to Riot API icon ID
