@@ -26,10 +26,10 @@ def merge_dicts(a, b, path=None):
             elif isinstance(a[key], list) and isinstance(b[key], list):
                 pass  # Lists fusing has to be handled case-by-case
             # In the case one is None/empty and the other is not, we use the non empty value
-            elif not a and b:
+            elif not a[key] and b[key]:
                 a[key] = b[key]
-            elif not b and a:
-                b[key] = a[key]
+            elif not b[key] and a[key]:
+                pass  # We rely on a value here
             elif a[key] == b[key]:
                 pass  # Same leaf value, we pass
             else:
@@ -81,17 +81,28 @@ def merge_games(game_1: LolGame, game_2: LolGame) -> LolGame:
                 # We try and match them on team side + champion ID
                 try:
                     g2_player = next(
-                        p for p in game_2["teams"][team_side]["players"] if p["championId"] == g1_player["championId"]
+                        p
+                        for p in game_2["teams"][team_side]["players"]
+                        if p["championId"] == g1_player["championId"]
                     )
                 # Sometimes we don’t have a championId, we then match on an "id" field
                 except KeyError:
-                    g2_player = next(p for p in game_2["teams"][team_side]["players"] if p["id"] == g1_player["id"])
+                    g2_player = next(
+                        p for p in game_2["teams"][team_side]["players"] if p["id"] == g1_player["id"]
+                    )
 
             except StopIteration:
                 raise MergeError("Conflict between player IDs")
 
             # Checking all list-based fields are equal or present in only one of the two objects
-            for field in ["snapshots", "runes", "summonerSpells", "itemsEvents", "wardsEvents", "skillEvents"]:
+            for field in [
+                "snapshots",
+                "runes",
+                "summonerSpells",
+                "itemsEvents",
+                "wardsEvents",
+                "skillEvents",
+            ]:
                 check_equal_field(field, g1_player, g2_player)
 
             # Basic merge that will check for similar values outside of lists
