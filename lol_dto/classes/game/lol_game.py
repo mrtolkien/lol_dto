@@ -33,10 +33,11 @@ class LolGame:
     A class representing a single League of Legends game
     """
 
-    # The ['sources'] dictionary should have all information necessary to identify the game for a given data source
-    # Riot API example: {'riotLolApi': {'gameId': int, 'platformId': str}}
-    # TODO See if it can just be attributes and sources has no info except it is a dataclass?
-    sources: Dict[str, dict] = field(default_factory=dict)
+    # The sources attribute should have all information necessary to identify the game for a given data source
+    # Riot API example: game.sources.riotLolApi.gameId, and game.sources.riotLolApi.platformId
+    # Each parser transforming data to the LolGame format should implement its own source dataclass to allow for
+    #   merging different sources
+    sources: dataclass = None
 
     # Time-related fields should be expressed in seconds, optionally using floats for ms precision
     duration: float = None  # Expressed in seconds
