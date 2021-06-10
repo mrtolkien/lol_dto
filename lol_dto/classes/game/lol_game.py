@@ -52,4 +52,10 @@ class LolGame(TypedDict, total=False):
     tournament: Optional[str]  # Name of the tournament this game is a part of
     gameInSeries: Optional[int]  # Game index in the series including this game
     vod: Optional[str]  # VOD url
-    picksBans: Optional[List[LolPickBan]]  # Ordered list of picks and bans that happened in the game
+    picksBans: Optional[
+        List[LolPickBan]
+    ]  # Ordered list of picks and bans that happened in the game
+
+    def __init__(self):
+        super().__init__()
+        ...

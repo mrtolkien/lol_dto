@@ -8,13 +8,14 @@ class MergeError(Exception):
 
 
 def merge_dicts(a, b, path=None):
-    """Merges b into a recursively
+    """
+    Merges b into a recursively
 
     Returns:
         The a dictionary with b merged in it
 
     Raises:
-        MergeError if a key present in the two dictionaries points to different values, except for lists
+        MergeError if a key present in the two dictionaries points to different values, except for lists where it passes
     """
     if path is None:  # Necessary because [] cannot be a default value
         path = []
@@ -34,7 +35,9 @@ def merge_dicts(a, b, path=None):
                 pass  # Same leaf value, we pass
             else:
                 path.append(str(key))
-                raise MergeError(f"Conflict at {'.'.join(path)}\n" f"{a[key]} != {b[key]}")
+                raise MergeError(
+                    f"Conflict at {'.'.join(path)}\n" f"{a[key]} != {b[key]}"
+                )
         else:  # If the key isn’t in a, we just write the value from b
             a[key] = b[key]
     return a
@@ -45,13 +48,16 @@ def check_equal_field(field_name, dict_1, dict_2):
         try:
             assert dict_1[field_name] == dict_2[field_name]
         except AssertionError:
-            raise MergeError(f"Conflict at {field_name}\n" f"{dict_1[field_name]} != {dict_2[field_name]}")
+            raise MergeError(
+                f"Conflict at {field_name}\n"
+                f"{dict_1[field_name]} != {dict_2[field_name]}"
+            )
 
 
 def merge_games(game_1: LolGame, game_2: LolGame) -> LolGame:
-    """Merges two LolGame objects into a single one.
-
-    If the two objects have similar keys, it will check their equality.
+    """
+    Merges two LolGame objects into a single one. Useful for fusing Match and Timeline from the Riot API.
+        If the two objects have similar keys, it will check their equality and raise otherwise
 
     Args:
         game_1: A LolGame
@@ -88,7 +94,9 @@ def merge_games(game_1: LolGame, game_2: LolGame) -> LolGame:
                 # Sometimes we don’t have a championId, we then match on an "id" field
                 except KeyError:
                     g2_player = next(
-                        p for p in game_2["teams"][team_side]["players"] if p["id"] == g1_player["id"]
+                        p
+                        for p in game_2["teams"][team_side]["players"]
+                        if p["id"] == g1_player["id"]
                     )
 
             except StopIteration:
