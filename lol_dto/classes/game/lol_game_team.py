@@ -1,51 +1,61 @@
-from typing import TypedDict, List, Optional, Dict
+from dataclasses import dataclass, field
+from typing import List, Optional, Dict
 
-from lol_dto.classes.game.lol_game_event import LolGameTeamMonsterKill, LolGameTeamBuildingKill
+from lol_dto.classes.game.lol_game_event import (
+    LolGameTeamMonsterKill,
+    LolGameTeamBuildingKill,
+)
 from lol_dto.classes.game.lol_game_player import LolGamePlayer
 
 
-class LolGameTeamEndOfGameStats(TypedDict, total=False):
-    """End of game stats pertaining the whole team.
+@dataclass
+class LolGameTeamEndOfGameStats:
     """
-    # Structure kills need to be related to team as they can be killed by minions
-    towerKills: int  # Total tower kills
-    inhibitorKills: int  # Total inhibitor kills
+    End of game stats pertaining the whole team
+    """
 
-    firstTower: bool  # True if the team killed the first tower
-    firstInhibitor: bool  # True if the team killed the first inhibitor
+    # Structure kills need to be related to team as they can be killed by minions
+    towerKills: int = None  # Total tower kills
+    inhibitorKills: int = None  # Total inhibitor kills
+
+    firstTower: bool = None  # True if the team killed the first tower
+    firstInhibitor: bool = None  # True if the team killed the first inhibitor
 
     # Epic monsters kills are linked to teams as it makes little sense to link them to individual players
-    riftHeraldKills: int  # Total rift herald kills
-    dragonKills: int  # Total dragon kills
-    baronKills: int  # Total baron kills
+    riftHeraldKills: int = None  # Total rift herald kills
+    dragonKills: int = None  # Total dragon kills
+    baronKills: int = None  # Total baron kills
 
-    firstRiftHerald: bool  # True if the team killed the first Rift Herald
-    firstDragon: bool  # True if the team killed the first Dragon
-    firstBaron: bool  # True if the team killed the first Nashor
+    firstRiftHerald: bool = None  # True if the team killed the first Rift Herald
+    firstDragon: bool = None  # True if the team killed the first Dragon
+    firstBaron: bool = None  # True if the team killed the first Nashor
 
 
-class LolGameTeam(TypedDict, total=False):
-    """One of the two teams taking part in a LoL game.
+@dataclass
+class LolGameTeam:
+    """
+    One of the two teams taking part in a LoL game
 
-    The key referring to this object is what defines its side.
+    It's side is defined by the attribute name: teams.BLUE and teams.RED
     """
 
     # Players are defined as a simple list as no obvious key emerges
-    players: List[LolGamePlayer]
+    players: List[LolGamePlayer] = field(default_factory=list)
 
     # Team-related bans are a list of champions that were banned by players on the team
-    bans: Optional[List[int]]  # List of champion IDs
-    bansNames: Optional[List[str]]  # List of champion names for human readability
+    bans: Optional[List[int]] = field(default_factory=list)  # List of champion IDs
+    # List of champion names for human readability
+    bansNames: Optional[List[str]] = field(default_factory=list)
 
     # End of game stats
-    endOfGameStats: LolGameTeamEndOfGameStats
+    endOfGameStats: LolGameTeamEndOfGameStats = None
 
     # Team monsters kills
-    monstersKills: List[LolGameTeamMonsterKill]
+    monstersKills: List[LolGameTeamMonsterKill] = field(default_factory=list)
 
     # Team buildings kills
-    buildingsKills: List[LolGameTeamBuildingKill]
+    buildingsKills: List[LolGameTeamBuildingKill] = field(default_factory=list)
 
     # Esports-specific fields
-    name: Optional[str]  # The actual name of the team (T1, Fnatic, TSM, ...)
-    uniqueIdentifiers: Dict[str, dict]
+    name: str = None  # The actual name of the team (T1, Fnatic, TSM, ...)
+    uniqueIdentifiers: Dict[str, dict] = field(default_factory=dict)

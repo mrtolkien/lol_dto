@@ -1,9 +1,11 @@
-from typing import TypedDict
+from dataclasses import dataclass
 
 
 # This class is used both in LolEvent and LolGamePlayerSnapshot classes
-class Position(TypedDict):
-    """A position on the LoL map.
+@dataclass
+class Position:
+    """
+    A position on the LoL map, defined by Riot's coordinates
     """
 
     # min: -120

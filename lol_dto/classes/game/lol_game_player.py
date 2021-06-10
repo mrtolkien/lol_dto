@@ -1,4 +1,5 @@
-from typing import TypedDict, List, Dict, Optional
+from dataclasses import dataclass, field
+from typing import List, Dict, Optional
 
 from lol_dto.classes.game.position import Position
 from lol_dto.classes.game.lol_game_event import (
@@ -8,15 +9,16 @@ from lol_dto.classes.game.lol_game_event import (
 )
 
 
-class LolGamePlayerSnapshot(TypedDict, total=False):
-    """Information about a player at a specific point in the game.
+@dataclass
+class LolGamePlayerSnapshot:
+    """
+    Information about a player at a specific point in the game
     """
 
     timestamp: float  # Timestamp of the event expressed in seconds from the game start, with possible ms precision
 
     currentGold: int  # Current gold (at the time of the snapshot)
     totalGold: int  # Total gold earned
-    totalGoldDiff: Optional[int]  # Total gold difference with the opponent in the same role
 
     xp: int  # Current experience
     xpDiff: int  # Experience difference with the opponent in the same role
@@ -24,51 +26,61 @@ class LolGamePlayerSnapshot(TypedDict, total=False):
     level: int  # Current champion level
 
     cs: int  # Total number of minions and monsters killed
-    csDiff: Optional[int]  # Total CS difference with the opponent in the same role
 
     monstersKilled: int  # Total monsters (neutral minions) killed
     monstersKilledDiff: int  # Total monsters killed difference with the opponent in the same role
 
-    position: Optional[Position]  # Player position, None for the last "snapshot"
+    position: Position = None  # Player position, None for the last "snapshot"
+
+    # Those two last fields are redundant but can be added for convenience
+
+    # Total gold difference with the opponent in the same role
+    totalGoldDiff: int = None
+
+    csDiff: int = None  # Total CS difference with the opponent in the same role
 
 
-class LolGamePlayerRune(TypedDict, total=False):
-    """A single rune used by one of the players.
+@dataclass
+class LolGamePlayerRune:
+    """
+    A single rune used by one of the players
     """
 
     slot: int  # Primary tree, secondary tree, then stats perks
     id: int  # Referring to Riot API rune ID
 
-    name: Optional[str]  # Optional rune name for convenience
+    name: str = None  # Optional rune name for convenience
 
-    stats: List[int]  # Riot-provided end-of-game statistics for the rune
+    # Riot-provided end-of-game statistics for the rune
+    stats: List[int] = field(default_factory=list)
 
 
-class LolGamePlayerItem(TypedDict, total=False):
-    """A single item that a player possessed at the end of the game.
+@dataclass
+class LolGamePlayerItem:
+    """
+    A single item that a player possessed at the end of the game
     """
 
     slot: int  # Goes from 0 to 6 as of 2020
     id: int  # Referring to Riot API item ID
-    name: Optional[str]  # Optional item name for convenience
+    name: str = None  # Optional item name for convenience
 
 
-class LolGamePlayerSummonerSpell(TypedDict, total=False):
-    """A single summoner spell chosen by a player.
-    """
+@dataclass
+class LolGamePlayerSummonerSpell:
+    """A single summoner spell chosen by a player"""
 
     slot: int  # 0 or 1
     id: int  # Referring to Riot API summoner spell ID
-    name: Optional[str]  # Optional summoner spell name for convenience
+    name: str = None  # Optional summoner spell name for convenience
 
 
-class LolGamePlayerEndOfGameStats(TypedDict, total=False):
-    """End of game stats for a player in a game
-    """
+@dataclass
+class LolGamePlayerEndOfGameStats:
+    """End of game stats for a player in a game"""
 
-    # Items are simply a list with the 'slot' field defining which item slot they occupied.
-    # The list cannot be simply indexed on this 'slot' as many players have empty slots at the end of games.
-    items: List[LolGamePlayerItem]  # List of end of game items
+    # No None defaults set as those fields should usually be set from Riot's API
+    #   TODO Maybe set defaults because of incomplete scoreboards that you can get from Leaguepedia?
 
     # As first blood is player-specific, this does not appear in Team objects.
     firstBlood: bool  # True if the player performed the first blood
@@ -144,54 +156,64 @@ class LolGamePlayerEndOfGameStats(TypedDict, total=False):
     totalTimeCCDealt: int  # TODO Document this field
     timeCCingOthers: int  # TODO Document this field
 
+    # Items are simply a list with the 'slot' field defining which item slot they occupied.
+    # The list cannot be simply indexed on this 'slot' as many players have empty slots at the end of games.
 
-class LolGamePlayer(TypedDict, total=False):
+    # List of end of game items
+    items: List[LolGamePlayerItem] = field(default_factory=list)
+
+
+@dataclass
+class LolGamePlayer:
     """A player in a LoL game.
 
     All player-specific information should be present here.
     """
 
-    id: int  # Usually equal to participantId in Riot’s API. Meant to identify the player in kills
+    id: int = None  # Usually equal to participantId in Riot’s API. Meant to identify the player in kills
+    # TODO review use case and process for non-Riot data (Leaguepedia, Bayes, ...)
 
-    inGameName: str  # The in-game name is not linked to a particular data source and should be unique
-    profileIconId: int  # Refers to Riot API icon ID
+    inGameName: str = None  # The in-game name is not linked to a particular data source and should be unique
+    profileIconId: int = None  # Refers to Riot API icon ID
 
     # /!\ This field should be curated if it is present /!\
-    role: Optional[str]  # Role values are TOP, JGL, MID, BOT, SUP as of 2020.
+    role: str = None  # Role values are TOP, JGL, MID, BOT, SUP as of 2020.
 
-    championId: int  # Referring to Riot API champion ID
-    championName: Optional[str]  # Optional champion name for convenience
+    championId: int = None  # Referring to Riot API champion ID
+    championName: str = None  # Optional champion name for convenience
 
     # Unique identifiers are the ways to identify this player in the data sources used to gather the data
     # Any key that is present in game['sources'] should also be present here
     # A Riot API 'uniqueIdentifiers' dict looks like: {'riot': {'accountId': str, 'platformId': str}}
-    uniqueIdentifiers: Dict[str, dict]
+    uniqueIdentifiers: Dict[str, dict] = field(default_factory=dict)
 
     # Rune information is stored directly in the player object as they are beginning-of-game information
-    primaryRuneTreeId: int  # Refers to Riot rune tree ID
-    primaryRuneTreeName: Optional[str]  # Optional name for human readability
+    primaryRuneTreeId: int = None  # Refers to Riot rune tree ID
+    primaryRuneTreeName: str = None  # Optional name for human readability
 
-    secondaryRuneTreeId: int  # Refers to Riot rune tree ID
-    secondaryRuneTreeName: Optional[str]  # Optional name for human readability
+    secondaryRuneTreeId: int = None  # Refers to Riot rune tree ID
+    secondaryRuneTreeName: str = None  # Optional name for human readability
 
-    runes: List[LolGamePlayerRune]
+    runes: List[LolGamePlayerRune] = field(default_factory=list)
 
     # Summoner spells is a simple 2-items list
-    summonerSpells: List[LolGamePlayerSummonerSpell]
+    summonerSpells: List[LolGamePlayerSummonerSpell] = field(default_factory=list)
 
     # End of game stats are statistics like total kills, damage, vision score, ...
-    endOfGameStats: LolGamePlayerEndOfGameStats
+    endOfGameStats: LolGamePlayerEndOfGameStats = None
 
     # Snapshots represent player-specific information at a given timestamp.
     # Timestamp could be used as keys but JSON does not allow for integer keys.
     # This is therefore simply a list, and you should not expect it to be indexed or sorted in any particular way.
-    snapshots: List[LolGamePlayerSnapshot]
+    snapshots: List[LolGamePlayerSnapshot] = field(default_factory=list)
 
     # Item events is a list of item buys, sell, and undo
-    itemsEvents: List[LolGamePlayerItemEvent]
+    itemsEvents: List[LolGamePlayerItemEvent] = field(default_factory=list)
 
     # Ward events are a list of wards placed and destroyed
-    wardsEvents: List[LolGamePlayerWardEvent]
+    wardsEvents: List[LolGamePlayerWardEvent] = field(default_factory=list)
 
     # Skill level up events are every time the player used a skill or evolution point
-    skillsLevelUpEvents: List[LolGamePlayerSkillLevelUpEvent]
+    skillsLevelUpEvents: List[LolGamePlayerSkillLevelUpEvent] = field(
+        default_factory=list
+    )
