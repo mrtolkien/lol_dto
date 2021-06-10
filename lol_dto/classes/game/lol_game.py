@@ -4,6 +4,8 @@ from typing import Dict, List
 from lol_dto.classes.game.lol_game_event import LolGameKill
 from lol_dto.classes.game.lol_game_team import LolGameTeam
 
+# TODO Review doc and change uniqueIdentifiers field
+
 
 @dataclass
 class LolPickBan:

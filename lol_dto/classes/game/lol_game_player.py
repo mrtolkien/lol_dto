@@ -185,10 +185,10 @@ class LolGamePlayer:
     # Unique identifiers are the ways to identify this player in the data sources used to gather the data
     # Any attribute that is present in game.sources should also be present here
     # A Riot API uniqueIdentifiers class looks like:
-    #                                       player.uniqueIdentifiers.accountId and player.uniqueIdentifiers.platformId
+    #                                       player.sources.accountId and player.uniqueIdentifiers.platformId
     # Each parser transforming data to the LolGame format should implement its own source dataclass to allow for
     #   merging different sources
-    uniqueIdentifiers: dataclass = None
+    sources: dataclass = None
 
     # Rune information is stored directly in the player object as they are beginning-of-game information
     primaryRuneTreeId: int = None  # Refers to Riot rune tree ID

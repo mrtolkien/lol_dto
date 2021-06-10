@@ -57,5 +57,6 @@ class LolGameTeam:
     buildingsKills: List[LolGameTeamBuildingKill] = field(default_factory=list)
 
     # Esports-specific fields
-    name: str = None  # The actual name of the team (T1, Fnatic, TSM, ...)
-    uniqueIdentifiers: Dict[str, dict] = field(default_factory=dict)
+    # TODO Should this field be here even? Defining a name as a unique source of truth is *tough*
+    name: str = None  # The name of the team (T1, Fnatic, TSM, ...)
+    sources: dataclass = None

@@ -8,7 +8,7 @@ A unified Data Transfer Object for League of Legends games. Currently developed 
 Version 2.0 moved the implementation from `TypedDict` to `dataclass`, which means the syntax changed and is not 
 backwards compatible.
 
-`lol_game.asdict()` can be used to get the object as a dictionary, and then saved as a JSON. 
+`dataclasses.asdict()` can be used to get the object as a dictionary, and then saved as a JSON. 
 
 # Motivation
 League of Legends game information can come in many forms. The most popular source is Riot’s API and in particular its 
