@@ -65,8 +65,12 @@ class LolGame:
     # Optional game type
 
     # Optional esports information
+    league: str = None  # Full name of the league
+    leagueSlug: str = None  # Short name of the league
+
     tournament: str = None  # Name of the tournament this game is a part of
     gameInSeries: int = None  # Game index in the series including this game
+
     vod: str = None  # VOD url
 
     # Ordered list of picks and bans
