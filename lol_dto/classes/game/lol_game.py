@@ -62,14 +62,13 @@ class LolGame:
     # Kills involve multiple players from different teams and are therefore defined here
     kills: List[LolGameKill] = field(default_factory=list)
 
-    # Optional game type
+    # Game lobby name for custom games
+    lobbyName: str = None
 
     # Optional esports information
-    # TODO Like team names, is league name too prone to errors?
+    # TODO Like team names, is league name too prone to errors? Maybe only put this data in the sources dict?
     league: str = None  # Full name of the league
     leagueSlug: str = None  # Short name of the league
-
-    # TODO Should there be a match name? Imo those are more related to the `sources` dict
     tournament: str = None  # Name of the tournament this game is a part of
     gameInSeries: int = None  # Game index in the series including this game
 
