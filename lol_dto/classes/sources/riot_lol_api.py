@@ -15,7 +15,7 @@ class RiotGameSource:
 
 @dataclass
 class RiotPlayerSource:
-    puuid: str
+    puuid: str = None
     accountId: str = None
     summonerId: str = None
     platformId: str = None
