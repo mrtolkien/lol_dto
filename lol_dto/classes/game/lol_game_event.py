@@ -52,7 +52,7 @@ class LolGameTeamBuildingKill(LolEvent):
     A building kill for a team
     """
 
-    type: str  # 'TURRET', 'INHIBITOR'
+    type: str  # 'TURRET', 'TURRET_PLATE', 'INHIBITOR'
     lane: str  # 'TOP', 'MID', 'BOT'
     side: str  # 'BLUE', 'RED'
 
