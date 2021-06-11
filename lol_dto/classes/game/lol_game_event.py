@@ -106,6 +106,4 @@ class LolGamePlayerLargeMonsterKill(LolEvent):
     """
     A large monster kill by a player
     """
-
-    killerId: int  # Refers to 'id' in players
     type: str  # 'BLUE_BUFF', 'RED_BUFF', 'RAPTOR', 'WOLF', 'KRUG', 'GROMP', 'SCUTTLE' as of 2021
