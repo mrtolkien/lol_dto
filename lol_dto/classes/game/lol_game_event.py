@@ -1,5 +1,5 @@
 from abc import ABC
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List, Optional
 
 from lol_dto.classes.game.position import Position
@@ -54,12 +54,15 @@ class LolGameTeamBuildingKill(LolEvent):
 
     type: str  # 'TURRET', 'TURRET_PLATE', 'INHIBITOR'
     lane: str  # 'TOP', 'MID', 'BOT'
-    side: str  # 'BLUE', 'RED'
+    side: str  # 'BLUE', 'RED' (the side it got killed in, technically redundant with team side)
 
     # Refers to 'id' in players, represents the player landing the last hit
     killerId: int = None
+    assistsIds: List[int] = field(default_factory=list)
 
-    towerLocation: str = None  # 'OUTER', 'INNER', 'INHIBITOR', 'NEXUS'
+    towerLocation: str = (
+        None  # 'OUTER', 'INNER', 'INHIBITOR', 'NEXUS', None for inhibitors
+    )
 
 
 @dataclass
