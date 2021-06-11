@@ -15,7 +15,7 @@ class LolEvent(ABC):
 
     # In the Riot API only champion kills and monster kills have a position associated to them
     # Cannot make it default to None as it creates issues with inheritance that are not worth the hassle
-    position: Optional[Position]  # Position where the event took place
+    position: Position = None  # Position where the event took place
 
 
 @dataclass
@@ -24,8 +24,8 @@ class LolGameKill(LolEvent):
     A single kill in a LoL game
     """
 
-    victimId: int  # Player getting killed
-    assistsIds: List[int]  # Players getting an assist in the kill
+    victimId: int = None  # Player getting killed
+    assistsIds: List[int] = None  # Players getting an assist in the kill
 
     # All the id here refer to the id field in players objects
     # Player getting the last hit on the kill. None for executions
@@ -38,11 +38,13 @@ class LolGameTeamEpicMonsterKill(LolEvent):
     An epic monster kill for a team
     """
 
-    killerId: int  # Refers to 'id' in players, represents the player landing the last hit
+    killerId: int = (
+        None  # Refers to 'id' in players, represents the player landing the last hit
+    )
     # Players getting an assist in the monster kill, as shown in client (can be opponents)
-    assistsIds: List[int]
+    assistsIds: List[int] = None
 
-    type: str  # 'DRAGON', 'BARON', 'RIFT_HERALD' as of 2021
+    type: str = None  # 'DRAGON', 'BARON', 'RIFT_HERALD' as of 2021
     subType: str = None  # 'CLOUD', 'INFERNAL', 'MOUNTAIN', 'OCEAN', 'ELDER'
 
 
@@ -52,9 +54,9 @@ class LolGameTeamBuildingKill(LolEvent):
     A building kill for a team
     """
 
-    type: str  # 'TURRET', 'TURRET_PLATE', 'INHIBITOR'
-    lane: str  # 'TOP', 'MID', 'BOT'
-    side: str  # 'BLUE', 'RED' (the side it got killed in, technically redundant with team side)
+    type: str = None  # 'TURRET', 'TURRET_PLATE', 'INHIBITOR'
+    lane: str = None  # 'TOP', 'MID', 'BOT'
+    side: str = None  # 'BLUE', 'RED' (the side it got killed in, technically redundant with team side)
 
     # Refers to 'id' in players, represents the player landing the last hit
     killerId: int = None
@@ -73,9 +75,9 @@ class LolGamePlayerItemEvent(LolEvent):
     Represents buying, selling, destroying, and undoing items
     """
 
-    type: str  # 'PURCHASED', 'SOLD', 'UNDO', 'DESTROYED', 'USED', 'PICKED_UP'
-    id: int  # Referring to Riot API item ID. Resulting item in case of an UNDO
-    name: str  # Optional convenience field for human readability
+    type: str = None  # 'PURCHASED', 'SOLD', 'UNDO', 'DESTROYED', 'USED', 'PICKED_UP'
+    id: int = None  # Referring to Riot API item ID. Resulting item in case of an UNDO
+    name: str = None  # Optional convenience field for human readability
     undoId: int = None  # Referring to the item that was undone in an UNDO event
 
 
@@ -86,9 +88,9 @@ class LolGamePlayerWardEvent(LolEvent):
     Represents placing and killing wards
     """
 
-    type: str  # 'PLACED', 'KILLED'
-    wardType: str  # Values in: YELLOW_TRINKET', 'CONTROL_WARD', 'SIGHT_WARD', 'YELLOW_TRINKET_UPGRADE', 'BLUE_TRINKET',
-    #                                  'TEEMO_MUSHROOM', 'VISION_WARD', 'UNDEFINED'
+    type: str = None  # 'PLACED', 'KILLED'
+    wardType: str = None  # Values in: YELLOW_TRINKET', 'CONTROL_WARD', 'SIGHT_WARD', 'YELLOW_TRINKET_UPGRADE',
+    # 'BLUE_TRINKET', 'TEEMO_MUSHROOM', 'VISION_WARD', 'UNDEFINED'
 
 
 @dataclass
@@ -97,8 +99,8 @@ class LolGamePlayerSkillLevelUpEvent(LolEvent):
     A skill level up by a player
     """
 
-    type: str  # 'NORMAL' or 'EVOLVE'
-    slot: int  # The skill slot, from 1 to 4
+    type: str = None  # 'NORMAL' or 'EVOLVE'
+    slot: int = None  # The skill slot, from 1 to 4
 
 
 @dataclass
@@ -106,4 +108,5 @@ class LolGamePlayerLargeMonsterKill(LolEvent):
     """
     A large monster kill by a player
     """
-    type: str  # 'BLUE_BUFF', 'RED_BUFF', 'RAPTOR', 'WOLF', 'KRUG', 'GROMP', 'SCUTTLE' as of 2021
+
+    type: str = None  # 'BLUE_BUFF', 'RED_BUFF', 'RAPTOR', 'WOLF', 'KRUG', 'GROMP', 'SCUTTLE' as of 2021
