@@ -7,6 +7,7 @@ from lol_dto.classes.game.lol_game_player import (
     LolGamePlayerSnapshot,
     LolGamePlayerSummonerSpell,
     LolGamePlayerEndOfGameStats,
+    LolGamePlayerLargeMonsterKill
 )
 from lol_dto.classes.game.lol_game_event import (
     LolEvent,
