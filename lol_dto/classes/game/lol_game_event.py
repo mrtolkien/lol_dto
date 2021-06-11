@@ -75,10 +75,11 @@ class LolGamePlayerItemEvent(LolEvent):
     Represents buying, selling, destroying, and undoing items
     """
 
-    type: str = None  # 'PURCHASED', 'SOLD', 'UNDO', 'DESTROYED', 'USED', 'PICKED_UP'
-    id: int = None  # Referring to Riot API item ID. Resulting item in case of an UNDO
+    # TODO Document removed DESTROYED
+    type: str = None  # 'PURCHASED', 'SOLD', 'UNDO', 'USED', 'PICKED_UP'
+    id: int = None  # Referring to Riot API item ID
     name: str = None  # Optional convenience field for human readability
-    undoId: int = None  # Referring to the item that was undone in an UNDO event
+    beforeUndoId: int = None  # Resulting item in case of an UNDO, helps recalculate items? could be dropped maybe
 
 
 @dataclass
@@ -88,8 +89,9 @@ class LolGamePlayerWardEvent(LolEvent):
     Represents placing and killing wards
     """
 
+    # TODO DOCUMENT dropped yellow trinket upgrade, wrong?
     type: str = None  # 'PLACED', 'KILLED'
-    wardType: str = None  # Values in: YELLOW_TRINKET', 'CONTROL_WARD', 'SIGHT_WARD', 'YELLOW_TRINKET_UPGRADE',
+    wardType: str = None  # Values in: YELLOW_TRINKET', 'CONTROL_WARD', 'SIGHT_WARD',
     # 'BLUE_TRINKET', 'TEEMO_MUSHROOM', 'VISION_WARD', 'UNDEFINED'
 
 

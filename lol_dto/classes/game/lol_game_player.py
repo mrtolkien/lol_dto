@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import List, Dict, Optional
+from typing import List
 
 from lol_dto.classes.game.position import Position
 from lol_dto.classes.game.lol_game_event import (
@@ -34,6 +34,9 @@ class LolGamePlayerSnapshot:
 
     cs: int = None  # Total number of minions and monsters killed
     monstersKilled: int = None  # Total monsters (neutral minions) killed
+
+    # Whether or not the player is alive at the time of the snapshot
+    isAlive: bool = None
 
     # Those four last fields are redundant but can be added for convenience
     # TODO Should they be dropped?
