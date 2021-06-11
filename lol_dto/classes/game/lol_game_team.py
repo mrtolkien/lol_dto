@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from typing import List, Optional, Dict
 
 from lol_dto.classes.game.lol_game_event import (
-    LolGameTeamMonsterKill,
+    LolGameTeamEpicMonsterKill,
     LolGameTeamBuildingKill,
 )
 from lol_dto.classes.game.lol_game_player import LolGamePlayer
@@ -51,7 +51,7 @@ class LolGameTeam:
     endOfGameStats: LolGameTeamEndOfGameStats = None
 
     # Team monsters kills
-    monstersKills: List[LolGameTeamMonsterKill] = field(default_factory=list)
+    epicMonstersKills: List[LolGameTeamEpicMonsterKill] = field(default_factory=list)
 
     # Team buildings kills
     buildingsKills: List[LolGameTeamBuildingKill] = field(default_factory=list)

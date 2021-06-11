@@ -6,6 +6,7 @@ from lol_dto.classes.game.lol_game_event import (
     LolGamePlayerItemEvent,
     LolGamePlayerWardEvent,
     LolGamePlayerSkillLevelUpEvent,
+    LolGamePlayerLargeMonsterKill,
 )
 
 
@@ -13,31 +14,37 @@ from lol_dto.classes.game.lol_game_event import (
 class LolGamePlayerSnapshot:
     """
     Information about a player at a specific point in the game
+
+    Riot's API gives this information with a 1 minute granularity in its MatchTimeline object
+
+    Fields might be omitted when None to make the object lighter
     """
 
     timestamp: float  # Timestamp of the event expressed in seconds from the game start, with possible ms precision
 
-    currentGold: int  # Current gold (at the time of the snapshot)
-    totalGold: int  # Total gold earned
+    # Player position, None for the last "snapshot" in Riot's API
+    position: Position = None
 
-    xp: int  # Current experience
-    xpDiff: int  # Experience difference with the opponent in the same role
+    currentGold: int = None  # Current gold (at the time of the snapshot)
+    totalGold: int = None  # Total gold earned
 
-    level: int  # Current champion level
+    xp: int = None  # Current experience
 
-    cs: int  # Total number of minions and monsters killed
+    level: int = None  # Current champion level
 
-    monstersKilled: int  # Total monsters (neutral minions) killed
-    monstersKilledDiff: int  # Total monsters killed difference with the opponent in the same role
+    cs: int = None  # Total number of minions and monsters killed
+    monstersKilled: int = None  # Total monsters (neutral minions) killed
 
-    position: Position = None  # Player position, None for the last "snapshot"
-
-    # Those two last fields are redundant but can be added for convenience
-
+    # Those four last fields are redundant but can be added for convenience
+    # TODO Should they be dropped?
+    # Experience difference with the opponent in the same role
+    xpDiff: int = None
     # Total gold difference with the opponent in the same role
     totalGoldDiff: int = None
-
-    csDiff: int = None  # Total CS difference with the opponent in the same role
+    # Total CS difference with the opponent in the same role
+    csDiff: int = None
+    # Total monsters killed difference with the opponent in the same role
+    monstersKilledDiff: int = None
 
 
 @dataclass
@@ -205,9 +212,9 @@ class LolGamePlayer:
     # End of game stats are statistics like total kills, damage, vision score, ...
     endOfGameStats: LolGamePlayerEndOfGameStats = None
 
-    # Snapshots represent player-specific information at a given timestamp.
-    # Timestamp could be used as keys but JSON does not allow for integer keys.
-    # This is therefore simply a list, and you should not expect it to be indexed or sorted in any particular way.
+    # Snapshots represent player-specific information at a given timestamp
+    # Timestamp could be used as keys but JSON does not allow for integer keys
+    # This is therefore simply a list, which you should not expect it to be indexed or sorted in any particular way
     snapshots: List[LolGamePlayerSnapshot] = field(default_factory=list)
 
     # Item events is a list of item buys, sell, and undo
@@ -220,3 +227,14 @@ class LolGamePlayer:
     skillsLevelUpEvents: List[LolGamePlayerSkillLevelUpEvent] = field(
         default_factory=list
     )
+
+    # The next fields are usually not available in Riot's API
+
+    # Kills of large monsters, accessible in some data sources
+    largeMonstersKills: List[LolGamePlayerLargeMonsterKill] = field(
+        default_factory=list
+    )
+
+    # Direct level up events exist in some data sources
+    # It is a simple list of level up timestamps, in seconds
+    levelUpEvents: List[int] = field(default_factory=list)

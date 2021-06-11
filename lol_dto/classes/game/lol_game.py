@@ -65,6 +65,7 @@ class LolGame:
     # Optional game type
 
     # Optional esports information
+    # TODO Like team names, is it too prone to errors?
     league: str = None  # Full name of the league
     leagueSlug: str = None  # Short name of the league
 

@@ -10,6 +10,8 @@ backwards compatible.
 
 `dataclasses.asdict()` can be used to get the object as a dictionary, and then saved as a JSON. 
 
+Fields can be omitted when not supplied to make the object lighter. This is particularly true for Snapshots objects 
+
 # Motivation
 League of Legends game information can come in many forms. The most popular source is Riot’s API and in particular its 
 [MATCH-V4](https://developer.riotgames.com/apis#match-v4/) endpoint, which defines its own MatchDto 

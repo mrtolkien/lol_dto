@@ -1,3 +1,4 @@
+from abc import ABC
 from dataclasses import dataclass
 from typing import List, Optional
 
@@ -5,10 +6,9 @@ from lol_dto.classes.game.position import Position
 
 
 @dataclass
-class LolEvent:
-    """A single event that took place during a LoL game.
-
-    Should not be used as-is and is intended to be a building block for other event classes.
+class LolEvent(ABC):
+    """
+    A single event that took place during a LoL game
     """
 
     timestamp: float  # Timestamp of the event expressed in seconds from the game start, with possible ms precision
@@ -20,50 +20,57 @@ class LolEvent:
 
 @dataclass
 class LolGameKill(LolEvent):
-    """A single kill in a LoL game"""
+    """
+    A single kill in a LoL game
+    """
 
     victimId: int  # Player getting killed
     assistsIds: List[int]  # Players getting an assist in the kill
 
     # All the id here refer to the id field in players objects
-    killerId: int = (
-        None  # Player getting the last hit on the kill. None for executions.
-    )
+    # Player getting the last hit on the kill. None for executions
+    killerId: int = None
 
 
 @dataclass
-class LolGameTeamMonsterKill(LolEvent):
-    """A monster kill for a team."""
+class LolGameTeamEpicMonsterKill(LolEvent):
+    """
+    An epic monster kill for a team
+    """
 
     killerId: int  # Refers to 'id' in players, represents the player landing the last hit
-    type: str  # 'DRAGON', 'BARON', 'RIFT_HERALD'
+    # Players getting an assist in the monster kill, as shown in client (can be opponents)
+    assistsIds: List[int]
 
+    type: str  # 'DRAGON', 'BARON', 'RIFT_HERALD' as of 2021
     subType: str = None  # 'CLOUD', 'INFERNAL', 'MOUNTAIN', 'OCEAN', 'ELDER'
 
 
 @dataclass
 class LolGameTeamBuildingKill(LolEvent):
-    """A building kill for a team."""
+    """
+    A building kill for a team
+    """
 
     type: str  # 'TURRET', 'INHIBITOR'
     lane: str  # 'TOP', 'MID', 'BOT'
     side: str  # 'BLUE', 'RED'
 
-    killerId: int = (
-        None  # Refers to 'id' in players, represents the player landing the last hit
-    )
+    # Refers to 'id' in players, represents the player landing the last hit
+    killerId: int = None
 
     towerLocation: str = None  # 'OUTER', 'INNER', 'INHIBITOR', 'NEXUS'
 
 
 @dataclass
 class LolGamePlayerItemEvent(LolEvent):
-    """An item-related event for a player.
+    """
+    An item-related event for a player
 
-    Represents buying, selling, destroying, and undoing items.
+    Represents buying, selling, destroying, and undoing items
     """
 
-    type: str  # 'PURCHASED', 'SOLD', 'UNDO', 'DESTROYED'
+    type: str  # 'PURCHASED', 'SOLD', 'UNDO', 'DESTROYED', 'USED', 'PICKED_UP'
     id: int  # Referring to Riot API item ID. Resulting item in case of an UNDO
     name: str  # Optional convenience field for human readability
     undoId: int = None  # Referring to the item that was undone in an UNDO event
@@ -71,9 +78,9 @@ class LolGamePlayerItemEvent(LolEvent):
 
 @dataclass
 class LolGamePlayerWardEvent(LolEvent):
-    """A ward-related event for a player.
-
-    Represents placing and killing wards.
+    """
+    A ward-related event for a player
+    Represents placing and killing wards
     """
 
     type: str  # 'PLACED', 'KILLED'
@@ -83,7 +90,19 @@ class LolGamePlayerWardEvent(LolEvent):
 
 @dataclass
 class LolGamePlayerSkillLevelUpEvent(LolEvent):
-    """A skill level up by a player."""
+    """
+    A skill level up by a player
+    """
 
     type: str  # 'NORMAL' or 'EVOLVE'
     slot: int  # The skill slot, from 1 to 4
+
+
+@dataclass
+class LolGamePlayerLargeMonsterKill(LolEvent):
+    """
+    A large monster kill by a player
+    """
+
+    killerId: int  # Refers to 'id' in players
+    type: str  # 'BLUE_BUFF', 'RED_BUFF', 'RAPTOR', 'WOLF', 'KRUG', 'GROMP', 'SCUTTLE' as of 2021
