@@ -52,8 +52,7 @@ class LolGame:
     patch: str = None  # Patch should follow a simple XX.YY nomenclature and is the recommended field to use
     gameVersion: str = None  # The full game version expressed as XX.YY.ZZ.αα, allowing to distinguish micro patches
 
-    # This is the only place where the game’s winner appears.
-    # To know if a given player won, use player['team'] == game['winner']
+    # This is the only place where the game’s winner appears
     winner: str = None  # Equal to the winning team’s side
 
     # Team are a dictionary with keys equal to the team side ('BLUE' or 'RED')

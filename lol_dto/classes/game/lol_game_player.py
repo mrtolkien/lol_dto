@@ -16,8 +16,6 @@ class LolGamePlayerSnapshot:
     Information about a player at a specific point in the game
 
     Riot's API gives this information with a 1 minute granularity in its MatchTimeline object
-
-    Fields might be omitted when None to make the object lighter
     """
 
     timestamp: float  # Timestamp of the event expressed in seconds from the game start, with possible ms precision
@@ -37,6 +35,8 @@ class LolGamePlayerSnapshot:
 
     # Whether or not the player is alive at the time of the snapshot
     isAlive: bool = None
+
+    # TODO Add summoner spell and ultimate availability info
 
     # Those four last fields are redundant but can be added for convenience
     # TODO Should they be dropped?
@@ -89,82 +89,83 @@ class LolGamePlayerSummonerSpell:
 class LolGamePlayerEndOfGameStats:
     """End of game stats for a player in a game"""
 
-    # No None defaults set as those fields should usually be set from Riot's API
-    #   TODO Maybe set defaults because of incomplete scoreboards that you can get from Leaguepedia?
-
     # As first blood is player-specific, this does not appear in Team objects.
-    firstBlood: bool  # True if the player performed the first blood
-    firstBloodAssist: bool  # True if the player assisted the first blood kill
-    firstTower: bool  # True if the player dealt the last hit to the first tower kill
-    firstTowerAssist: bool  # True if the player assisted the first tower kill
-    firstInhibitor: bool  # True if the player dealt the last hit to the first inhibitor kill
-    firstInhibitorAssist: bool  # True if the player assisted in the first inhibitor kill
+    firstBlood: bool = None  # True if the player performed the first blood
+    firstBloodAssist: bool = None  # True if the player assisted the first blood kill
+    # True if the player dealt the last hit to the first tower kill
+    firstTower: bool = None
+    firstTowerAssist: bool = None  # True if the player assisted the first tower kill
+    # True if the player dealt the last hit to the first inhibitor kill
+    firstInhibitor: bool = None
+    #  True if the player assisted in the first inhibitor kill
+    firstInhibitorAssist: bool = None
 
     # TODO Add a small description for every field
 
     # All statistics here refer to end of game stats, so we do not preface them by anything.
-    kills: int
-    deaths: int
-    assists: int
-    gold: int
-    cs: int
-    level: int
+    kills: int = None
+    deaths: int = None
+    assists: int = None
+    gold: int = None
+    cs: int = None
+    level: int = None
 
     # Warding-related statistics
-    wardsPlaced: int
-    wardsKilled: int
-    visionWardsBought: int
-    visionScore: int
+    wardsPlaced: int = None
+    wardsKilled: int = None
+    visionWardsBought: int = None
+    visionScore: int = None
 
     # Kills-related statistics
-    killingSprees: int  # Number of a time a player has initiated a killing spree (2 or more consecutive kills)
-    largestKillingSpree: int  # Largest consecutive kills, above 0 only if it reached at least 2
+    killingSprees: int = None  # Number of a time a player has initiated a killing spree (2 or more consecutive kills)
+    # Largest consecutive kills, above 0 only if it reached at least 2
+    largestKillingSpree: int = None
 
-    doubleKills: int
-    tripleKills: int
-    quadraKills: int
-    pentaKills: int
+    doubleKills: int = None
+    tripleKills: int = None
+    quadraKills: int = None
+    pentaKills: int = None
 
-    towerKills: int
-    inhibitorKills: int
+    towerKills: int = None
+    inhibitorKills: int = None
 
     # Using modern Riot nomenclature of monsters for "neutral minions"
-    monsterKills: int
-    monsterKillsInAlliedJungle: int
-    monsterKillsInEnemyJungle: int
+    monsterKills: int = None
+    monsterKillsInAlliedJungle: int = None
+    monsterKillsInEnemyJungle: int = None
 
     # Damage-related statistics
     # Total true damage dealt can be calculated by subtracting physical and magic damage to the total
-    totalDamageDealt: int  # Includes damage to minions and monsters
-    physicalDamageDealt: int
-    magicDamageDealt: int
+    totalDamageDealt: int = None  # Includes damage to minions and monsters
+    physicalDamageDealt: int = None
+    magicDamageDealt: int = None
 
     # Total true damage dealt  to champions can be calculated by subtracting physical and magic damage to the total
-    totalDamageDealtToChampions: int
-    physicalDamageDealtToChampions: int
-    magicDamageDealtToChampions: int
+    totalDamageDealtToChampions: int = None
+    physicalDamageDealtToChampions: int = None
+    magicDamageDealtToChampions: int = None
 
     # Total true damage taken can be calculated by subtracting physical and magic damage to the total
-    totalDamageTaken: int
-    physicalDamageTaken: int
-    magicDamageTaken: int
+    totalDamageTaken: int = None
+    physicalDamageTaken: int = None
+    magicDamageTaken: int = None
 
     # Other damage statistics
-    damageDealtToObjectives: int
-    damageDealtToTurrets: int
+    damageDealtToObjectives: int = None
+    damageDealtToTurrets: int = None
 
     # Really random statistics
-    longestTimeSpentLiving: int  # Expressed in seconds
-    largestCriticalStrike: int  # Full raw damage of the largest critical strike
-    goldSpent: int  # Can be useful to try and identify AFK players?
+    longestTimeSpentLiving: int = None  # Expressed in seconds
+    largestCriticalStrike: int = None  # Full raw damage of the largest critical strike
+    goldSpent: int = None  # Can be useful to try and identify AFK players?
 
     # The following fields need to have their behaviour properly explained as part of the specification
-    totalHeal: int  # TODO Document this field
-    totalUnitsHealed: int  # TODO Document this field
-    damageSelfMitigated: int  # TODO Document this field
+    totalHeal: int = None  # TODO Document this field
+    totalUnitsHealed: int = None  # TODO Document this field
+    damageSelfMitigated: int = None  # TODO Document this field
 
-    totalTimeCCDealt: int  # TODO Document this field
-    timeCCingOthers: int  # TODO Document this field
+    utotalTimeCCDealt: int = None  # TODO Document this field
+    timeCCingOthers: int = None  # TODO Document this field
 
     # Items are simply a list with the 'slot' field defining which item slot they occupied.
     # The list cannot be simply indexed on this 'slot' as many players have empty slots at the end of games.
@@ -175,9 +176,10 @@ class LolGamePlayerEndOfGameStats:
 
 @dataclass
 class LolGamePlayer:
-    """A player in a LoL game.
+    """
+    A player in a LoL game
 
-    All player-specific information should be present here.
+    All player-specific information should be present here
     """
 
     id: int = None  # Usually equal to participantId in Riot’s API. Meant to identify the player in kills

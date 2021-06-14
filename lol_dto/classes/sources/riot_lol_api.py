@@ -9,8 +9,8 @@ class RiotGameSource:
         setattr(game.sources, 'riotLolApi', RiotGameSource(gameId=..., platformId=...))
     """
 
-    gameId: int
-    platformId: str
+    gameId: int = None
+    platformId: str = None
 
 
 @dataclass
