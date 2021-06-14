@@ -71,8 +71,8 @@ class LolGamePlayerItem:
     A single item that a player possessed at the end of the game
     """
 
-    slot: int  # Goes from 0 to 6 as of 2020
     id: int  # Referring to Riot API item ID
+    slot: int = None  # Goes from 0 to 6 as of 2020
     name: str = None  # Optional item name for convenience
 
 
@@ -80,8 +80,8 @@ class LolGamePlayerItem:
 class LolGamePlayerSummonerSpell:
     """A single summoner spell chosen by a player"""
 
-    slot: int  # 0 or 1
     id: int  # Referring to Riot API summoner spell ID
+    slot: int = None  # 0 or 1
     name: str = None  # Optional summoner spell name for convenience
 
 
@@ -162,7 +162,7 @@ class LolGamePlayerEndOfGameStats:
 
     # The following fields need to have their behaviour properly explained as part of the specification
     totalHeal: int = None  # TODO Document this field
-    totalDamageShieldedOnTeammates: int = None # TODO Document this field
+    totalDamageShieldedOnTeammates: int = None  # TODO Document this field
     totalUnitsHealed: int = None  # TODO Document this field
     damageSelfMitigated: int = None  # TODO Document this field
 
