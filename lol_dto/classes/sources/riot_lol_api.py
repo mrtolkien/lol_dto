@@ -19,3 +19,5 @@ class RiotPlayerSource:
     accountId: str = None
     summonerId: str = None
     platformId: str = None
+
+    participantId: int = None  # Will usually be player.id, but it is still a key unique to this data source
