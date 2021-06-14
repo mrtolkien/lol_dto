@@ -161,7 +161,7 @@ class LolGamePlayerEndOfGameStats:
 
     # The following fields need to have their behaviour properly explained as part of the specification
     totalHeal: int = None  # TODO Document this field
-    totalShield: int = None # TODO Document this field
+    totalDamageShieldedOnTeammates: int = None # TODO Document this field
     totalUnitsHealed: int = None  # TODO Document this field
     damageSelfMitigated: int = None  # TODO Document this field
 
