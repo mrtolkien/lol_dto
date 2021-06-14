@@ -152,6 +152,7 @@ class LolGamePlayerEndOfGameStats:
 
     # Other damage statistics
     damageDealtToObjectives: int = None
+    damageDealtToBuildings: int = None
     damageDealtToTurrets: int = None
 
     # Really random statistics
