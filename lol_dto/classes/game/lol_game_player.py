@@ -164,7 +164,7 @@ class LolGamePlayerEndOfGameStats:
     totalUnitsHealed: int = None  # TODO Document this field
     damageSelfMitigated: int = None  # TODO Document this field
 
-    utotalTimeCCDealt: int = None  # TODO Document this field
+    totalTimeCCDealt: int = None  # TODO Document this field
     timeCCingOthers: int = None  # TODO Document this field
 
     # Items are simply a list with the 'slot' field defining which item slot they occupied.
