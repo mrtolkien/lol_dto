@@ -127,14 +127,14 @@ class LolGamePlayerCooldownEvent(LolEvent, ABC):
 
 @dataclass
 class LolGamePlayerItemUseEvent(LolGamePlayerCooldownEvent):
-    itemId: int = None  # Item ID
+    id: int = None  # Item ID
 
 
 @dataclass
 class LolGamePlayerSpellUseEvent(LolGamePlayerCooldownEvent):
-    spellKey: str = None  # P for passive, Q W E R for the other spells
+    key: str = None  # P for passive, Q W E R for the other spells
 
 
 @dataclass
 class LolGamePlayerSummonerSpellUseEvent(LolGamePlayerCooldownEvent):
-    summonerSpellId: int = None  # Summoner spell ID
+    id: int = None  # Summoner spell ID
