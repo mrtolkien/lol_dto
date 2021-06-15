@@ -112,3 +112,21 @@ class LolGamePlayerLargeMonsterKill(LolEvent):
     """
 
     type: str = None  # 'BLUE_BUFF', 'RED_BUFF', 'RAPTOR', 'WOLF', 'KRUG', 'GROMP', 'SCUTTLE' as of 2021
+
+
+@dataclass
+class LolGamePlayerCooldownEvent(LolEvent):
+    """
+    An event that represents an action with a cooldown
+
+    Can be used for summoner spells use, spells uses (including ultimate), and items uses
+    """
+
+    type: str = None  # 'SUMMONER_SPELL', 'SPELL', 'ITEM'
+
+    cooldown: int = None  # The cooldown of the object after it has been used
+
+    # P (passive), Q, W, E, R. There are not better IDs in Riot's API
+    spellKey: Optional[str] = None
+    summonerSpellId: Optional[int] = None  # Summoner spell ID
+    itemId: Optional[int] = None  # Item ID

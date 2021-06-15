@@ -73,6 +73,7 @@ class LolGamePlayerItem:
 
     id: int  # Referring to Riot API item ID
     slot: int = None  # Goes from 0 to 6 as of 2020
+
     name: str = None  # Optional item name for convenience
 
 
@@ -245,3 +246,7 @@ class LolGamePlayer:
     # Direct level up events exist in some data sources
     # It is a simple list of level up timestamps, in seconds
     levelUpEvents: List[int] = field(default_factory=list)
+
+    # Cooldown information can be parsed from spectator mode
+    #   It includes ultimate usage, summoner spells usage, and items usage (only items with CDs)
+    cooldownEvents: List[LolGamePlayerCooldownEvent] = field(default_factory=list)
