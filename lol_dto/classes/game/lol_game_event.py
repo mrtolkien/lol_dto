@@ -115,18 +115,26 @@ class LolGamePlayerLargeMonsterKill(LolEvent):
 
 
 @dataclass
-class LolGamePlayerCooldownEvent(LolEvent):
+class LolGamePlayerCooldownEvent(LolEvent, ABC):
+    # TODO Review imports
     """
     An event that represents an action with a cooldown
 
     Can be used for summoner spells use, spells uses (including ultimate), and items uses
     """
-
-    type: str = None  # 'SUMMONER_SPELL', 'SPELL', 'ITEM'
-
     cooldown: float = None  # The cooldown of the object in s after it has been used
 
-    # P (passive), Q, W, E, R. There are not better IDs in Riot's API
-    spellKey: Optional[str] = None
-    summonerSpellId: Optional[int] = None  # Summoner spell ID
-    itemId: Optional[int] = None  # Item ID
+
+@dataclass
+class LolGamePlayerItemUseEvent(LolGamePlayerCooldownEvent):
+    itemId: int = None  # Item ID
+
+
+@dataclass
+class LolGamePlayerSpellUseEvent(LolGamePlayerCooldownEvent):
+    spellKey: str = None  # P for passive, Q W E R for the other spells
+
+
+@dataclass
+class LolGamePlayerSummonerSpellUseEvent(LolGamePlayerCooldownEvent):
+    summonerSpellId: int = None  # Summoner spell ID

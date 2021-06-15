@@ -7,7 +7,9 @@ from lol_dto.classes.game.lol_game_event import (
     LolGamePlayerWardEvent,
     LolGamePlayerSkillLevelUpEvent,
     LolGamePlayerLargeMonsterKill,
-    LolGamePlayerCooldownEvent,
+    LolGamePlayerItemUseEvent,
+    LolGamePlayerSummonerSpellUseEvent,
+    LolGamePlayerSpellUseEvent,
 )
 
 
@@ -227,6 +229,7 @@ class LolGamePlayer:
     snapshots: List[LolGamePlayerSnapshot] = field(default_factory=list)
 
     # Item events is a list of item buys, sell, and undo
+    # TODO Maybe rename it to itemShopEvents?
     itemsEvents: List[LolGamePlayerItemEvent] = field(default_factory=list)
 
     # Ward events are a list of wards placed and destroyed
@@ -250,4 +253,8 @@ class LolGamePlayer:
 
     # Cooldown information can be parsed from spectator mode
     #   It includes ultimate usage, summoner spells usage, and items usage (only items with CDs)
-    cooldownEvents: List[LolGamePlayerCooldownEvent] = field(default_factory=list)
+    itemsUses: List[LolGamePlayerItemUseEvent] = field(default_factory=list)
+    spellsUses: List[LolGamePlayerSpellUseEvent] = field(default_factory=list)
+    summonerSpellsUses: List[LolGamePlayerSummonerSpellUseEvent] = field(
+        default_factory=list
+    )
