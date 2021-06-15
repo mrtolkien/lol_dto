@@ -1,3 +1,2 @@
 from lol_dto.utilities.merge_games import merge_games
-
-# TODO Add to_dict, to_json, with dropping None fields
+from lol_dto.utilities.dump_json import dump_json
