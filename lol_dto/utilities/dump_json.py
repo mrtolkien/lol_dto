@@ -33,5 +33,10 @@ def delete_empty_fields(d: dict) -> dict:
             delete_empty_fields(value)
         elif not value:
             d.pop(key)
+        elif isinstance(value, list):
+            # It's not empty because of the previous test
+            for list_value in value:
+                if isinstance(list_value, dict):
+                    delete_empty_fields(list_value)
 
     return d
