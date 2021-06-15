@@ -72,11 +72,11 @@ class LolGamePlayerItemEvent(LolEvent):
     """
     An item-related event for a player
 
-    Represents buying, selling, destroying, and undoing items
+    Represents buying, selling, picking up (herald), and undoing items
     """
 
-    # TODO Document removed DESTROYED
-    type: str = None  # 'PURCHASED', 'SOLD', 'UNDO', 'USED', 'PICKED_UP'
+    type: str = None  # 'PURCHASED', 'SOLD', 'UNDO', 'PICKED_UP', 'USED'
+    # TODO DESTROYED dropped, unifying to 'USED'? Losing some information though
     id: int = None  # Referring to Riot API item ID
     name: str = None  # Optional convenience field for human readability
     beforeUndoId: int = None  # Resulting item in case of an UNDO, helps recalculate items? could be dropped maybe
@@ -126,15 +126,9 @@ class LolGamePlayerCooldownEvent(LolEvent, ABC):
 
 
 @dataclass
-class LolGamePlayerItemUseEvent(LolGamePlayerCooldownEvent):
-    id: int = None  # Item ID
-
-
-@dataclass
 class LolGamePlayerSpellUseEvent(LolGamePlayerCooldownEvent):
-    key: str = None  # P for passive, Q W E R for the other spells
+    # P for passive, Q W E R for the main spells, None for summoner spells
+    key: str = None
 
-
-@dataclass
-class LolGamePlayerSummonerSpellUseEvent(LolGamePlayerCooldownEvent):
-    id: int = None  # Summoner spell ID
+    # Summoner spell ID
+    id: int = None

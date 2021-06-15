@@ -7,8 +7,6 @@ from lol_dto.classes.game.lol_game_event import (
     LolGamePlayerWardEvent,
     LolGamePlayerSkillLevelUpEvent,
     LolGamePlayerLargeMonsterKill,
-    LolGamePlayerItemUseEvent,
-    LolGamePlayerSummonerSpellUseEvent,
     LolGamePlayerSpellUseEvent,
 )
 
@@ -252,9 +250,4 @@ class LolGamePlayer:
     levelUpEvents: List[int] = field(default_factory=list)
 
     # Cooldown information can be parsed from spectator mode
-    #   It includes ultimate usage, summoner spells usage, and items usage (only items with CDs)
-    itemsUses: List[LolGamePlayerItemUseEvent] = field(default_factory=list)
     spellsUses: List[LolGamePlayerSpellUseEvent] = field(default_factory=list)
-    summonerSpellsUses: List[LolGamePlayerSummonerSpellUseEvent] = field(
-        default_factory=list
-    )
