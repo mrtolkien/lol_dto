@@ -124,7 +124,7 @@ class LolGamePlayerCooldownEvent(LolEvent):
 
     type: str = None  # 'SUMMONER_SPELL', 'SPELL', 'ITEM'
 
-    cooldown: int = None  # The cooldown of the object after it has been used
+    cooldown: float = None  # The cooldown of the object in s after it has been used
 
     # P (passive), Q, W, E, R. There are not better IDs in Riot's API
     spellKey: Optional[str] = None
