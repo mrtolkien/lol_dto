@@ -15,10 +15,10 @@ class LolGameTeamEndOfGameStats:
     """
 
     # Structure kills need to be related to team as they can be killed by minions
-    towerKills: int = None  # Total tower kills
+    turretKills: int = None  # Total turret kills
     inhibitorKills: int = None  # Total inhibitor kills
 
-    firstTower: bool = None  # True if the team killed the first tower
+    firstTurret: bool = None  # True if the team killed the first turret
     firstInhibitor: bool = None  # True if the team killed the first inhibitor
 
     # Epic monsters kills are linked to teams as it makes little sense to link them to individual players
