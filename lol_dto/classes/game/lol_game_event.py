@@ -62,7 +62,7 @@ class LolGameTeamBuildingKill(LolEvent):
     killerId: int = None
     assistsIds: List[int] = field(default_factory=list)
 
-    towerLocation: str = (
+    turretLocation: str = (
         None  # 'OUTER', 'INNER', 'INHIBITOR', 'NEXUS', None for inhibitors
     )
 

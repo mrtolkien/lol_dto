@@ -94,9 +94,9 @@ class LolGamePlayerEndOfGameStats:
     # As first blood is player-specific, this does not appear in Team objects.
     firstBlood: bool = None  # True if the player performed the first blood
     firstBloodAssist: bool = None  # True if the player assisted the first blood kill
-    # True if the player dealt the last hit to the first tower kill
-    firstTower: bool = None
-    firstTowerAssist: bool = None  # True if the player assisted the first tower kill
+    # True if the player dealt the last hit to the first turret kill
+    firstTurret: bool = None
+    firstTurretAssist: bool = None  # True if the player assisted the first turret kill
     # True if the player dealt the last hit to the first inhibitor kill
     firstInhibitor: bool = None
     #  True if the player assisted in the first inhibitor kill
@@ -128,7 +128,7 @@ class LolGamePlayerEndOfGameStats:
     quadraKills: int = None
     pentaKills: int = None
 
-    towerKills: int = None
+    turretKills: int = None
     inhibitorKills: int = None
 
     # Using modern Riot nomenclature of monsters for "neutral minions"
