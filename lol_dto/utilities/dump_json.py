@@ -6,7 +6,7 @@ from lol_dto.classes.game import LolGame
 
 def dump_json(lol_game: LolGame, filename: str, remove_empty: bool = True):
     """
-    Dump the given LolGame to a local file
+    Dump the given LolGame to a local file in JSON format
 
     Args:
         lol_game: the LolGame object to dump
@@ -14,7 +14,7 @@ def dump_json(lol_game: LolGame, filename: str, remove_empty: bool = True):
         remove_empty: whether or not to dump None fields in the JSON. True by default to lighten the object.
 
     Returns:
-        -
+        Nothing
 
     """
 
@@ -28,13 +28,23 @@ def dump_json(lol_game: LolGame, filename: str, remove_empty: bool = True):
 
 
 def delete_empty_fields(d: dict) -> dict:
+    """
+    Deletes the None fields in a dictionary recursively
+    Mostly used to make resulting JSON dumps lighter
+
+    Args:
+        d: The dictionary to reduce
+
+    Returns:
+        The reduced dictionary
+
+    """
     for key, value in list(d.items()):
         if isinstance(value, dict):
             delete_empty_fields(value)
-        elif value is None or value is []:
+        elif value is None:
             d.pop(key)
         elif isinstance(value, list):
-            # It's not empty because of the previous test
             for list_value in value:
                 if isinstance(list_value, dict):
                     delete_empty_fields(list_value)

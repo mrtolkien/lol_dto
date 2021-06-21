@@ -1,16 +1,32 @@
 [tool.poetry]
 name = "lol_dto"
-version = "2.0.0a"
-description = "A unified representation of League of Legends-related information."
+version = "2.0.0a1"
+description = "A unified representation of League of Legends-related information"
 authors = ["mrtolkien <gary.mialaret+pypi@gmail.com>"]
 license = "MIT"
+readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.7"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.4"
+tox = "^3.23.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+isolated_build = true
+envlist = py37, py38, py39
+
+[testenv]
+whitelist_externals = poetry
+commands =
+    poetry install -v
+    poetry run pytest tests/
+"""

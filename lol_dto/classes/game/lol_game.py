@@ -1,10 +1,10 @@
 from dataclasses import dataclass, field
-from typing import Dict, List
+from typing import List
 
 from lol_dto.classes.game.lol_game_event import LolGameKill
 from lol_dto.classes.game.lol_game_team import LolGameTeam
 
-# TODO Review doc and change uniqueIdentifiers field
+# TODO Review doc and change uniqueIdentifiers field there
 
 
 @dataclass
@@ -27,6 +27,11 @@ class LolPickBan:
 class LolGameTeams:
     BLUE: LolGameTeam = field(default_factory=LolGameTeam)
     RED: LolGameTeam = field(default_factory=LolGameTeam)
+
+    # TODO Add a test for this feature
+    def __iter__(self):
+        for t in self.BLUE, self.RED:
+            yield t
 
 
 @dataclass
@@ -53,7 +58,7 @@ class LolGame:
     gameVersion: str = None  # The full game version expressed as XX.YY.ZZ.αα, allowing to distinguish micro patches
 
     # This is the only place where the game’s winner appears
-    winner: str = None  # Equal to the winning team’s side
+    winner: str = None  # BLUE or RED
 
     # Team are a dictionary with keys equal to the team side ('BLUE' or 'RED')
     teams: LolGameTeams = field(default_factory=LolGameTeams)

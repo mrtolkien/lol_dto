@@ -7,6 +7,10 @@ class MergeError(Exception):
     pass
 
 
+# TODO Commit three test dicts representing the same game and heavily test merging of LolGame objects
+#   Also test removing None fields
+
+
 def merge_dicts(a, b, path=None):
     """
     Merges b into a recursively
