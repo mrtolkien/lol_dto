@@ -44,6 +44,8 @@ class LolGame:
     # Riot API example: game.sources.riotLolApi.gameId, and game.sources.riotLolApi.platformId
     # Each parser transforming data to the LolGame format should implement its own source dataclass to allow for
     #   merging different sources
+    # Esports data about the tournament or league name should be linked to a source as it is hard to define a single
+    #   source of truth for it
     sources: dataclass = None
 
     # Time-related fields should be expressed in seconds, optionally using floats for ms precision
@@ -70,12 +72,7 @@ class LolGame:
     lobbyName: str = None
 
     # Optional esports information
-    # TODO Like team names, is league name too prone to errors? Maybe only put this data in the sources dict?
-    league: str = None  # Full name of the league
-    leagueSlug: str = None  # Short name of the league
-    tournament: str = None  # Name of the tournament this game is a part of
     gameInSeries: int = None  # Game index in the series including this game
-
     vod: str = None  # VOD url
 
     # Ordered list of picks and bans
