@@ -1,6 +1,6 @@
 from abc import ABC
 from dataclasses import dataclass, field
-from typing import List, Optional
+from typing import List
 
 from lol_dto.classes.game.position import Position
 
@@ -11,7 +11,8 @@ class LolEvent(ABC):
     A single event that took place during a LoL game
     """
 
-    timestamp: float  # Timestamp of the event expressed in seconds from the game start, with possible ms precision
+    # Timestamp of the event expressed in seconds from the game start, with possible ms precision
+    timestamp: float = None
 
     # In the Riot API only champion kills and monster kills have a position associated to them
     # Cannot make it default to None as it creates issues with inheritance that are not worth the hassle
@@ -89,10 +90,11 @@ class LolGamePlayerWardEvent(LolEvent):
     Represents placing and killing wards
     """
 
-    # TODO DOCUMENT dropped yellow trinket upgrade, wrong?
+    # TODO Document dropped yellow trinket upgrade, is it wrong?
     type: str = None  # 'PLACED', 'KILLED'
-    wardType: str = None  # Values in: YELLOW_TRINKET', 'CONTROL_WARD', 'SIGHT_WARD',
+    wardType: str = None  # Values in: 'YELLOW_TRINKET', 'CONTROL_WARD', 'SIGHT_WARD',
     # 'BLUE_TRINKET', 'TEEMO_MUSHROOM', 'VISION_WARD', 'UNDEFINED'
+    death_timestamp: int = None  # When the ward died
 
 
 @dataclass
