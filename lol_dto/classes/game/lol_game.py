@@ -5,6 +5,7 @@ from lol_dto.classes.game.lol_game_event import LolGameKill
 from lol_dto.classes.game.lol_game_team import LolGameTeam
 
 # TODO All name fields should be properties
+from lol_dto.classes.sources.empty_dataclass import EmptyDataclass
 
 
 @dataclass
@@ -45,7 +46,7 @@ class LolGame:
     #   merging different sources
     # Esports data about the tournament or league name should be linked to a source as it is hard to define a single
     #   source of truth for it
-    sources: dataclass = None
+    sources: dataclass = field(default_factory=EmptyDataclass)
 
     # Time-related fields should be expressed in seconds, optionally using floats for ms precision
     duration: float = None  # Expressed in seconds

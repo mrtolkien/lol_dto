@@ -9,6 +9,7 @@ from lol_dto.classes.game.lol_game_event import (
     LolGamePlayerLargeMonsterKill,
     LolGamePlayerSpellUseEvent,
 )
+from lol_dto.classes.sources.empty_dataclass import EmptyDataclass
 
 
 @dataclass
@@ -204,7 +205,7 @@ class LolGamePlayer:
     #                                       player.sources.accountId and player.uniqueIdentifiers.platformId
     # Each parser transforming data to the LolGame format should implement its own source dataclass to allow for
     #   merging different sources
-    sources: dataclass = None
+    sources: dataclass = field(default_factory=EmptyDataclass)
 
     # Rune information is stored directly in the player object as they are beginning-of-game information
     primaryRuneTreeId: int = None  # Refers to Riot rune tree ID

@@ -6,6 +6,7 @@ from lol_dto.classes.game.lol_game_event import (
     LolGameTeamBuildingKill,
 )
 from lol_dto.classes.game.lol_game_player import LolGamePlayer
+from lol_dto.classes.sources.empty_dataclass import EmptyDataclass
 
 
 @dataclass
@@ -57,4 +58,4 @@ class LolGameTeam:
     buildingsKills: List[LolGameTeamBuildingKill] = field(default_factory=list)
 
     # Esports-specific identifiers
-    sources: dataclass = None
+    sources: dataclass = field(default_factory=EmptyDataclass)
