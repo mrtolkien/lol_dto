@@ -1,17 +1,22 @@
 import json
 import dataclasses
+from typing import Union
 
 from lol_dto.classes.game import LolGame
 
 
-def dump_json(lol_game: LolGame, filename: str, remove_empty: bool = True):
+def dump_json(
+    lol_game: Union[LolGame, dataclasses.dataclass],
+    filename: str,
+    remove_empty: bool = True,
+):
     """
     Dump the given LolGame to a local file in JSON format
 
     Args:
-        lol_game: the LolGame object to dump
+        lol_game: the LolGame object to dump or a similar dataclass
         filename: the file to dump to
-        remove_empty: whether or not to dump None fields in the JSON. True by default to lighten the object.
+        remove_empty: whether or not to dump None fields in the JSON. True by default to heavily lighten the object
 
     Returns:
         Nothing
