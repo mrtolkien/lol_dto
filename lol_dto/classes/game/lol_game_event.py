@@ -94,7 +94,7 @@ class LolGamePlayerWardEvent(LolEvent):
     type: str = None  # 'PLACED', 'KILLED'
     wardType: str = None  # Values in: 'YELLOW_TRINKET', 'CONTROL_WARD', 'SIGHT_WARD',
     # 'BLUE_TRINKET', 'TEEMO_MUSHROOM', 'VISION_WARD', 'UNDEFINED'
-    death_timestamp: int = None  # When the ward died
+    deathTimestamp: int = None  # When the ward died
 
 
 @dataclass
