@@ -4,6 +4,8 @@ from typing import List
 from lol_dto.classes.game.lol_game_event import LolGameKill
 from lol_dto.classes.game.lol_game_team import LolGameTeam
 
+# TODO All name fields should be properties
+
 
 @dataclass
 class LolPickBan:
