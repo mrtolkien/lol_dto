@@ -4,8 +4,6 @@ from typing import List
 from lol_dto.classes.game.lol_game_event import LolGameKill
 from lol_dto.classes.game.lol_game_team import LolGameTeam
 
-# TODO Review doc and change uniqueIdentifiers field there
-
 
 @dataclass
 class LolPickBan:
@@ -28,7 +26,6 @@ class LolGameTeams:
     BLUE: LolGameTeam = field(default_factory=LolGameTeam)
     RED: LolGameTeam = field(default_factory=LolGameTeam)
 
-    # TODO Add a test for this feature
     def __iter__(self):
         for t in self.BLUE, self.RED:
             yield t
