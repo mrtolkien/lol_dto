@@ -62,10 +62,8 @@ class LolGameTeam:
     sources: dataclass = field(default_factory=EmptyDataclass)
 
     # PROPERTIES AND BACKREFS
-    # A backref to the parent game
-    from lol_dto.classes.game import LolGame
-
-    game: LolGame = field(
+    # A backref to the parent game, cannot be properly type hinted here because of circular imports
+    game: dataclass = field(
         default=None, repr=False, init=False, compare=False, hash=False
     )
 
