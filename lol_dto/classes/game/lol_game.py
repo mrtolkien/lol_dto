@@ -5,7 +5,7 @@ from lol_dto.classes.game.lol_game_event import LolGameKill
 from lol_dto.classes.game.lol_game_team import LolGameTeam
 from lol_dto.classes.sources.empty_dataclass import EmptyDataclass
 
-from lol_dto.names_helper.champion_name import ChampionNameClass
+from lol_dto.names_helper.name_classes import ChampionNameClass
 
 
 @dataclass

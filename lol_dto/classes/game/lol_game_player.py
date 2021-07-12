@@ -10,6 +10,13 @@ from lol_dto.classes.game.lol_game_event import (
     LolGamePlayerSpellUseEvent,
 )
 from lol_dto.classes.sources.empty_dataclass import EmptyDataclass
+from lol_dto.names_helper.name_classes import (
+    ChampionNameClass,
+    RuneNameClass,
+    ItemNameClass,
+    SummonerNameClass,
+    RuneTreeNameClass,
+)
 
 
 @dataclass
@@ -53,7 +60,7 @@ class LolGamePlayerSnapshot:
 
 
 @dataclass
-class LolGamePlayerRune:
+class LolGamePlayerRune(RuneNameClass):
     """
     A single rune used by one of the players
     """
@@ -61,14 +68,12 @@ class LolGamePlayerRune:
     slot: int  # Primary tree, secondary tree, then stats perks
     id: int  # Referring to Riot API rune ID
 
-    name: str = None  # Optional rune name for convenience
-
     # Riot-provided end-of-game statistics for the rune
     stats: List[int] = field(default_factory=list)
 
 
 @dataclass
-class LolGamePlayerItem:
+class LolGamePlayerItem(ItemNameClass):
     """
     A single item that a player possessed at the end of the game
     """
@@ -76,16 +81,13 @@ class LolGamePlayerItem:
     id: int  # Referring to Riot API item ID
     slot: int = None  # Goes from 0 to 6 as of 2020
 
-    name: str = None  # Optional item name for convenience
-
 
 @dataclass
-class LolGamePlayerSummonerSpell:
+class LolGamePlayerSummonerSpell(SummonerNameClass):
     """A single summoner spell chosen by a player"""
 
     id: int  # Referring to Riot API summoner spell ID
     slot: int = None  # 0 or 1
-    name: str = None  # Optional summoner spell name for convenience
 
 
 @dataclass
@@ -164,13 +166,14 @@ class LolGamePlayerEndOfGameStats:
     goldSpent: int = None  # Can be useful to try and identify AFK players?
 
     # The following fields need to have their behaviour properly explained as part of the specification
-    totalHeal: int = None  # TODO Document this field
-    totalDamageShieldedOnTeammates: int = None  # TODO Document this field
-    totalUnitsHealed: int = None  # TODO Document this field
-    damageSelfMitigated: int = None  # TODO Document this field
+    # TODO Precisely document those fields and how they are computed
+    totalHeal: int = None
+    totalDamageShieldedOnTeammates: int = None
+    totalUnitsHealed: int = None
+    damageSelfMitigated: int = None
 
-    totalTimeCCDealt: int = None  # TODO Document this field
-    timeCCingOthers: int = None  # TODO Document this field
+    totalTimeCCDealt: int = None
+    timeCCingOthers: int = None
 
     # Items are simply a list with the 'slot' field defining which item slot they occupied.
     # The list cannot be simply indexed on this 'slot' as many players have empty slots at the end of games.
@@ -180,15 +183,16 @@ class LolGamePlayerEndOfGameStats:
 
 
 @dataclass
-class LolGamePlayer:
+class LolGamePlayer(ChampionNameClass, RuneTreeNameClass):
     """
     A player in a LoL game
 
     All player-specific information should be present here
     """
 
-    id: int = None  # Usually equal to participantId in Riot’s API. Meant to identify the player in kills
-    # TODO review use case and process for non-Riot data (Leaguepedia, Bayes, ...)
+    # Usually equal to participantId in Riot’s API. Meant to identify the player in kills
+    #   Can be arbitrary, the only thing that matters is to be consistent with game.kills.killerId fields
+    id: int = None
 
     inGameName: str = None  # The in-game name is not linked to a particular data source and should be unique
     profileIconId: int = None  # Refers to Riot API icon ID
@@ -197,7 +201,6 @@ class LolGamePlayer:
     role: str = None  # Role values are TOP, JGL, MID, BOT, SUP as of 2020.
 
     championId: int = None  # Referring to Riot API champion ID
-    championName: str = None  # Optional champion name for convenience
 
     # Unique identifiers are the ways to identify this player in the data sources used to gather the data
     # Any attribute that is present in game.sources should also be present here
@@ -209,10 +212,7 @@ class LolGamePlayer:
 
     # Rune information is stored directly in the player object as they are beginning-of-game information
     primaryRuneTreeId: int = None  # Refers to Riot rune tree ID
-    primaryRuneTreeName: str = None  # Optional name for human readability
-
     secondaryRuneTreeId: int = None  # Refers to Riot rune tree ID
-    secondaryRuneTreeName: str = None  # Optional name for human readability
 
     runes: List[LolGamePlayerRune] = field(default_factory=list)
 
@@ -228,7 +228,6 @@ class LolGamePlayer:
     snapshots: List[LolGamePlayerSnapshot] = field(default_factory=list)
 
     # Item events is a list of item buys, sell, and undo
-    # TODO Maybe rename it to itemShopEvents?
     itemsEvents: List[LolGamePlayerItemEvent] = field(default_factory=list)
 
     # Ward events are a list of wards placed and destroyed

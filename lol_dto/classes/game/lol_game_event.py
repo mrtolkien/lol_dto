@@ -3,6 +3,7 @@ from dataclasses import dataclass, field
 from typing import List
 
 from lol_dto.classes.game.position import Position
+from lol_dto.names_helper.name_classes import ItemNameClass
 
 
 @dataclass
@@ -69,7 +70,7 @@ class LolGameTeamBuildingKill(LolEvent):
 
 
 @dataclass
-class LolGamePlayerItemEvent(LolEvent):
+class LolGamePlayerItemEvent(LolEvent, ItemNameClass):
     """
     An item-related event for a player
 
@@ -77,9 +78,9 @@ class LolGamePlayerItemEvent(LolEvent):
     """
 
     type: str = None  # 'PURCHASED', 'SOLD', 'UNDO', 'PICKED_UP', 'USED'
-    # TODO DESTROYED dropped, unifying to 'USED'? Losing some information though
+    # DESTROYED is dropped and treated as 'USED'
+
     id: int = None  # Referring to Riot API item ID
-    name: str = None  # Optional convenience field for human readability
     beforeUndoId: int = None  # Resulting item in case of an UNDO, helps recalculate items? could be dropped maybe
 
 

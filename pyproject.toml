@@ -13,6 +13,7 @@ python = "^3.7"
 names = ["lol-id-tools>=1.7.1"]
 
 [tool.poetry.dev-dependencies]
+lol-id-tools = "^1.7.1"
 pytest = "^6.2.4"
 tox = "^3.23.1"
 
