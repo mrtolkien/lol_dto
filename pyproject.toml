@@ -8,12 +8,12 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.7"
+lol-id-tools = { version = "^1.7.1", optional = true }
 
 [tool.poetry.extras]
-names = ["lol-id-tools>=1.7.1"]
+names = ["lol-id-tools"]
 
 [tool.poetry.dev-dependencies]
-lol-id-tools = "^1.7.1"
 pytest = "^6.2.4"
 tox = "^3.23.1"
 
