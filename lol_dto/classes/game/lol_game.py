@@ -81,7 +81,7 @@ class LolGame:
 
     def __post_init__(self):
         """
-        Post init function to define a backref in children needing access to tho parent object
+        Post init function to define a backref in children needing access to the patch to find object names
         """
         for team in self.teams:
-            team.game = self
+            setattr(team, "game", self)

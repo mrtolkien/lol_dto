@@ -60,13 +60,3 @@ class LolGameTeam:
 
     # Esports-specific identifiers
     sources: dataclass = field(default_factory=EmptyDataclass)
-
-    # PROPERTIES AND BACKREFS
-    # A backref to the parent game, cannot be properly type hinted here because of circular imports
-    game: dataclass = field(
-        default=None, repr=False, init=False, compare=False, hash=False
-    )
-
-    @property
-    def side(self):
-        return "BLUE" if self == self.game.teams.BLUE else "RED"
