@@ -3,8 +3,6 @@ from typing import List
 
 from lol_dto.classes.game.lol_game_event import LolGameKill
 from lol_dto.classes.game.lol_game_team import LolGameTeam
-
-# TODO All name fields should be properties
 from lol_dto.classes.sources.empty_dataclass import EmptyDataclass
 
 
@@ -21,7 +19,10 @@ class LolPickBan:
     team: str  # 'BLUE' or 'RED'
 
     # Optional field for direct human use
-    championName: str = None
+    @property
+    def championName(self) -> str:
+        # TODO
+        ...
 
 
 @dataclass
@@ -77,3 +78,10 @@ class LolGame:
 
     # Ordered list of picks and bans
     picksBans: List[LolPickBan] = field(default_factory=list)
+
+    def __post_init__(self):
+        """
+        Post init function to define a backref in children needing access to tho parent object
+        """
+        for team in self.teams:
+            team.game = self

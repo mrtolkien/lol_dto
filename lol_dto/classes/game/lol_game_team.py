@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import List, Optional, Dict
+from typing import List, Optional
 
 from lol_dto.classes.game.lol_game_event import (
     LolGameTeamEpicMonsterKill,
@@ -37,9 +37,10 @@ class LolGameTeam:
     """
     One of the two teams taking part in a LoL game
 
-    It's side is defined by the attribute name: teams.BLUE and teams.RED
+    Its side is defined by the attribute name: teams.BLUE and teams.RED
     """
 
+    # DATA FIELDS
     # Players are defined as a simple list as no obvious key emerges
     players: List[LolGamePlayer] = field(default_factory=list)
 
@@ -59,3 +60,15 @@ class LolGameTeam:
 
     # Esports-specific identifiers
     sources: dataclass = field(default_factory=EmptyDataclass)
+
+    # PROPERTIES AND BACKREFS
+    # A backref to the parent game
+    from lol_dto.classes.game import LolGame
+
+    game: LolGame = field(
+        default=None, repr=False, init=False, compare=False, hash=False
+    )
+
+    @property
+    def side(self):
+        return "BLUE" if self == self.game.teams.BLUE else "RED"
