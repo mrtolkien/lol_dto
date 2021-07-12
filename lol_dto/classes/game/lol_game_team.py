@@ -7,6 +7,7 @@ from lol_dto.classes.game.lol_game_event import (
 )
 from lol_dto.classes.game.lol_game_player import LolGamePlayer
 from lol_dto.classes.sources.empty_dataclass import EmptyDataclass
+from lol_dto.names_helper.name_classes import BanNamesClass
 
 
 @dataclass
@@ -33,7 +34,7 @@ class LolGameTeamEndOfGameStats:
 
 
 @dataclass
-class LolGameTeam:
+class LolGameTeam(BanNamesClass):
     """
     One of the two teams taking part in a LoL game
 
@@ -46,8 +47,6 @@ class LolGameTeam:
 
     # Team-related bans are a list of champions that were banned by players on the team
     bans: Optional[List[int]] = field(default_factory=list)  # List of champion IDs
-    # List of champion names for human readability
-    bansNames: Optional[List[str]] = field(default_factory=list)
 
     # End of game stats
     endOfGameStats: LolGameTeamEndOfGameStats = None

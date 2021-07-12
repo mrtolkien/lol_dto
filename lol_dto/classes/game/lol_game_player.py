@@ -45,18 +45,12 @@ class LolGamePlayerSnapshot:
     # Whether or not the player is alive at the time of the snapshot
     isAlive: bool = None
 
-    # TODO Add summoner spell and ultimate availability info
+    # Whether or not a summoner spell is available or not
+    spell1Available: bool = None
+    spell2Available: bool = None
 
-    # Those four last fields are redundant but can be added for convenience
-    # TODO Should they be dropped?
-    # Experience difference with the opponent in the same role
-    xpDiff: int = None
-    # Total gold difference with the opponent in the same role
-    totalGoldDiff: int = None
-    # Total CS difference with the opponent in the same role
-    csDiff: int = None
-    # Total monsters killed difference with the opponent in the same role
-    monstersKilledDiff: int = None
+    # Ultimate availability
+    ultimateAvailable: bool = None
 
 
 @dataclass
@@ -105,7 +99,7 @@ class LolGamePlayerEndOfGameStats:
     #  True if the player assisted in the first inhibitor kill
     firstInhibitorAssist: bool = None
 
-    # TODO Add a small description for every field
+    # TODO Add a proper description for every field
 
     # All statistics here refer to end of game stats, so we do not preface them by anything.
     kills: int = None
@@ -166,7 +160,6 @@ class LolGamePlayerEndOfGameStats:
     goldSpent: int = None  # Can be useful to try and identify AFK players?
 
     # The following fields need to have their behaviour properly explained as part of the specification
-    # TODO Precisely document those fields and how they are computed
     totalHeal: int = None
     totalDamageShieldedOnTeammates: int = None
     totalUnitsHealed: int = None

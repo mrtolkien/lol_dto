@@ -91,10 +91,9 @@ class LolGamePlayerWardEvent(LolEvent):
     Represents placing and killing wards
     """
 
-    # TODO Document dropped yellow trinket upgrade, is it wrong?
     type: str = None  # 'PLACED', 'KILLED'
     wardType: str = None  # Values in: 'YELLOW_TRINKET', 'CONTROL_WARD', 'SIGHT_WARD',
-    # 'BLUE_TRINKET', 'TEEMO_MUSHROOM', 'VISION_WARD', 'UNDEFINED'
+    # 'BLUE_TRINKET', 'TEEMO_MUSHROOM', 'VISION_WARD', 'UNDEFINED' for Match V5
     deathTimestamp: int = None  # When the ward died
 
 
@@ -119,12 +118,12 @@ class LolGamePlayerLargeMonsterKill(LolEvent):
 
 @dataclass
 class LolGamePlayerCooldownEvent(LolEvent, ABC):
-    # TODO Review imports
     """
     An event that represents an action with a cooldown
 
     Can be used for summoner spells use, spells uses (including ultimate), and items uses
     """
+
     cooldown: float = None  # The cooldown of the object in s after it has been used
 
 
