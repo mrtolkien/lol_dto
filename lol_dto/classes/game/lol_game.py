@@ -5,9 +5,11 @@ from lol_dto.classes.game.lol_game_event import LolGameKill
 from lol_dto.classes.game.lol_game_team import LolGameTeam
 from lol_dto.classes.sources.empty_dataclass import EmptyDataclass
 
+from lol_dto.names_helper.champion_name import ChampionNameClass
+
 
 @dataclass
-class LolPickBan:
+class LolPickBan(ChampionNameClass):
     """
     A single pick or ban in a LoL game
 
@@ -17,12 +19,6 @@ class LolPickBan:
     championId: int
     isBan: bool  # True if this represents a ban, False if this represents a pick
     team: str  # 'BLUE' or 'RED'
-
-    # Optional field for direct human use
-    @property
-    def championName(self) -> str:
-        # TODO
-        ...
 
 
 @dataclass
@@ -85,3 +81,6 @@ class LolGame:
         """
         for team in self.teams:
             setattr(team, "game", self)
+
+        for pb in self.picksBans:
+            setattr(pb, "game", self)
