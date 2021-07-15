@@ -77,8 +77,7 @@ class LolGamePlayerItemEvent(LolEvent, ItemNameClass):
     Represents buying, selling, picking up (herald), and undoing items
     """
 
-    type: str = None  # 'PURCHASED', 'SOLD', 'UNDO', 'PICKED_UP', 'USED'
-    # DESTROYED is dropped and treated as 'USED'
+    type: str = None  # 'PURCHASED', 'SOLD', 'UNDO', 'PICKED_UP', 'USED', 'DESTROYED'
 
     id: int = None  # Referring to Riot API item ID
     beforeUndoId: int = None  # Resulting item in case of an UNDO, helps recalculate items? could be dropped maybe
