@@ -12,6 +12,9 @@ class RiotGameSource:
     gameId: int = None
     platformId: str = None
 
+    # Esports games field
+    gameHash: str = None
+
 
 @dataclass
 class RiotPlayerSource:
