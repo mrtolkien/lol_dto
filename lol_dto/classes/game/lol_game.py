@@ -52,6 +52,9 @@ class LolGame:
     #   Expressed as ISO 8601 date and time with a seconds precision, for example "2020-05-27T02:23:02+00:00"
     start: str = None
 
+    # match-v5 makes a difference between game creation and game start, so we have a secondary field
+    creation: str = None
+
     # We allow information duplication here because many data sources only have patch information
     patch: str = None  # Patch should follow a simple XX.YY nomenclature and is the recommended field to use
     gameVersion: str = None  # The full game version expressed as XX.YY.ZZ.αα, allowing to distinguish micro patches
