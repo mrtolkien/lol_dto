@@ -55,6 +55,10 @@ class LolGame:
     # match-v5 makes a difference between game creation and game start, so we have a secondary field
     creation: str = None
 
+    # Those metadata fields are there to represent data from match-v5 objects
+    type: str = None
+    queue_id: int = None
+
     # We allow information duplication here because many data sources only have patch information
     patch: str = None  # Patch should follow a simple XX.YY nomenclature and is the recommended field to use
     gameVersion: str = None  # The full game version expressed as XX.YY.ZZ.αα, allowing to distinguish micro patches
