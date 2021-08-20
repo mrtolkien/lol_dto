@@ -176,6 +176,25 @@ class LolGamePlayerEndOfGameStats:
     totalTimeCCDealt: int = None
     timeCCingOthers: int = None
 
+    # New match-v5 end of game stats
+    xp: int = None
+    bountyLevel: int = None
+    baronKills: int = None
+    championTransform: int = None
+    consumablesPurchased: int = None
+    detectorWardsPlaced: int = None
+    dragonKills: int = None
+    inhibitorTakedowns: int = None
+    itemsPurchased: int = None
+    nexusKills: int = None
+    nexusTakedowns: int = None
+    objectivesStolen: int = None
+    objectivesStolenAssists: int = None
+    sightWardsBoughtInGame: int = None
+    totalHealsOnTeammates: int = None
+    totalTimeSpentDead: int = None
+    turretTakedowns: int = None
+
     # Items are simply a list with the 'slot' field defining which item slot they occupied.
     # The list cannot be simply indexed on this 'slot' as many players have empty slots at the end of games.
 
