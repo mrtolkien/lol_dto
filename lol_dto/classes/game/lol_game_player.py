@@ -155,6 +155,13 @@ class LolGamePlayerEndOfGameStats:
     damageDealtToBuildings: int = None
     damageDealtToTurrets: int = None
 
+    # Spell uses statistics, accessible in match-v5
+    #   I hate the format, but am not sure where to put it otherwise where it would make sense
+    spell1Casts: int = None
+    spell2Casts: int = None
+    spell3Casts: int = None
+    spell4Casts: int = None
+
     # Really random statistics
     longestTimeSpentLiving: int = None  # Expressed in seconds
     largestCriticalStrike: int = None  # Full raw damage of the largest critical strike
