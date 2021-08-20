@@ -105,8 +105,12 @@ class LolGamePlayerSnapshot:
     timeEnemySpentControlled: int = None
 
     # New snapshot fields from match-v5
-    championStats: dict = field(default_factory=LolGamePlayerSnapshotChampionStats)
-    damageStats: dict = field(default_factory=LolGamePlayerSnapshotDamageStats)
+    championStats: LolGamePlayerSnapshotChampionStats = field(
+        default_factory=LolGamePlayerSnapshotChampionStats
+    )
+    damageStats: LolGamePlayerSnapshotDamageStats = field(
+        default_factory=LolGamePlayerSnapshotDamageStats
+    )
 
 
 @dataclass
