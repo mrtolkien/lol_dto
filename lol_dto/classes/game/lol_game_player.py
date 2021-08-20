@@ -21,6 +21,10 @@ from lol_dto.names_helper.name_classes import (
 
 @dataclass
 class LolGamePlayerSnapshotChampionStats:
+    """
+    Champion stats at a given snapshot for a player
+    """
+
     abilityHaste: int = None
     abilityPower: int = None
     armor: int = None

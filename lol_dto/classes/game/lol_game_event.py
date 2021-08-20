@@ -21,6 +21,22 @@ class LolEvent(ABC):
 
 
 @dataclass
+class LolGameKillDamageInstance:
+    basic: bool
+
+    physicalDamage: int
+    magicDamage: int
+    trueDamage: int
+
+    type: str
+
+    participantId: int
+    name: int
+    spellName: str
+    spellSlot: int
+
+
+@dataclass
 class LolGameKill(LolEvent):
     """
     A single kill in a LoL game
@@ -32,6 +48,13 @@ class LolGameKill(LolEvent):
     # All the id here refer to the id field in players objects
     # Player getting the last hit on the kill. None for executions
     killerId: int = None
+
+    # New match-v5 fields
+    bounty: int = None
+    killStreakLength: int = None
+
+    victimDamageDealt: List[LolGameKillDamageInstance] = field(default_factory=list)
+    victimDamageReceived: List[LolGameKillDamageInstance] = field(default_factory=list)
 
 
 @dataclass
