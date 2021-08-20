@@ -82,6 +82,7 @@ class LolGamePlayerSummonerSpell(SummonerNameClass):
 
     id: int  # Referring to Riot API summoner spell ID
     slot: int = None  # 0 or 1
+    casts: int = None  # New match-v5 field
 
 
 @dataclass

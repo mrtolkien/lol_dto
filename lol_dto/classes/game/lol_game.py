@@ -72,7 +72,7 @@ class LolGame:
     # Kills involve multiple players from different teams and are therefore defined here
     kills: List[LolGameKill] = field(default_factory=list)
 
-    # Game lobby name for custom games
+    # Game lobby name, appearing amongst other in match-v5
     lobbyName: str = None
 
     # Optional esports information

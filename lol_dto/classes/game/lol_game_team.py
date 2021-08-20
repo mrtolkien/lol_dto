@@ -49,7 +49,9 @@ class LolGameTeam(BanNamesClass):
     bans: Optional[List[int]] = field(default_factory=list)  # List of champion IDs
 
     # End of game stats
-    endOfGameStats: LolGameTeamEndOfGameStats = None
+    endOfGameStats: LolGameTeamEndOfGameStats = field(
+        default_factory=LolGameTeamEndOfGameStats
+    )
 
     # Team monsters kills
     epicMonstersKills: List[LolGameTeamEpicMonsterKill] = field(default_factory=list)
