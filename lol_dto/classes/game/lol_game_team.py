@@ -61,3 +61,6 @@ class LolGameTeam(BanNamesClass):
 
     # Esports-specific identifiers
     sources: dataclass = field(default_factory=EmptyDataclass)
+
+    # New match-v5 field
+    earlySurrendered: bool = None
