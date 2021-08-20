@@ -20,6 +20,55 @@ from lol_dto.names_helper.name_classes import (
 
 
 @dataclass
+class LolGamePlayerSnapshotChampionStats:
+    abilityHaste: int = None
+    abilityPower: int = None
+    armor: int = None
+    armorPen: int = None
+    armorPenPercent: int = None
+    attackDamage: int = None
+    attackSpeed: int = None
+    bonusArmorPenPercent: int = None
+    bonusMagicPenPercent: int = None
+    ccReduction: int = None
+    cooldownReduction: int = None
+    health: int = None
+    healthMax: int = None
+    healthRegen: int = None
+    lifesteal: int = None
+    magicPen: int = None
+    magicPenPercent: int = None
+    magicResist: int = None
+    movementSpeed: int = None
+    omnivamp: int = None
+    physicalVamp: int = None
+    power: int = None
+    powerMax: int = None
+    powerRegen: int = None
+    spellVamp: int = None
+
+
+@dataclass
+class LolGamePlayerSnapshotDamageStats:
+    """
+    Damage stats at a given snapshot for a player
+    """
+
+    magicDamageDone: int = None
+    magicDamageDoneToChampions: int = None
+    magicDamageTaken: int = None
+    physicalDamageDone: int = None
+    physicalDamageDoneToChampions: int = None
+    physicalDamageTaken: int = None
+    totalDamageDone: int = None
+    totalDamageDoneToChampions: int = None
+    totalDamageTaken: int = None
+    trueDamageDone: int = None
+    trueDamageDoneToChampions: int = None
+    trueDamageTaken: int = None
+
+
+@dataclass
 class LolGamePlayerSnapshot:
     """
     Information about a player at a specific point in the game
@@ -51,6 +100,13 @@ class LolGamePlayerSnapshot:
 
     # Ultimate availability
     ultimateAvailable: bool = None
+
+    # Absolutely no clue what this is supposed to be, match-v5 field
+    timeEnemySpentControlled: int = None
+
+    # New snapshot fields from match-v5
+    championStats: dict = field(default_factory=LolGamePlayerSnapshotChampionStats)
+    damageStats: dict = field(default_factory=LolGamePlayerSnapshotDamageStats)
 
 
 @dataclass
