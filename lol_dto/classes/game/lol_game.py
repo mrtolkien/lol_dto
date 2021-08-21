@@ -32,6 +32,13 @@ class LolGameTeams:
 
 
 @dataclass
+class LolGamePause:
+    # ISO datetime
+    realTimestamp: str
+    type: str
+
+
+@dataclass
 class LolGame:
     """
     A class representing a single League of Legends game

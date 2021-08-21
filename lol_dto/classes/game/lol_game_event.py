@@ -21,11 +21,6 @@ class LolEvent(ABC):
 
 
 @dataclass
-class LolGamePause(LolEvent):
-    type: str = None
-
-
-@dataclass
 class LolGameKillDamageInstance:
     basic: bool
 
