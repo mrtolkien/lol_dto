@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import List
 
-from lol_dto.classes.game.lol_game_event import LolGameKill, LolGamePause
+from lol_dto.classes.game.lol_game_event import LolGameKill
 from lol_dto.classes.game.lol_game_team import LolGameTeam
 from lol_dto.classes.sources.empty_dataclass import EmptyDataclass
 
