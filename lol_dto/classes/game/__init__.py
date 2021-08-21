@@ -13,6 +13,7 @@ from lol_dto.classes.game.lol_game_player import (
 )
 from lol_dto.classes.game.lol_game_event import (
     LolEvent,
+    LolGamePause,
     LolGameKill,
     LolGameKillDamageInstance,
     LolGameTeamEpicMonsterKill,
