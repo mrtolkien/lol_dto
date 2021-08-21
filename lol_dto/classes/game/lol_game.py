@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import List
 
-from lol_dto.classes.game.lol_game_event import LolGameKill
+from lol_dto.classes.game.lol_game_event import LolGameKill, LolGamePause
 from lol_dto.classes.game.lol_game_team import LolGameTeam
 from lol_dto.classes.sources.empty_dataclass import EmptyDataclass
 
@@ -81,6 +81,9 @@ class LolGame:
 
     # Ordered list of picks and bans
     picksBans: List[LolPickBan] = field(default_factory=list)
+
+    # List of pause events that happened in the game
+    pauses: List[LolGamePause] = field(default_factory=list)
 
     def __post_init__(self):
         """
