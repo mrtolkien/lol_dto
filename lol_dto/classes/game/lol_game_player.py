@@ -7,7 +7,8 @@ from lol_dto.classes.game.lol_game_event import (
     LolGamePlayerWardEvent,
     LolGamePlayerSkillLevelUpEvent,
     LolGamePlayerLargeMonsterKill,
-    LolGamePlayerSpellUseEvent, LolGamePlayerSpecialKill,
+    LolGamePlayerSpellUseEvent,
+    LolGamePlayerSpecialKill,
 )
 from lol_dto.classes.sources.empty_dataclass import EmptyDataclass
 from lol_dto.names_helper.name_classes import (
@@ -336,5 +337,5 @@ class LolGamePlayer(ChampionNameClass, RuneTreeNameClass):
     # Cooldown information can be parsed from spectator mode
     spellsUses: List[LolGamePlayerSpellUseEvent] = field(default_factory=list)
 
-    # Special kills are linked to players and represent first bloods, multi-kills, ...
+    # Special kills are linked to players and represent first bloods, multi-kills, and ace
     specialKills: List[LolGamePlayerSpecialKill] = field(default_factory=list)

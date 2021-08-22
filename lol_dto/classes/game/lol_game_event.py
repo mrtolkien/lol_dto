@@ -64,6 +64,7 @@ class LolGamePlayerSpecialKill(LolEvent):
     """
 
     type: str = None
+    multiKillLength: int = None
 
 
 @dataclass
