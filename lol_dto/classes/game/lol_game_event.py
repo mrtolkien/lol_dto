@@ -58,6 +58,15 @@ class LolGameKill(LolEvent):
 
 
 @dataclass
+class LolGamePlayerSpecialKill(LolEvent):
+    """
+    A special kill in a LoL game (first blood, multi-kills, ...)
+    """
+
+    type: str = None
+
+
+@dataclass
 class LolGameTeamEpicMonsterKill(LolEvent):
     """
     An epic monster kill for a team
