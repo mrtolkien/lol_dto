@@ -79,7 +79,7 @@ class LolGameTeamEpicMonsterKill(LolEvent):
     # Players getting an assist in the monster kill, as shown in client (can be opponents)
     assistsIds: List[int] = None
 
-    type: str = None  # 'DRAGON', 'BARON', 'RIFT_HERALD' as of 2021
+    type: str = None  # 'DRAGON', 'DRAGON_SOUL', 'BARON', 'RIFT_HERALD' as of 2021
     subType: str = None  # 'CLOUD', 'INFERNAL', 'MOUNTAIN', 'OCEAN', 'ELDER'
 
 
