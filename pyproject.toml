@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "lol_dto"
+version = "2.0.0a3"
+description = "A unified representation of League of Legends-related information."
+authors = ["mrtolkien <gary.mialaret@gmail.com>"]
+license = "MIT"
+readme="README.md"
+repository="https://github.com/mrtolkien/lol_dto"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
