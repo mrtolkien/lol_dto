@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "lol_dto"
-version = "2.0.0a2"
+version = "2.0.0a4"
 description = "A unified representation of League of Legends-related information"
 authors = ["mrtolkien <gary.mialaret+pypi@gmail.com>"]
 license = "MIT"
