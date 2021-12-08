@@ -1,17 +1,38 @@
 [tool.poetry]
 name = "lol_dto"
-version = "1.1.0"
-description = "A unified representation of League of Legends-related information."
-authors = ["mrtolkien <gary.mialaret@gmail.com>"]
+version = "2.0.0"
+description = "A unified representation of League of Legends-related information"
+authors = ["mrtolkien <gary.mialaret+pypi@gmail.com>"]
 license = "MIT"
-readme="README.md"
-repository="https://github.com/mrtolkien/lol_dto"
+readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.7"
+lol-id-tools = { version = "^1.7.1", optional = true }
+
+[tool.poetry.extras]
+names = ["lol-id-tools"]
 
 [tool.poetry.dev-dependencies]
+pytest = "^6.2.4"
+tox = "^3.23.1"
+black = {version = "^21.12b0", allow-prereleases = true}
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+
+# Blanck Tox config file, but there are no tests at the moment
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+isolated_build = true
+envlist = py37, py38, py39
+
+[testenv]
+whitelist_externals = poetry
+commands =
+    poetry install -v
+    poetry run pytest tests/
+"""

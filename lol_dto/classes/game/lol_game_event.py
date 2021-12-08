@@ -1,74 +1,168 @@
-from typing import TypedDict, Optional, List
+from abc import ABC
+from dataclasses import dataclass, field
+from typing import List
 
 from lol_dto.classes.game.position import Position
+from lol_dto.names_helper.name_classes import ItemNameClass
 
 
-class LolEvent(TypedDict, total=False):
-    """A single event that took place during a LoL game.
-
-    Should not be used as-is and is intended to be a building block for other event classes.
+@dataclass
+class LolEvent(ABC):
+    """
+    A single event that took place during a LoL game
     """
 
-    timestamp: float  # Timestamp of the event expressed in seconds from the game start, with possible ms precision
+    # Timestamp of the event expressed in seconds from the game start, with possible ms precision
+    timestamp: float = None
 
     # In the Riot API only champion kills and monster kills have a position associated to them
-    position: Optional[Position]  # Position where the event took place
+    # Cannot make it default to None as it creates issues with inheritance that are not worth the hassle
+    position: Position = None  # Position where the event took place
 
 
+@dataclass
+class LolGameKillDamageInstance:
+    basic: bool
+
+    physicalDamage: int
+    magicDamage: int
+    trueDamage: int
+
+    type: str
+
+    participantId: int
+    name: int
+    spellName: str
+    spellSlot: int
+
+
+@dataclass
 class LolGameKill(LolEvent):
-    """A single kill in a LoL game"""
+    """
+    A single kill in a LoL game
+    """
+
+    victimId: int = None  # Player getting killed
+    assistsIds: List[int] = None  # Players getting an assist in the kill
 
     # All the id here refer to the id field in players objects
-    killerId: Optional[int]  # Player getting the last hit on the kill. None for executions.
-    assistsIds: List[int]  # Players getting an assist in the kill
-    victimId: int  # Player getting killed
+    # Player getting the last hit on the kill. None for executions
+    killerId: int = None
+
+    # New match-v5 fields
+    bounty: int = None
+    killStreakLength: int = None
+
+    victimDamageDealt: List[LolGameKillDamageInstance] = field(default_factory=list)
+    victimDamageReceived: List[LolGameKillDamageInstance] = field(default_factory=list)
 
 
-class LolGameTeamMonsterKill(LolEvent, total=False):
-    """A monster kill for a team."""
-
-    killerId: int  # Refers to 'id' in players, represents the player landing the last hit
-    type: str  # 'DRAGON', 'BARON', 'RIFT_HERALD'
-    subType: Optional[str]  # 'CLOUD', 'INFERNAL', 'MOUNTAIN', 'OCEAN', 'ELDER'
-
-
-class LolGameTeamBuildingKill(LolEvent, total=False):
-    """A building kill for a team."""
-
-    killerId: Optional[int]  # Refers to 'id' in players, represents the player landing the last hit
-
-    type: str  # 'TURRET', 'INHIBITOR'
-    lane: str  # 'TOP', 'MID', 'BOT'
-    side: str  # 'BLUE', 'RED'
-    towerLocation: Optional[str]  # 'OUTER', 'INNER', 'INHIBITOR', 'NEXUS'
-
-
-class LolGamePlayerItemEvent(LolEvent, total=False):
-    """An item-related event for a player.
-
-    Represents buying, selling, destroying, and undoing items.
+@dataclass
+class LolGamePlayerSpecialKill(LolEvent):
+    """
+    A special kill in a LoL game (first blood, multi-kills, ...)
     """
 
-    type: str  # 'PURCHASED', 'SOLD', 'UNDO', 'DESTROYED'
-    id: int  # Referring to Riot API item ID. Resulting item in case of an UNDO
-    name: str  # Optional convenience field for human readability
-    undoId: Optional[int]  # Referring to the item that was undone in an UNDO event
+    type: str = None
+    multiKillLength: int = None
 
 
+@dataclass
+class LolGameTeamEpicMonsterKill(LolEvent):
+    """
+    An epic monster kill for a team
+    """
+
+    killerId: int = (
+        None  # Refers to 'id' in players, represents the player landing the last hit
+    )
+    # Players getting an assist in the monster kill, as shown in client (can be opponents)
+    assistsIds: List[int] = None
+
+    type: str = None  # 'DRAGON', 'DRAGON_SOUL', 'BARON', 'RIFT_HERALD' as of 2021
+    subType: str = None  # 'CLOUD', 'INFERNAL', 'MOUNTAIN', 'OCEAN', 'ELDER'
+
+
+@dataclass
+class LolGameTeamBuildingKill(LolEvent):
+    """
+    A building kill for a team
+    """
+
+    type: str = None  # 'TURRET', 'TURRET_PLATE', 'INHIBITOR'
+    lane: str = None  # 'TOP', 'MID', 'BOT'
+    side: str = None  # 'BLUE', 'RED' (the side it got killed in, technically redundant with team side)
+
+    # Refers to 'id' in players, represents the player landing the last hit
+    killerId: int = None
+    assistsIds: List[int] = field(default_factory=list)
+
+    turretLocation: str = (
+        None  # 'OUTER', 'INNER', 'INHIBITOR', 'NEXUS', None for inhibitors
+    )
+
+
+@dataclass
+class LolGamePlayerItemEvent(LolEvent, ItemNameClass):
+    """
+    An item-related event for a player
+
+    Represents buying, selling, picking up (herald), and undoing items
+    """
+
+    type: str = None  # 'PURCHASED', 'SOLD', 'UNDO', 'PICKED_UP', 'USED', 'DESTROYED'
+
+    id: int = None  # Referring to Riot API item ID
+    beforeUndoId: int = None  # Resulting item in case of an UNDO, helps recalculate items? could be dropped maybe
+
+
+@dataclass
 class LolGamePlayerWardEvent(LolEvent):
-    """A ward-related event for a player.
-
-    Represents placing and killing wards.
+    """
+    A ward-related event for a player
+    Represents placing and killing wards
     """
 
-    type: str  # 'PLACED', 'KILLED'
-    wardType: str  # Values in: YELLOW_TRINKET', 'CONTROL_WARD', 'SIGHT_WARD', 'YELLOW_TRINKET_UPGRADE', 'BLUE_TRINKET',
-    #                                  'TEEMO_MUSHROOM', 'VISION_WARD', 'UNDEFINED'
+    type: str = None  # 'PLACED', 'KILLED'
+    wardType: str = None  # Values in: 'YELLOW_TRINKET', 'CONTROL_WARD', 'SIGHT_WARD',
+    # 'BLUE_TRINKET', 'TEEMO_MUSHROOM', 'VISION_WARD', 'UNDEFINED' for Match V5
+    deathTimestamp: int = None  # When the ward died
 
 
+@dataclass
 class LolGamePlayerSkillLevelUpEvent(LolEvent):
-    """A skill level up by a player.
+    """
+    A skill level up by a player
     """
 
-    type: str  # 'NORMAL' or 'EVOLVE'
-    slot: int  # The skill slot, from 1 to 4
+    type: str = None  # 'NORMAL' or 'EVOLVE'
+    slot: int = None  # The skill slot, from 1 to 4
+
+
+@dataclass
+class LolGamePlayerLargeMonsterKill(LolEvent):
+    """
+    A large monster kill by a player
+    """
+
+    type: str = None  # 'BLUE_BUFF', 'RED_BUFF', 'RAPTOR', 'WOLF', 'KRUG', 'GROMP', 'SCUTTLE' as of 2021
+
+
+@dataclass
+class LolGamePlayerCooldownEvent(LolEvent, ABC):
+    """
+    An event that represents an action with a cooldown
+
+    Can be used for summoner spells use, spells uses (including ultimate), and items uses
+    """
+
+    cooldown: float = None  # The cooldown of the object in s after it has been used
+
+
+@dataclass
+class LolGamePlayerSpellUseEvent(LolGamePlayerCooldownEvent):
+    # P for passive, Q W E R for the main spells, None for summoner spells
+    key: str = None
+
+    # Summoner spell ID
+    id: int = None

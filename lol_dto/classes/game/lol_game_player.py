@@ -1,197 +1,341 @@
-from typing import TypedDict, List, Dict, Optional
+from dataclasses import dataclass, field
+from typing import List
 
 from lol_dto.classes.game.position import Position
 from lol_dto.classes.game.lol_game_event import (
     LolGamePlayerItemEvent,
     LolGamePlayerWardEvent,
     LolGamePlayerSkillLevelUpEvent,
+    LolGamePlayerLargeMonsterKill,
+    LolGamePlayerSpellUseEvent,
+    LolGamePlayerSpecialKill,
+)
+from lol_dto.classes.sources.empty_dataclass import EmptyDataclass
+from lol_dto.names_helper.name_classes import (
+    ChampionNameClass,
+    RuneNameClass,
+    ItemNameClass,
+    SummonerNameClass,
+    RuneTreeNameClass,
 )
 
 
-class LolGamePlayerSnapshot(TypedDict, total=False):
-    """Information about a player at a specific point in the game.
+@dataclass
+class LolGamePlayerSnapshotChampionStats:
+    """
+    Champion stats at a given snapshot for a player
+    """
+
+    abilityHaste: int = None
+    abilityPower: int = None
+    armor: int = None
+    armorPen: int = None
+    armorPenPercent: int = None
+    attackDamage: int = None
+    attackSpeed: int = None
+    bonusArmorPenPercent: int = None
+    bonusMagicPenPercent: int = None
+    ccReduction: int = None
+    cooldownReduction: int = None
+    health: int = None
+    healthMax: int = None
+    healthRegen: int = None
+    lifesteal: int = None
+    magicPen: int = None
+    magicPenPercent: int = None
+    magicResist: int = None
+    movementSpeed: int = None
+    omnivamp: int = None
+    physicalVamp: int = None
+    power: int = None
+    powerMax: int = None
+    powerRegen: int = None
+    spellVamp: int = None
+
+
+@dataclass
+class LolGamePlayerSnapshotDamageStats:
+    """
+    Damage stats at a given snapshot for a player
+    """
+
+    magicDamageDone: int = None
+    magicDamageDoneToChampions: int = None
+    magicDamageTaken: int = None
+    physicalDamageDone: int = None
+    physicalDamageDoneToChampions: int = None
+    physicalDamageTaken: int = None
+    totalDamageDone: int = None
+    totalDamageDoneToChampions: int = None
+    totalDamageTaken: int = None
+    trueDamageDone: int = None
+    trueDamageDoneToChampions: int = None
+    trueDamageTaken: int = None
+
+
+@dataclass
+class LolGamePlayerSnapshot:
+    """
+    Information about a player at a specific point in the game
+
+    Riot's API gives this information with a 1 minute granularity in its MatchTimeline object
     """
 
     timestamp: float  # Timestamp of the event expressed in seconds from the game start, with possible ms precision
 
-    currentGold: int  # Current gold (at the time of the snapshot)
-    totalGold: int  # Total gold earned
-    totalGoldDiff: Optional[int]  # Total gold difference with the opponent in the same role
+    # Player position, None for the last "snapshot" in Riot's API
+    position: Position = None
 
-    xp: int  # Current experience
-    xpDiff: int  # Experience difference with the opponent in the same role
+    currentGold: int = None  # Current gold (at the time of the snapshot)
+    totalGold: int = None  # Total gold earned
 
-    level: int  # Current champion level
+    xp: int = None  # Current experience
 
-    cs: int  # Total number of minions and monsters killed
-    csDiff: Optional[int]  # Total CS difference with the opponent in the same role
+    level: int = None  # Current champion level
 
-    monstersKilled: int  # Total monsters (neutral minions) killed
-    monstersKilledDiff: int  # Total monsters killed difference with the opponent in the same role
+    cs: int = None  # Total number of minions and monsters killed
+    monstersKilled: int = None  # Total monsters (neutral minions) killed
 
-    position: Optional[Position]  # Player position, None for the last "snapshot"
+    # Whether or not the player is alive at the time of the snapshot
+    isAlive: bool = None
+
+    # Whether or not a summoner spell is available or not
+    spell1Available: bool = None
+    spell2Available: bool = None
+
+    # Ultimate availability
+    ultimateAvailable: bool = None
+
+    # Absolutely no clue what this is supposed to be, match-v5 field
+    timeEnemySpentControlled: int = None
+
+    # New snapshot fields from match-v5
+    championStats: LolGamePlayerSnapshotChampionStats = field(
+        default_factory=LolGamePlayerSnapshotChampionStats
+    )
+    damageStats: LolGamePlayerSnapshotDamageStats = field(
+        default_factory=LolGamePlayerSnapshotDamageStats
+    )
 
 
-class LolGamePlayerRune(TypedDict, total=False):
-    """A single rune used by one of the players.
+@dataclass
+class LolGamePlayerRune(RuneNameClass):
+    """
+    A single rune used by one of the players
     """
 
     slot: int  # Primary tree, secondary tree, then stats perks
     id: int  # Referring to Riot API rune ID
 
-    name: Optional[str]  # Optional rune name for convenience
+    # Riot-provided end-of-game statistics for the rune
+    stats: List[int] = field(default_factory=list)
 
-    stats: List[int]  # Riot-provided end-of-game statistics for the rune
 
-
-class LolGamePlayerItem(TypedDict, total=False):
-    """A single item that a player possessed at the end of the game.
+@dataclass
+class LolGamePlayerItem(ItemNameClass):
+    """
+    A single item that a player possessed at the end of the game
     """
 
-    slot: int  # Goes from 0 to 6 as of 2020
     id: int  # Referring to Riot API item ID
-    name: Optional[str]  # Optional item name for convenience
+    slot: int = None  # Goes from 0 to 6 as of 2020
 
 
-class LolGamePlayerSummonerSpell(TypedDict, total=False):
-    """A single summoner spell chosen by a player.
-    """
+@dataclass
+class LolGamePlayerSummonerSpell(SummonerNameClass):
+    """A single summoner spell chosen by a player"""
 
-    slot: int  # 0 or 1
     id: int  # Referring to Riot API summoner spell ID
-    name: Optional[str]  # Optional summoner spell name for convenience
+    slot: int = None  # 0 or 1
+    casts: int = None  # New match-v5 field
 
 
-class LolGamePlayerEndOfGameStats(TypedDict, total=False):
-    """End of game stats for a player in a game
-    """
-
-    # Items are simply a list with the 'slot' field defining which item slot they occupied.
-    # The list cannot be simply indexed on this 'slot' as many players have empty slots at the end of games.
-    items: List[LolGamePlayerItem]  # List of end of game items
+@dataclass
+class LolGamePlayerEndOfGameStats:
+    """End of game stats for a player in a game"""
 
     # As first blood is player-specific, this does not appear in Team objects.
-    firstBlood: bool  # True if the player performed the first blood
-    firstBloodAssist: bool  # True if the player assisted the first blood kill
-    firstTower: bool  # True if the player dealt the last hit to the first tower kill
-    firstTowerAssist: bool  # True if the player assisted the first tower kill
-    firstInhibitor: bool  # True if the player dealt the last hit to the first inhibitor kill
-    firstInhibitorAssist: bool  # True if the player assisted in the first inhibitor kill
+    firstBlood: bool = None  # True if the player performed the first blood
+    firstBloodAssist: bool = None  # True if the player assisted the first blood kill
+    # True if the player dealt the last hit to the first turret kill
+    firstTurret: bool = None
+    firstTurretAssist: bool = None  # True if the player assisted the first turret kill
+    # True if the player dealt the last hit to the first inhibitor kill
+    firstInhibitor: bool = None
+    #  True if the player assisted in the first inhibitor kill
+    firstInhibitorAssist: bool = None
 
-    # TODO Add a small description for every field
+    # TODO Add a proper description for every field
 
     # All statistics here refer to end of game stats, so we do not preface them by anything.
-    kills: int
-    deaths: int
-    assists: int
-    gold: int
-    cs: int
-    level: int
+    kills: int = None
+    deaths: int = None
+    assists: int = None
+    gold: int = None
+    cs: int = None
+    level: int = None
 
     # Warding-related statistics
-    wardsPlaced: int
-    wardsKilled: int
-    visionWardsBought: int
-    visionScore: int
+    wardsPlaced: int = None
+    wardsKilled: int = None
+    visionWardsBought: int = None
+    visionScore: int = None
 
     # Kills-related statistics
-    killingSprees: int  # Number of a time a player has initiated a killing spree (2 or more consecutive kills)
-    largestKillingSpree: int  # Largest consecutive kills, above 0 only if it reached at least 2
+    killingSprees: int = None  # Number of a time a player has initiated a killing spree (2 or more consecutive kills)
+    # Largest consecutive kills, above 0 only if it reached at least 2
+    largestKillingSpree: int = None
 
-    doubleKills: int
-    tripleKills: int
-    quadraKills: int
-    pentaKills: int
+    doubleKills: int = None
+    tripleKills: int = None
+    quadraKills: int = None
+    pentaKills: int = None
 
-    towerKills: int
-    inhibitorKills: int
+    turretKills: int = None
+    inhibitorKills: int = None
 
     # Using modern Riot nomenclature of monsters for "neutral minions"
-    monsterKills: int
-    monsterKillsInAlliedJungle: int
-    monsterKillsInEnemyJungle: int
+    monsterKills: int = None
+    monsterKillsInAlliedJungle: int = None
+    monsterKillsInEnemyJungle: int = None
 
     # Damage-related statistics
     # Total true damage dealt can be calculated by subtracting physical and magic damage to the total
-    totalDamageDealt: int  # Includes damage to minions and monsters
-    physicalDamageDealt: int
-    magicDamageDealt: int
+    totalDamageDealt: int = None  # Includes damage to minions and monsters
+    physicalDamageDealt: int = None
+    magicDamageDealt: int = None
 
     # Total true damage dealt  to champions can be calculated by subtracting physical and magic damage to the total
-    totalDamageDealtToChampions: int
-    physicalDamageDealtToChampions: int
-    magicDamageDealtToChampions: int
+    totalDamageDealtToChampions: int = None
+    physicalDamageDealtToChampions: int = None
+    magicDamageDealtToChampions: int = None
 
     # Total true damage taken can be calculated by subtracting physical and magic damage to the total
-    totalDamageTaken: int
-    physicalDamageTaken: int
-    magicDamageTaken: int
+    totalDamageTaken: int = None
+    physicalDamageTaken: int = None
+    magicDamageTaken: int = None
 
     # Other damage statistics
-    damageDealtToObjectives: int
-    damageDealtToTurrets: int
+    damageDealtToObjectives: int = None
+    damageDealtToBuildings: int = None
+    damageDealtToTurrets: int = None
+
+    # Spell uses statistics, accessible in match-v5
+    #   I hate the format, but am not sure where to put it otherwise where it would make sense
+    spell1Casts: int = None
+    spell2Casts: int = None
+    spell3Casts: int = None
+    spell4Casts: int = None
 
     # Really random statistics
-    longestTimeSpentLiving: int  # Expressed in seconds
-    largestCriticalStrike: int  # Full raw damage of the largest critical strike
-    goldSpent: int  # Can be useful to try and identify AFK players?
+    longestTimeSpentLiving: int = None  # Expressed in seconds
+    largestCriticalStrike: int = None  # Full raw damage of the largest critical strike
+    goldSpent: int = None  # Can be useful to try and identify AFK players?
 
     # The following fields need to have their behaviour properly explained as part of the specification
-    totalHeal: int  # TODO Document this field
-    totalUnitsHealed: int  # TODO Document this field
-    damageSelfMitigated: int  # TODO Document this field
+    totalHeal: int = None
+    totalDamageShieldedOnTeammates: int = None
+    totalUnitsHealed: int = None
+    damageSelfMitigated: int = None
 
-    totalTimeCCDealt: int  # TODO Document this field
-    timeCCingOthers: int  # TODO Document this field
+    totalTimeCCDealt: int = None
+    timeCCingOthers: int = None
+
+    # New match-v5 end of game stats
+    xp: int = None
+    bountyLevel: int = None
+    baronKills: int = None
+    championTransform: int = None
+    consumablesPurchased: int = None
+    detectorWardsPlaced: int = None
+    dragonKills: int = None
+    inhibitorTakedowns: int = None
+    itemsPurchased: int = None
+    nexusKills: int = None
+    nexusTakedowns: int = None
+    objectivesStolen: int = None
+    objectivesStolenAssists: int = None
+    sightWardsBoughtInGame: int = None
+    totalHealsOnTeammates: int = None
+    totalTimeSpentDead: int = None
+    turretTakedowns: int = None
+
+    # Items are simply a list with the 'slot' field defining which item slot they occupied.
+    # The list cannot be simply indexed on this 'slot' as many players have empty slots at the end of games.
+
+    # List of end of game items
+    items: List[LolGamePlayerItem] = field(default_factory=list)
 
 
-class LolGamePlayer(TypedDict, total=False):
-    """A player in a LoL game.
+@dataclass
+class LolGamePlayer(ChampionNameClass, RuneTreeNameClass):
+    """
+    A player in a LoL game
 
-    All player-specific information should be present here.
+    All player-specific information should be present here
     """
 
-    id: int  # Usually equal to participantId in Riot’s API. Meant to identify the player in kills
+    # Usually equal to participantId in Riot’s API. Meant to identify the player in kills
+    #   Can be arbitrary, the only thing that matters is to be consistent with game.kills.killerId fields
+    id: int = None
 
-    inGameName: str  # The in-game name is not linked to a particular data source and should be unique
-    profileIconId: int  # Refers to Riot API icon ID
+    inGameName: str = None  # The in-game name is not linked to a particular data source and should be unique
+    profileIconId: int = None  # Refers to Riot API icon ID
 
     # /!\ This field should be curated if it is present /!\
-    role: Optional[str]  # Role values are TOP, JGL, MID, BOT, SUP as of 2020.
+    role: str = None  # Role values are TOP, JGL, MID, BOT, SUP as of 2020.
 
-    championId: int  # Referring to Riot API champion ID
-    championName: Optional[str]  # Optional champion name for convenience
+    championId: int = None  # Referring to Riot API champion ID
 
     # Unique identifiers are the ways to identify this player in the data sources used to gather the data
-    # Any key that is present in game['sources'] should also be present here
-    # A Riot API 'uniqueIdentifiers' dict looks like: {'riot': {'accountId': str, 'platformId': str}}
-    uniqueIdentifiers: Dict[str, dict]
+    # Any attribute that is present in game.sources should also be present here
+    # A Riot API uniqueIdentifiers class looks like:
+    #                                       player.sources.accountId and player.uniqueIdentifiers.platformId
+    # Each parser transforming data to the LolGame format should implement its own source dataclass to allow for
+    #   merging different sources
+    sources: dataclass = field(default_factory=EmptyDataclass)
 
     # Rune information is stored directly in the player object as they are beginning-of-game information
-    primaryRuneTreeId: int  # Refers to Riot rune tree ID
-    primaryRuneTreeName: Optional[str]  # Optional name for human readability
+    primaryRuneTreeId: int = None  # Refers to Riot rune tree ID
+    secondaryRuneTreeId: int = None  # Refers to Riot rune tree ID
 
-    secondaryRuneTreeId: int  # Refers to Riot rune tree ID
-    secondaryRuneTreeName: Optional[str]  # Optional name for human readability
-
-    runes: List[LolGamePlayerRune]
+    runes: List[LolGamePlayerRune] = field(default_factory=list)
 
     # Summoner spells is a simple 2-items list
-    summonerSpells: List[LolGamePlayerSummonerSpell]
+    summonerSpells: List[LolGamePlayerSummonerSpell] = field(default_factory=list)
 
     # End of game stats are statistics like total kills, damage, vision score, ...
-    endOfGameStats: LolGamePlayerEndOfGameStats
+    endOfGameStats: LolGamePlayerEndOfGameStats = None
 
-    # Snapshots represent player-specific information at a given timestamp.
-    # Timestamp could be used as keys but JSON does not allow for integer keys.
-    # This is therefore simply a list, and you should not expect it to be indexed or sorted in any particular way.
-    snapshots: List[LolGamePlayerSnapshot]
+    # Snapshots represent player-specific information at a given timestamp
+    # Timestamp could be used as keys but JSON does not allow for integer keys
+    # This is therefore simply a list, which you should not expect it to be indexed or sorted in any particular way
+    snapshots: List[LolGamePlayerSnapshot] = field(default_factory=list)
 
     # Item events is a list of item buys, sell, and undo
-    itemsEvents: List[LolGamePlayerItemEvent]
+    itemsEvents: List[LolGamePlayerItemEvent] = field(default_factory=list)
 
     # Ward events are a list of wards placed and destroyed
-    wardsEvents: List[LolGamePlayerWardEvent]
+    wardsEvents: List[LolGamePlayerWardEvent] = field(default_factory=list)
 
     # Skill level up events are every time the player used a skill or evolution point
-    skillsLevelUpEvents: List[LolGamePlayerSkillLevelUpEvent]
+    skillsLevelUpEvents: List[LolGamePlayerSkillLevelUpEvent] = field(
+        default_factory=list
+    )
+
+    # The next fields are usually not available in Riot's API
+
+    # Kills of large monsters, accessible in some data sources
+    largeMonstersKills: List[LolGamePlayerLargeMonsterKill] = field(
+        default_factory=list
+    )
+
+    # Direct level up events exist in some data sources
+    # It is a simple list of level up timestamps, in seconds
+    levelUpEvents: List[int] = field(default_factory=list)
+
+    # Cooldown information can be parsed from spectator mode
+    spellsUses: List[LolGamePlayerSpellUseEvent] = field(default_factory=list)
+
+    # Special kills are linked to players and represent first bloods, multi-kills, and ace
+    specialKills: List[LolGamePlayerSpecialKill] = field(default_factory=list)
