@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "lol_dto"
-version = "2.0.0a4"
+version = "2.0.0"
 description = "A unified representation of League of Legends-related information"
 authors = ["mrtolkien <gary.mialaret+pypi@gmail.com>"]
 license = "MIT"
@@ -16,6 +16,7 @@ names = ["lol-id-tools"]
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.4"
 tox = "^3.23.1"
+black = {version = "^21.12b0", allow-prereleases = true}
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
