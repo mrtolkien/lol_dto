@@ -2,7 +2,7 @@
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-A unified Data Transfer Object for League of Legends games. Currently developed by Tolki, FatalElement, and Kalturi.
+A unified Data Transfer Object for League of Legends games. Currently developed by Tolki.
 
 ## 2.0 note and JSON serialization
 
@@ -11,12 +11,12 @@ backwards compatible.
 
 `dataclasses.asdict()` can be used to get the object as a dictionary, and then saved as a JSON.
 
-Fields can be omitted when not supplied to make the object lighter. This is particularly true for Snapshots objects
+Fields can be omitted when not supplied to make the object lighter. This is particularly useful for Snapshots objects.
 
 ## Motivation
 
 League of Legends game information can come in many forms. The most popular source is Riot’s API and in particular its
-[MATCH-V4](https://developer.riotgames.com/apis#match-v4/) endpoint, which defines its own MatchDto
+[MATCH-V5](https://developer.riotgames.com/apis#match-v5/) endpoint, which defines its own MatchDto
 and MatchTimelineDto objects. While other sources of information could follow Riot’s data format, requiring
 multiple objects to represent a single game and being constrained by Riot’s data format is inconvenient.
 
@@ -52,14 +52,14 @@ the object to keep it as light as possible.
 
 ## `lol_dto`
 
-This repository hosts a `python` reference implementation in the form of a `TypedDict`.
+This repository hosts a `python` reference implementation in the form of a `dataclass`.
 
-A `TypedDict` does not enforce constraints but will raise linter warnings and allows IDEs to autocomplete field names.
+A `dataclass` does not enforce type constraints but will raise linter warnings and allows IDEs to autocomplete field names.
 
 Another module focused on transforming `MatchDto` and `MatchTimelineDto` to a `LolGame` can
 [be found here](https://github.com/mrtolkien/riot_transmute). Its
-[unit tests](https://github.com/mrtolkien/riot_transmute/blob/master/riot_api_to_lol_dto/tests/test_riotwatcher_dto.py#L35)
-and [JSON examples](https://github.com/mrtolkien/riot_transmute/tree/master/examples)
+[unit tests](https://github.com/mrtolkien/riot_transmute/blob/master/tests/test_riot_transmute.py)
+and [JSON examples](https://github.com/mrtolkien/riot_transmute/tree/master/json_examples)
 are useful sources to better understand the data structure.
 
 ### LolGame DTO overview
@@ -83,16 +83,20 @@ game: dict
 │       ├── wardsEvents: list
 │       └── skillsLevelUpEvents: list
 ├── kills: list
-└── picksBans: list
+├── picksBans: list
+└── pauses: list
 ```
 
 ### Game
 
 - `sources` represents unique identifiers for this game for a given data source
   - `"riotLolApi": { "gameId": 4409190456, "platformId": "KR" }`
-- `teams` is a dictionary with keys equal to `'BLUE'` or `'RED'`
+- `teams` has properties equal to `'BLUE'` and `'RED'`
 - `kills` are present directly at the root of the `game` object as they refer to multiple players through
-  `killerId`, `victimId`, and `assistingParticipantsIds` - We have to rely on the arbitrary `participantId` given by the Riot API because: - Relying on `championId` makes it incompatible with blind pick - Relying on `inGameName` does not work for `MatchTimeline` objects from the Riot API
+  `killerId`, `victimId`, and `assistingParticipantsIds`
+  - We have to rely on the arbitrary `participantId` given by the Riot API because:
+    - Relying on `championId` makes it incompatible with blind pick
+    - Relying on `inGameName` does not work for `MatchTimeline` objects from the Riot API
 - `picksBans` represents the full picks and bans and is mostly used for esports games
 
 ### Team
