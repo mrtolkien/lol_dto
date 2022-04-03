@@ -127,4 +127,4 @@ Currently wanted contribution are:
 
 - Feedback about the data structure and field names
 - Implementation of the data structure in other programming languages
-- C functions to cast Riot API objects to this LolGame DTO as multiple languages can bind to them
+- C/Rust/... functions to cast Riot API objects to this LolGame DTO as multiple languages can bind to them
