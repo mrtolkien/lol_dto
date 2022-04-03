@@ -2,13 +2,11 @@ from dataclasses import dataclass
 from typing import List
 
 try:
-    # TODO Make the optional import have a better syntax and a proper extra
     import lol_id_tools
 except ImportError:
     pass
 
-# TODO Currently, this is relying on lol_id_tools and far from perfect
-#   Ideally, move it to using cassiopeia and using the right patch information through self.game backrefs
+# Ideally, move it to using cassiopeia and using the right patch information through self.game backrefs
 
 
 @dataclass
@@ -17,7 +15,7 @@ class ChampionNameClass:
 
     @property
     def championName(self) -> str:
-        return lol_id_tools.get_name(self.championId, object_type="champion")
+        return lol_id_tools.get_name(self.championId, object_type="champion", patch=self.game.patch)
 
 
 @dataclass
@@ -26,7 +24,7 @@ class BanNamesClass:
 
     @property
     def bansNames(self) -> List[str]:
-        return [lol_id_tools.get_name(b, object_type="champion") for b in self.bans]
+        return [lol_id_tools.get_name(b, object_type="champion", patch=self.game.patch) for b in self.bans]
 
 
 @dataclass
@@ -35,7 +33,7 @@ class RuneNameClass:
 
     @property
     def name(self) -> str:
-        return lol_id_tools.get_name(self.id, object_type="rune")
+        return lol_id_tools.get_name(self.id, object_type="rune", patch=self.game.patch)
 
 
 @dataclass
@@ -45,11 +43,11 @@ class RuneTreeNameClass:
 
     @property
     def primaryRuneTreeName(self) -> str:
-        return lol_id_tools.get_name(self.primaryRuneTreeId, object_type="rune")
+        return lol_id_tools.get_name(self.primaryRuneTreeId, object_type="rune", patch=self.game.patch)
 
     @property
     def secondaryRuneTreeName(self) -> str:
-        return lol_id_tools.get_name(self.secondaryRuneTreeId, object_type="rune")
+        return lol_id_tools.get_name(self.secondaryRuneTreeId, object_type="rune", patch=self.game.patch)
 
 
 @dataclass
@@ -58,7 +56,7 @@ class ItemNameClass:
 
     @property
     def name(self) -> str:
-        return lol_id_tools.get_name(self.id, object_type="item")
+        return lol_id_tools.get_name(self.id, object_type="item", patch=self.game.patch)
 
 
 @dataclass
@@ -67,4 +65,4 @@ class SummonerNameClass:
 
     @property
     def name(self) -> str:
-        return lol_id_tools.get_name(self.id, object_type="summoner_spell")
+        return lol_id_tools.get_name(self.id, object_type="summoner_spell", patch=self.game.patch)

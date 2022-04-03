@@ -64,3 +64,13 @@ class LolGameTeam(BanNamesClass):
 
     # New match-v5 field
     earlySurrendered: bool = None
+
+    def __post_init__(self):
+        """
+        Post init function to define a backref in children needing access to the patch to find object names
+        """
+        for player in self.players:
+            setattr(player, "game", self.game)
+
+        for ban in self.bans:
+            setattr(ban, "game", self.game)

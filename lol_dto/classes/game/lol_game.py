@@ -18,7 +18,7 @@ class LolPickBan(ChampionNameClass):
 
     championId: int
     isBan: bool  # True if this represents a ban, False if this represents a pick
-    team: str  # 'BLUE' or 'RED'
+    team: str  # 'BLUE' or 'tRED'
 
 
 @dataclass

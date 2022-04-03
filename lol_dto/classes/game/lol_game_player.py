@@ -266,6 +266,9 @@ class LolGamePlayerEndOfGameStats:
     # List of end of game items
     items: List[LolGamePlayerItem] = field(default_factory=list)
 
+    def __post_init__(self):
+        for item in self.items:
+            setattr(item, "game", self.game)
 
 @dataclass
 class LolGamePlayer(ChampionNameClass, RuneTreeNameClass):
@@ -339,3 +342,15 @@ class LolGamePlayer(ChampionNameClass, RuneTreeNameClass):
 
     # Special kills are linked to players and represent first bloods, multi-kills, and ace
     specialKills: List[LolGamePlayerSpecialKill] = field(default_factory=list)
+
+    def __post_init__(self):
+        """
+        Post init function to define a backref in children needing access to the patch to find object names
+        """
+        for summ in self.summonerSpells:
+            setattr(summ, "game", self.game)
+
+        for rune in self.runes:
+            setattr(rune, "game", self.game)
+
+        setattr(self.endOfGameStats, "game", self.game)
