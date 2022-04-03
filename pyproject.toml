@@ -7,8 +7,8 @@ license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.7"
-lol-id-tools = { version = "^1.7.1", optional = true }
+python = "^3.8"
+lol-id-tools = { version = "^2.0.0", optional = true }
 
 [tool.poetry.extras]
 names = ["lol-id-tools"]
