@@ -7,16 +7,16 @@ license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.10"
 lol-id-tools = { version = "^1.7.1", optional = true }
 
 [tool.poetry.extras]
 names = ["lol-id-tools"]
 
 [tool.poetry.dev-dependencies]
-pytest = "^7.0.0"
-tox = "^3.23.1"
-black = {version = "^21.12b0", allow-prereleases = true}
+pytest = "^9.0.3"
+tox = "^4.0"
+black = "^26.10.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -28,10 +28,10 @@ build-backend = "poetry.core.masonry.api"
 legacy_tox_ini = """
 [tox]
 isolated_build = true
-envlist = py37, py38, py39
+envlist = py310, py311, py312, py313
 
 [testenv]
-whitelist_externals = poetry
+allowlist_externals = poetry
 commands =
     poetry install -v
     poetry run pytest tests/
